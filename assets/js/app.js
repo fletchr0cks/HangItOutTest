@@ -7,7 +7,17 @@ run(function () {
         if (navigator.network.connection.type == Connection.NONE) {
             alert("No internet connection - we won't be able to show you any maps");
         } else {
-            alert("We can reach Google!");
+            alert("We can reach Google! Trying location");
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var loc = "" + position.coords.latitude + "," + position.coords.longitude;
+                $('#results2').html(loc);
+
+            }, function () {
+                $('#results2').html("fail");
+            });
+            
+            
+            
             $('#results').html("Loading results ...");
              $.ajax({
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/56.058168,-2.719811.json",
