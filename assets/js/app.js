@@ -44,6 +44,24 @@ run(function () {
                 x$('img#static_map').attr('src', "assets/img/gpsfailed.png");
             });
         });
+        
+        $.ajax({
+		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/56.058168,-2.719811.json",
+		dataType: "jsonp",
+		success: function(parsed_json) {
+			var location = parsed_json['location']['city'];
+            alert(location);
+            
+            $.each(parsed_json.hourly_forecast, function (i, zone) {
+            
+            sky = parseInt(zone.sky);
+
+	});
+            alert(sky*2);
+            }
+					
+	});
+        
     });
     when('#save', function () {
         store.save({
