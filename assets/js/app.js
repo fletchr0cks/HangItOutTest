@@ -15,6 +15,7 @@ run(function () {
 		success: function(parsed_json) {
 			var location = parsed_json['location']['city'];
             alert(location);
+            }
 					
 	});
             
