@@ -20,12 +20,18 @@ run(function () {
             
             $('#results').html("Loading results ...");
              $.ajax({
-		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/56.058168,-2.719811.json",
+		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/"+ loc + ".json",
 		dataType: "jsonp",
 		success: function(parsed_json) {
 			var location = parsed_json['location']['city'];
             alert(location);
             $('#results').html(location);
+             $.each(parsed_json.hourly_forecast, function (i, zone) {
+            
+            var sky = zone.sky;
+            $('#results2').append("<p>" + sky + "</p>");
+
+	});
             }
             
             });
