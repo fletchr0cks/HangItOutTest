@@ -22,7 +22,11 @@ run(function () {
              $.each(parsed_json.hourly_forecast, function (i, zone) {
             
             var sky = zone.sky;
-            $('#results2').append("<p>" + sky + "</p>");
+            
+            var userhtml = "<table style=\"width: 100%\"><tr><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.FCTTIME.hour + "</div></td><td style\"width: 20%\"><div class=\"normal_small\">" + zone.temp.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.wspd.metric + "</td><td style=\"width: 20%\">" + zone.sky + "</td></tr></table>";
+
+            
+            $('#results2').append(userhtml);
 
 	});
             }
