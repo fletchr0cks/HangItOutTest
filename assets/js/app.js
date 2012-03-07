@@ -10,22 +10,15 @@ run(function () {
             alert("We can reach Google! Trying location");
             navigator.geolocation.getCurrentPosition(function (position) {
                 var loc = "" + position.coords.latitude + "," + position.coords.longitude;
-                $('#results2').html(loc);
-
-            }, function () {
-                $('#results2').html("fail");
-            });
-            
-            
-            
-            $('#results').html("Loading results ...");
-             $.ajax({
+                $('#results').html(loc);
+                
+                 $.ajax({
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/56.058168,-2.719811.json",
 		dataType: "jsonp",
 		success: function(parsed_json) {
 			var location = parsed_json['location']['city'];
             alert(location + loc);
-            $('#results').html(location + loc);
+           
              $.each(parsed_json.hourly_forecast, function (i, zone) {
             
             var sky = zone.sky;
@@ -35,6 +28,16 @@ run(function () {
             }
             
             });
+                
+
+            }, function () {
+                $('#results2').html("fail");
+            });
+            
+            
+            
+            $('#results').html("Loading results ...");
+            
    
 
         }
