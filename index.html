@@ -27,28 +27,14 @@
 	<body>
     
     <script language="javascript" type="text/javascript">
-    alert('does jquery work');
-    $(document).ready(function() { 
-   alert('hi'); 
-   $.ajax({
-		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/56.058168,-2.719811.json",
-		dataType: "jsonp",
-		success: function(parsed_json) {
-			var location = parsed_json['location']['city'];
-            alert(location);
-            }
-            
-            });
-   
-   
-   
-   
-}); 
-</script>
+   </script>
     
     
- 		<div id="title_bar">Hang It Out Test2</div>
-
+ 		<div id="title_bar">Hang It Out3</div>
+        <div id="results">
+        Replaced on load
+        </div>
+        
 		<div id="welcome" class="view">
 		  <div class="app_button" id="map_button">Show My Location</div>
   	      <div class="app_button" id="settings_button">Settings</div>
