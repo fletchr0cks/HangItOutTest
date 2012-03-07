@@ -7,19 +7,7 @@ run(function () {
         if (navigator.network.connection.type == Connection.NONE) {
             alert("No internet connection - we won't be able to show you any maps");
         } else {
-            alert("We can reach Google - get ready!");
-            
-            $.ajax({
-		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/56.058168,-2.719811.json",
-		dataType: "jsonp",
-		success: function(parsed_json) {
-			var location = parsed_json['location']['city'];
-            alert(location);
-            }
-					
-	});
-            
-            
+            alert("We can reach Google!");
         }
     })();
     
