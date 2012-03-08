@@ -4,7 +4,6 @@
 
 function onDeviceReady() {
         checkConnection();
-        runProg();
     }
 
     function checkConnection() {
@@ -22,8 +21,8 @@ function onDeviceReady() {
         alert('Connection type: ' + states[networkState]);
     }
 
-function runProg() {
 
+run(function () {
     // immediately invoked on first run
     var init = (function () {
     var networkState = navigator.network.connection.type;
@@ -103,7 +102,7 @@ function runProg() {
                
 
         }
-}
+    })();
     
     // a little inline controller
     when('#welcome');
