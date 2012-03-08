@@ -29,9 +29,9 @@ run(function () {
             alert("No internet connection - we won't be able to show you any maps");
         } else {
             alert("We can reach Google - get ready for some awesome maps!");
-                   $.ajax({
+      $.ajax({
         type: "GET",
-		url: "assets/js/json.txt",
+		url: "json.txt",
 		dataType: "text/plain",
 		success: function(parsed_json) {
             var json = eval('(' + parsed_json + ')');
