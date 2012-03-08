@@ -21,12 +21,14 @@ run(function () {
            
              $.each(parsed_json.hourly_forecast, function (i, zone) {
             
-            var sky = zone.sky;
+            var sky = parseInt(zone.sky);
             
-            var userhtml = "<table style=\"width: 100%\"><tr><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.FCTTIME.hour + "</div></td><td style\"width: 20%\"><div class=\"normal_small\">" + zone.temp.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.wspd.metric + "</td><td style=\"width: 20%\">" + zone.sky + "</td></tr></table>";
+            var userhtml = "<table style=\"width: 100%\"><tr><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.FCTTIME.hour + "</div></td><td style\"width: 20%\"><div class=\"normal_small\">" + zone.temp.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.wspd.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.sky + "</div></td></tr></table>";
 
             
             $('#results2').append(userhtml);
+            $('#chart').html("<img src=\"http://chart.apis.google.com/chart?chxt=y&chs=300x150&cht=gm&chl=Groovy&chtt=Washing-o-meter&chco=FF9900&chd=t:70\" />");
+            
 
 	});
             }
