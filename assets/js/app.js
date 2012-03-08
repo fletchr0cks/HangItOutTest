@@ -1,9 +1,32 @@
 // 
 //  --- our app behavior logic ---
 //
+
+function onDeviceReady() {
+        checkConnection();
+    }
+
+    function checkConnection() {
+        var networkState = navigator.network.connection.type;
+
+        var states = {};
+        states[Connection.UNKNOWN]  = 'Unknown connection';
+        states[Connection.ETHERNET] = 'Ethernet connection';
+        states[Connection.WIFI]     = 'WiFi connection';
+        states[Connection.CELL_2G]  = 'Cell 2G connection';
+        states[Connection.CELL_3G]  = 'Cell 3G connection';
+        states[Connection.CELL_4G]  = 'Cell 4G connection';
+        states[Connection.NONE]     = 'No network connection';
+
+        alert('Connection type: ' + states[networkState]);
+    }
+
+
 run(function () {
     // immediately invoked on first run
     var init = (function () {
+    var networkState = navigator.network.connection.type;
+    alert(networkState);
         if (navigator.network.connection.type == Connection.NONE) {
             //alert("No internet connection - we won't be able to show you any maps");
             $('#data_result').html("No network connection. In demo mode");
@@ -27,7 +50,7 @@ run(function () {
             $('#results2').append(userhtml);
             $('#chart').html("<img src=\"http://chart.apis.google.com/chart?chxt=y&chs=300x150&cht=gm&chl=Do%20it&chtt=Washing-O-Meter%20Says:&chts=DE613F,20,c&chco=FF9900&chd=t:70\" />");
             
-            $('#data_result_last').html(zone.FCTTIME.pretty);
+            $('#data_result_last').html(zone.FCTTIME.hour);
             
 
 	});
