@@ -53,22 +53,15 @@ run(function () {
             }
             
             });
-            
-            
-            
-                 
-            });
-                
+
 
             }, function () {
               
                           
         });
             
-            
-               
 
-        }
+
     })();
     
     // a little inline controller
