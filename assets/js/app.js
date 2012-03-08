@@ -48,7 +48,7 @@ run(function () {
 
             
             $('#results2').append(userhtml);
-            $('#chart').html("<img src=\"http://chart.apis.google.com/chart?chxt=y&chs=300x150&cht=gm&chl=Do%20it&chtt=Washing-O-Meter%20Says:&chts=DE613F,20,c&chco=FF9900&chd=t:70\" />");
+            $('#chart').html("<img src=\"assets/img/chart.png\" />");
             
            
             
