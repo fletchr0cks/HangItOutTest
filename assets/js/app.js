@@ -7,6 +7,36 @@ run(function () {
         if (navigator.network.connection.type == Connection.NONE) {
             //alert("No internet connection - we won't be able to show you any maps");
             $('#data_result').html("No network connection. In demo mode");
+        $.ajax({
+        type: "GET"
+		url: "assets/js/json.txt",
+		dataType: "text/plain",
+		success: function(parsed_json) {
+			var location = parsed_json['location']['city'];
+            //alert(location + loc);
+            $('#loc_result').html("Location is " + loc + ": " + location);
+    
+           
+             $.each(parsed_json.hourly_forecast, function (i, zone) {
+            
+            var sky = parseInt(zone.sky);
+            
+            var userhtml = "<table style=\"width: 100%\"><tr><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.FCTTIME.hour + "</div></td><td style\"width: 20%\"><div class=\"normal_small\">" + zone.temp.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.wspd.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.sky + "</div></td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.qpf.metric + "</div></td></tr></table>";
+
+            
+            $('#results2').append(userhtml);
+            $('#chart').html("<img src=\"http://chart.apis.google.com/chart?chxt=y&chs=300x150&cht=gm&chl=Do%20it&chtt=Washing-O-Meter%20Says:&chts=DE613F,20,c&chco=FF9900&chd=t:70\" />");
+            
+            $('#data_result_last').html(zone.FCTTIME.pretty);
+            
+
+	});
+            }
+            
+            });
+            
+            
+            
         } else {
             //alert("We can reach Google! Trying location");
             $('#data_result').html("Connected to Weather Underground API.");
@@ -32,7 +62,7 @@ run(function () {
             $('#results2').append(userhtml);
             $('#chart').html("<img src=\"http://chart.apis.google.com/chart?chxt=y&chs=300x150&cht=gm&chl=Do%20it&chtt=Washing-O-Meter%20Says:&chts=DE613F,20,c&chco=FF9900&chd=t:70\" />");
             
-            $('data_result_last').html(zone.FCTTIME.pretty);
+            $('#data_result_last').html(zone.FCTTIME.pretty);
             
 
 	});
