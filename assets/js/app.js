@@ -18,7 +18,7 @@ run(function () {
 		success: function(parsed_json) {
 			var location = parsed_json['location']['city'];
             //alert(location + loc);
-            $('#loc_result').html("Location is " + loc + ": " location);
+            $('#loc_result').html("Location is " + loc + ": " + location);
 
            
              $.each(parsed_json.hourly_forecast, function (i, zone) {
