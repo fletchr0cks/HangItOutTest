@@ -27,7 +27,7 @@ run(function () {
     var init = (function () {
     var networkState = navigator.network.connection.type;
     alert(networkState);
-        if (navigator.network.connection.type == Connection.NONE) {
+        if (networkState == "null") {
             //alert("No internet connection - we won't be able to show you any maps");
             $('#data_result').html("No network connection. In demo mode");
         $.ajax({
@@ -50,7 +50,7 @@ run(function () {
             $('#results2').append(userhtml);
             $('#chart').html("<img src=\"http://chart.apis.google.com/chart?chxt=y&chs=300x150&cht=gm&chl=Do%20it&chtt=Washing-O-Meter%20Says:&chts=DE613F,20,c&chco=FF9900&chd=t:70\" />");
             
-            $('#data_result_last').html(zone.FCTTIME.hour);
+           
             
 
 	});
