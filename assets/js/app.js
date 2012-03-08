@@ -28,7 +28,6 @@ run(function () {
             
             $('#results2').append(userhtml);
             $('#chart').html("<img src=\"http://chart.apis.google.com/chart?chxt=y&chs=300x150&cht=gm&chl=Groovy&chtt=Washing-o-meter&chco=FF9900&chd=t:70\" />");
-            
 
 	});
             }
