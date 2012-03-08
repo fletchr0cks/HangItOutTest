@@ -31,16 +31,13 @@ body {
   margin-bottom: 20px;
   cursor: pointer;
   width: 200px;
-  background:#F7941E;
-  background: -webkit-gradient(linear, 0 0, 0 70%, from(#F7941E), to(#D37F18));
-  background: linear-gradient(#F7941E, #D37F18 70%);
-  border: 1px solid #C97917;
+  background:#FFBD35;
+  border: 1px solid #FFBD35;
   font-size: 18px;
   font-weight: 200;
-  text-shadow: 0 -1px 0 #7E4B0D;
   height: 40px;
   line-height: 40px;
-  color:#fff;
+  color:#DE613F;
   text-align: center;
 }
 
