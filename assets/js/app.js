@@ -8,7 +8,7 @@ run(function () {
             //alert("No internet connection - we won't be able to show you any maps");
             $('#data_result').html("No network connection. In demo mode");
         $.ajax({
-        type: "GET"
+        type: "GET",
 		url: "assets/js/json.txt",
 		dataType: "text/plain",
 		success: function(parsed_json) {
