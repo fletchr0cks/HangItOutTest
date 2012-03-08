@@ -29,9 +29,33 @@ run(function () {
             alert("No internet connection - we won't be able to show you any maps");
         } else {
             alert("We can reach Google - get ready for some awesome maps!");
-                 
+              $.ajax({
+        type: "GET",
+		url: "assets/js/json.txt",
+		dataType: "text/plain",
+		success: function(parsed_json) {
+			var location = parsed_json['location']['city'];
+            //alert(location + loc);
+            $('#loc_result').html("Location is " + loc + ": " + location);
+    
+           
+             $.each(parsed_json.hourly_forecast, function (i, zone) {
+            
+            var sky = parseInt(zone.sky);
+            
+            var userhtml = "<table style=\"width: 100%\"><tr><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.FCTTIME.hour + "</div></td><td style\"width: 20%\"><div class=\"normal_small\">" + zone.temp.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.wspd.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.sky + "</div></td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.qpf.metric + "</div></td></tr></table>";
+
+            
+            $('#results2').append(userhtml);
+           
+	});
+    
      $('#chart').html("<img src=\"assets/img/chart.png\" />");
-                    
+            }
+            
+            });
+            
+            
 
         }
     })();
