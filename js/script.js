@@ -1,6 +1,13 @@
 	
     // Wait for PhoneGap to load 
-    document.addEventListener("deviceready", onDeviceReady, false); 
+    function onBodyLoad() 
+        { 
+                document.addEventListener("deviceready",onDeviceReady,false); 
+                alert("this works"); 
+        } 
+        /* When this function is called, PhoneGap has been initialized and is 
+ready to roll */ 
+
 	
     // PhoneGap is loaded and it is now safe to make calls PhoneGap methods
     function onDeviceReady() {  
