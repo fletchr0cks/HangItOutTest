@@ -1,0 +1,16 @@
+#network{
+	text-align:center;
+}
+
+#network p{
+	font-weight:bold;
+}
+
+#checkConnection{
+	width:170px;
+	margin:0 auto;
+}
+
+#footer{
+	text-align:center;
+}

@@ -1,95 +1,39 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
-		<title>Training App</title>
-		<link rel="stylesheet" href="assets/css/master.css" type="text/css" media="screen" />
-		
-		<script src="phonegap.js" type="text/javascript" charset="utf-8"></script>
-		
-		<script src="assets/js/xui.js" type="text/javascript" charset="utf-8"></script>
-		
-		<script src="assets/js/lawnchair/adaptors/LawnchairAdaptorHelpers.js" type="text/javascript" charset="utf-8"></script>
-		
-		<script src="assets/js/lawnchair/adaptors/DOMStorageAdaptor.js" type="text/javascript" charset="utf-8"></script>
-		
-		<script src="assets/js/lawnchair/adaptors/WebkitSQLiteAdaptor.js" type="text/javascript" charset="utf-8"></script>
-		
-		<script src="assets/js/lawnchair/Lawnchair.js" type="text/javascript" charset="utf-8"></script>
-		
-		<script src="assets/js/dsl.js" type="text/javascript" charset="utf-8"></script>
-		
-		<script src="assets/js/app_l.js" type="text/javascript" charset="utf-8"></script>
-        
-        <script src="assets/js/jquery-1.6.2.js" type="text/javascript" charset="utf-8"></script>
-		
-	</head>
-	<body>
+  <head>
+    <title>Network Connection &amp; Events</title>
+	
+	<!-- PhoneGap Setup -->
+    <script type="text/javascript" charset="utf-8" src="mylibs/phonegap-1.4.1.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/script.js"></script>
+    <link rel="stylesheet" href="css/style.css">
     
-    <script language="javascript" type="text/javascript">
-   </script>
+    <!-- jQuery Mobile Setup -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="mylibs/jquery.mobile-1.0/jquery.mobile-1.0.min.css" />
+    <script type="text/javascript" src="mylibs/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="mylibs/jquery.mobile-1.0/jquery.mobile-1.0.min.js"></script>
     
-    
- 		<div> <img src="assets/img/banner.png"></div>
-         <div class="normaltxt" id="chart">
-        Loading Washing-O-Meter ....
-        </div>
-        <div class="normaltxt" id="data_result">
-        Trying data load ....
-        </div>
-        <div class="normaltxt" id="loc_result">
-        Getting location ....
-        </div>
-       
-		<div id="welcome" class="view">
-		  <div class="app_button" id="map_button">Full Results</div>
-          <div class="app_button" id="settings_button">Settings</div>
-
-		</div>
-        
-		 <div id="map" class="view">
-		  
-          <div id="latest"></div>
-          <div id="results2">
-          <table style="width: 100%"><tr><td style="width: 20%"><div class="normal_head">Hour</td>
-          <td style="width: 20%"><div class="normal_head">Temp</div></td>
-          <td style="width: 20%"><div class="normal_head">Wind</div></td>
-          <td style="width: 20%"><div class="normal_head">Sky</div></td>
-          <td style="width: 20%"><div class="normal_head">Precip</div></td>
-          </tr></table>
-
-          
-        </div>
-        
-        <div class="map_image">
-              <img id="static_map" src="assets/img/staticmap.png">
-		  </div>
-        
-		
-
-		  <div class="app_button" id="welcome_button">Go Back</div>
-		</div>
-
-		<div id="settings" class="view">
-		  <form id="settings_form">
-		    <fieldset>
-		      <legend>Map Type</legend>
-			  <input type="radio" name="map" value="roadmap" checked>Road Map<br/>
-		      <input type="radio" name="map" value="satellite">Satellite<br/>
-		      <input type="radio" name="map" value="terrain">Terrain<br/>
-		      <input type="radio" name="map" value="hybrid">Hybrid<br/>
-		    </fieldset>
-		    <fieldset>
-		      <legend>Zoom Level</legend>
-  		      <input type="radio" name="zoom" value="10">Super Far<br/>
-  		      <input type="radio" name="zoom" value="12">Far<br/>
-  		      <input type="radio" name="zoom" value="15" checked>Normal<br/>
-  		      <input type="radio" name="zoom" value="18">Close<br/>
-  		      <input type="radio" name="zoom" value="20">Super Close<br/>
-  		     </fieldset>
-		      <button id="save_button">Save</button>
-	      </form>
-		</div>
-
-	</body>
+  </head>
+  <body>
+  	<!-- Start of Network page -->
+  	<div data-role="page">
+    	<div data-role="header" data-position="fixed">
+    		<h1>Network and Events</h1>
+    	</div>
+    	<div data-role="content">
+    		<div id="netowrk">
+	    		<h3>Check network connection type:</h3>
+	    		<a data-role="button" id="checkConnection" data-theme="e">Check Network</a>
+	    		<h3>Online / Offline Section</h3>
+	    		<p id="online">Example content that is displayed when the device <strong>has</strong> Internet connectivity.</p>
+    		<p id="offline">Example content that is displayed when the device <strong>doesn't have</strong> Internet connectivity.</p>
+    		</div>
+    	</div> 
+    	<div data-role="footer" data-position="fixed" id="footer">
+    		<p>Footer</p>
+    	</div>
+	</div>
+	<!-- /Network page -->
+  </body>
 </html>
