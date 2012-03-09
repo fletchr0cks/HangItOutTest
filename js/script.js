@@ -2,6 +2,7 @@
     // Wait for PhoneGap to load 
     function onBodyLoad() 
         { 
+                 alert("onload");
                 document.addEventListener("deviceready",onDeviceReady,false); 
                 alert("this works"); 
         } 
