@@ -4,7 +4,8 @@
 	
     // PhoneGap is loaded and it is now safe to make calls PhoneGap methods
     function onDeviceReady() {  
-        alert("ready");          	
+        alert("ready");
+        $('#chart').html("<img src=\"assets/img/chart.png\" />");          	
         document.addEventListener("offline", onOffline, false);
         document.addEventListener("online", onOnline, false);
  
