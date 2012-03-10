@@ -32,7 +32,7 @@ run(function () {
             $('#data_result').html("No network connection. In demo mode");
         $.ajax({
         type: "GET",
-		url: "assets/js/json.txt",
+		url: "json.txt",
 		dataType: "text/plain",
 		success: function(parsed_json) {
 			var location = parsed_json['location']['city'];
