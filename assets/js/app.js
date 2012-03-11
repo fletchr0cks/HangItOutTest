@@ -2,9 +2,6 @@
 //  --- our app behavior logic ---
 //
 
-function onDeviceReady() {
-        checkConnection();
-    }
 
     function checkConnection() {
         var networkState = navigator.network.connection.type;
