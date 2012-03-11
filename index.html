@@ -27,6 +27,9 @@
 	<body onLoad="onDeviceReady()">
     
     <script language="javascript" type="text/javascript">
+    document.addEventListener("deviceready", function () {
+		alert('device ready');
+		}, false)
    </script>
     
     
@@ -38,7 +41,7 @@
         Trying data load ....
         </div>
         <div class="normaltxt" id="loc_result">
-        Getting location ....
+        Getting location here....
         </div>
        
 		<div id="welcome" class="view">
