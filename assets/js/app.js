@@ -55,25 +55,33 @@ function startProg(){
              var example = document.getElementById('canvhere');
              var ctx2d = example.getContext('2d');
              
-            ctx2d.fillStyle = "rgba(64,128,77,0.5)";
-               ctx2d.fillRect(0,0,50,14);
-    //ctx.fillStyle = "rgb(255,255,255)";
-           
+     //       ctx2d.fillStyle = "rgba(64,128,77,0.5)";
+   //            ctx2d.fillRect(0,0,50,14);
+              
 
            
              $.each(parsed_json.hourly_forecast, function (i, zone) {
             
-            var ws = parseInt(zone.wspd.metric) * 8;
+            var ws = (parseInt(zone.wspd.metric) * 5) + 5;
+            var temp = (parseInt(zone.temp.metric) * 2) + 5;
+            var hour = zone.FCTTIME.hour;
             
             var userhtml = "<table style=\"width: 100%\"><tr><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.FCTTIME.hour + "</div></td><td style\"width: 20%\"><div class=\"normal_small\">" + zone.temp.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.wspd.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.sky + "</div></td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.qpf.metric + "</div></td></tr></table>";
             
             var canv = "<canvas id=\"canv71" + zone.FCTTIME.hour + "\" width=\"250\" height=\"14\" style=\"border:1px solid #c3c3c3;\">text here eq no canvas</canvas>";
             
-            ctx2d.fillStyle = "rgba(64,128,255,0.5)";
-               ctx2d.fillRect(0,posy,ws,14);
-                ctx2d.font = '10px Arial';
+        ctx2d.fillStyle = "rgba(255,255,255)";
+        ctx2d.fillRect(0,posy,16,14);
+        ctx2d.font = '10px Arial';
+    	ctx2d.fillStyle = '#868686';
+        ctx2d.fillText(hour,2,posyt);
+        
+        
+        ctx2d.fillStyle = "rgba(64,128,255)";
+        ctx2d.fillRect(16,posy,ws,14);
+        ctx2d.font = '10px Arial';
     	ctx2d.fillStyle = '#FFFFFF';
-        ctx2d.fillText("11",10,posyt);
+        ctx2d.fillText(zone.wspd.metric,18,posyt);
     //ctx.fillStyle = "rgb(255,255,255)";
     //ctx.fillText("22",5,posyt);
            
