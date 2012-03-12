@@ -76,7 +76,7 @@ function startProg(){
     ctx2d.fillRect(0,0,125,14);
     ctx.font="10px Ariel";
     ctx.fillStyle = "rgb(255,255,255)";
-    ctx.fillText = ("22",5,10);
+    ctx.fillText("22",5,10);
     
      var example = document.getElementById('canv7119');
     var ctx2d = example.getContext('2d');
