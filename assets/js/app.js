@@ -58,11 +58,14 @@ function startProg(){
             ctx2d.fillStyle = "rgba(64,128,77,0.5)";
                ctx2d.fillRect(0,0,50,14);
     //ctx.fillStyle = "rgb(255,255,255)";
+            ctx2d.font = '15px Arial';
+    	ctx2d.fillStyle = '#F00';
+        ctx2d.fillText("11",5,10);
 
            
              $.each(parsed_json.hourly_forecast, function (i, zone) {
             
-            var ws = parseInt(zone.wspd.metric);
+            var ws = parseInt(zone.wspd.metric) * 3;
             
             var userhtml = "<table style=\"width: 100%\"><tr><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.FCTTIME.hour + "</div></td><td style\"width: 20%\"><div class=\"normal_small\">" + zone.temp.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.wspd.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.sky + "</div></td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.qpf.metric + "</div></td></tr></table>";
             
