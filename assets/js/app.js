@@ -54,12 +54,15 @@ function startProg(){
            
              $.each(parsed_json.hourly_forecast, function (i, zone) {
             
-            var sky = parseInt(zone.sky);
+            var ws = parseInt(zone.wspd.metric);
             
             var userhtml = "<table style=\"width: 100%\"><tr><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.FCTTIME.hour + "</div></td><td style\"width: 20%\"><div class=\"normal_small\">" + zone.temp.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.wspd.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.sky + "</div></td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.qpf.metric + "</div></td></tr></table>";
-
+            
+            var canv = "<canvas id=\"canv7118\" width=\"300\" height=\"10\">text here eq no canvas</canvas>";
             
             $('#results2').append(userhtml);
+            $('#results2').append(canv);
+            
           
             
             $('#latest').html("<div class=\"normal_small\">" + zone.FCTTIME.hour + "</div>");
@@ -68,6 +71,11 @@ function startProg(){
 	});
       $('#chart').html("<img src=\"http://chart.apis.google.com/chart?chxt=y&chs=300x150&cht=gm&chl=Do%20it&chtt=Washing-O-Meter%20Says:&chts=DE613F,20,c&chco=FF9900&chd=t:70\" />");
     
+    
+    var example = document.getElementById('canv7118');
+    var ctx2d = example.getContext('2d');
+    ctx2d.fillStyle = "rgb(64,128,255)";
+    ctx2d.fillRect(5,5,25,75);
     
             }
             
