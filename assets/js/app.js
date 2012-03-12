@@ -16,7 +16,17 @@
         states[Connection.NONE]     = 'No network connection';
 
         alert('Connection type: ' + states[networkState] + networkState);
+        
+        navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
     }
+    
+    // onSuccess: Display the current acceleration
+    function onSuccess(acceleration) {
+        var element = document.getElementById('accelerometer');
+        element.innerHTML = 'Acceleration X: ' + acceleration.x + '<br />' +
+                            'Acceleration Y: ' + acceleration.y + '<br />' +
+                            'Acceleration Z: ' + acceleration.z + '<br />' +
+                            'Timestamp: '      + acceleration.timestamp + '<br />';
 
 
 run(function () {
@@ -24,7 +34,10 @@ run(function () {
     var init = (function () {
     var networkState = navigator.network.connection.type;
     alert(networkState);
-        if (networkState == "null") {
+     navigator.geolocation.getCurrentPosition(function (position) {
+    var loctest = "" + position.coords.latitude + "," + position.coords.longitude;
+    alert(loctest);
+        if (networkState == "undefined") {
             //alert("No internet connection - we won't be able to show you any maps");
             $('#data_result').html("No network connection. In demo mode");
         $.ajax({
@@ -32,12 +45,13 @@ run(function () {
 		url: "json.txt",
 		dataType: "text/plain",
 		success: function(parsed_json) {
-			var location = parsed_json['location']['city'];
+            var json = eval('(' + parsed_json + ')');
+			var location = json['location']['city'];
             //alert(location + loc);
-            $('#loc_result').html("Location is " + loc + ": " + location);
+            $('#loc_result').html("Location (demo) is: " + location);
     
            
-             $.each(parsed_json.hourly_forecast, function (i, zone) {
+             $.each(json.hourly_forecast, function (i, zone) {
             
             var sky = parseInt(zone.sky);
             
