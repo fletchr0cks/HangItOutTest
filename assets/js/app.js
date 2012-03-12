@@ -58,13 +58,11 @@ function startProg(){
             
             var userhtml = "<table style=\"width: 100%\"><tr><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.FCTTIME.hour + "</div></td><td style\"width: 20%\"><div class=\"normal_small\">" + zone.temp.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.wspd.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.sky + "</div></td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.qpf.metric + "</div></td></tr></table>";
             
-            var canv = "<canvas id=\"canv7118\" width=\"300\" height=\"10\">text here eq no canvas</canvas>";
+            var canv = "<canvas id=\"canv71" + zone.FCTTIME.hour + "\" width=\"250\" height=\"14\" style=\"border:1px solid #c3c3c3;\">text here eq no canvas</canvas>";
             
-            $('#results2').append(userhtml);
             $('#results2').append(canv);
-            
-          
-            
+            $('#results2').append(userhtml);
+             
             $('#latest').html("<div class=\"normal_small\">" + zone.FCTTIME.hour + "</div>");
             
 
@@ -75,7 +73,15 @@ function startProg(){
     var example = document.getElementById('canv7118');
     var ctx2d = example.getContext('2d');
     ctx2d.fillStyle = "rgb(64,128,255)";
-    ctx2d.fillRect(5,5,25,75);
+    ctx2d.fillRect(0,0,125,14);
+    ctx.font="10px Ariel";
+    ctx.fillStyle = "rgb(255,255,255)";
+    ctx.fillText = ("22",5,10);
+    
+     var example = document.getElementById('canv7119');
+    var ctx2d = example.getContext('2d');
+    ctx2d.fillStyle = "rgb(64,128,255)";
+    ctx2d.fillRect(0,0,100,5);
     
             }
             
