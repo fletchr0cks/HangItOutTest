@@ -50,11 +50,15 @@ function startProg(){
 			var location = parsed_json['location']['city'];
             //alert(location + loc);
             $('#loc_result').html("Location is " + loc + ": " + location);
-            var posy = 0;
-             var posyt = 10;
+            var posy = 14;
+             var posyt = 24;
              var example = document.getElementById('canvhere');
              var ctx2d = example.getContext('2d');
-             
+             ctx2d.fillStyle = "rgb(255,255,255)";
+        ctx2d.fillRect(0,0,20,14);
+        ctx2d.font = '10px Arial';
+    	ctx2d.fillStyle = '#868686';
+        ctx2d.fillText("Hour",2,10);
      //       ctx2d.fillStyle = "rgba(64,128,77,0.5)";
    //            ctx2d.fillRect(0,0,50,14);
               
@@ -74,14 +78,14 @@ function startProg(){
         ctx2d.fillRect(0,posy,20,14);
         ctx2d.font = '10px Arial';
     	ctx2d.fillStyle = '#868686';
-        ctx2d.fillText(hour,ws - 5,posyt);
+        ctx2d.fillText(hour,2,posyt);
         
         
         ctx2d.fillStyle = "rgb(64,128,255)";
         ctx2d.fillRect(20,posy,ws,14);
         ctx2d.font = '10px Arial';
     	ctx2d.fillStyle = '#FFFFFF';
-        ctx2d.fillText(zone.wspd.metric,18,posyt);
+        ctx2d.fillText(zone.wspd.metric,ws-5,posyt);
     //ctx.fillStyle = "rgb(255,255,255)";
     //ctx.fillText("22",5,posyt);
            
