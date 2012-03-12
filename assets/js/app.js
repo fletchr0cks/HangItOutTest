@@ -4,6 +4,7 @@
 
 
     function checkConnection() {
+    alert("con check");
         var networkState = navigator.network.connection.type;
 
         var states = {};
@@ -21,24 +22,25 @@
     }
     
     // onSuccess: Display the current acceleration
-    function onSuccess(acceleration) {
-        var element = document.getElementById('accelerometer');
-        element.innerHTML = 'Acceleration X: ' + acceleration.x + '<br />' +
-                            'Acceleration Y: ' + acceleration.y + '<br />' +
-                            'Acceleration Z: ' + acceleration.z + '<br />' +
-                            'Timestamp: '      + acceleration.timestamp + '<br />';
-                            
-                            }
-
+    //Get the current Acceleration data if Successful
+        function onSuccess(acceleration){
+            alert('Acceleration X: ' + acceleration.x + '\n' +
+              'Acceleration Y: ' + acceleration.y + '\n' +
+              'Acceleration Z: ' + acceleration.z + '\n' +
+              'Timestamp: '      + acceleration.timestamp + '\n');
+        }
+ 
+        // alert if there is an error
+        function onError(){
+            alert("Error");
+        }
 
 run(function () {
     // immediately invoked on first run
     var init = (function () {
     var networkState = navigator.network.connection.type;
     alert(networkState);
-     navigator.geolocation.getCurrentPosition(function (position) {
-    var loctest = "" + position.coords.latitude + "," + position.coords.longitude;
-    alert(loctest);
+    
         if (networkState == "undefined") {
             //alert("No internet connection - we won't be able to show you any maps");
             $('#data_result').html("No network connection. In demo mode");
