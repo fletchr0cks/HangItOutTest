@@ -19,8 +19,6 @@
         alert('Connection type: ' + states[networkState] + networkState);
         
         navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
-        
-        startProg();
     }
     
     // onSuccess: Display the current acceleration
@@ -37,7 +35,47 @@
             alert("Error");
         }
 
-function startProg(){
+run(function () {
+    // immediately invoked on first run
+    var init = (function () {
+    var networkState = navigator.network.connection.type;
+    alert(networkState);
+    
+        if (networkState == "undefined") {
+            //alert("No internet connection - we won't be able to show you any maps");
+            $('#data_result').html("No network connection. In demo mode");
+        $.ajax({
+        type: "GET",
+		url: "json.txt",
+		dataType: "text/plain",
+		success: function(parsed_json) {
+            var json = eval('(' + parsed_json + ')');
+			var location = json['location']['city'];
+            //alert(location + loc);
+            $('#loc_result').html("Location (demo) is: " + location);
+    
+           
+             $.each(json.hourly_forecast, function (i, zone) {
+            
+            var sky = parseInt(zone.sky);
+            
+            var userhtml = "<table style=\"width: 100%\"><tr><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.FCTTIME.hour + "</div></td><td style\"width: 20%\"><div class=\"normal_small\">" + zone.temp.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.wspd.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.sky + "</div></td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.qpf.metric + "</div></td></tr></table>";
+
+            
+            $('#results2').append(userhtml);
+            $('#chart').html("<img src=\"assets/img/chart.png\" />");
+            
+           
+            
+
+	});
+            }
+            
+            });
+            
+            
+            
+        } else {
             //alert("We can reach Google! Trying location");
             $('#data_result').html("Connected to Weather Underground API.");
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -79,8 +117,12 @@ function startProg(){
             });
             
             
-  
-          // a little inline controller
+               
+
+        }
+    })();
+    
+    // a little inline controller
     when('#welcome');
     when('#settings', function() {
 		// load settings from store and make sure we persist radio buttons.
@@ -122,4 +164,4 @@ function startProg(){
         });
         display('#welcome');
     });
-}
+});
