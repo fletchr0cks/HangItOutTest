@@ -55,6 +55,9 @@ function startProg(){
              var example = document.getElementById('canvhere');
              var ctx2d = example.getContext('2d');
              
+            ctx2d.fillStyle = "rgba(64,128,77,0.5)";
+               ctx2d.fillRect(0,0,50,14);
+    //ctx.fillStyle = "rgb(255,255,255)";
 
            
              $.each(parsed_json.hourly_forecast, function (i, zone) {
@@ -65,10 +68,10 @@ function startProg(){
             
             var canv = "<canvas id=\"canv71" + zone.FCTTIME.hour + "\" width=\"250\" height=\"14\" style=\"border:1px solid #c3c3c3;\">text here eq no canvas</canvas>";
             
-            ctx2d.fillStyle = "rgb(64,128,255)";
+            ctx2d.fillStyle = "rgba(64,128,255,0.5)";
                ctx2d.fillRect(0,posy,ws,14);
-    ctx.fillStyle = "rgb(255,255,255)";
-    ctx.fillText("22",5,posyt);
+    //ctx.fillStyle = "rgb(255,255,255)";
+    //ctx.fillText("22",5,posyt);
            
            
             //$('#results2').append(userhtml);
