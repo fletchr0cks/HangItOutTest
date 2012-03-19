@@ -36,6 +36,44 @@
         function onError(){
             alert("Error");
         }
+        
+var theData = new Lawnchair('settings');
+
+function doSave() {
+	// Retrieve the values from the form elements
+	theUsername = document.getElementById('Username').value;
+	thePassword = document.getElementById('Password').value;
+	theAge = document.getElementById('Age').value;
+	var theSettings = {key:'settings', Username:theUsername, Password:thePassword, Age:theAge};// Construct an object with them
+	theData.save(theSettings);// Send them to the data store
+	alert("Saved!");
+}
+
+function doRecall() {// Call the get function, giving it the key we used to save with and a return function to populate the form with the values of the object
+	theData.get('settings', 
+		function(theSettings) { // Test we actually got a settings object
+			if (theSettings) { // We did, so put the values in to the form fields 
+				document.getElementById('Username').value = theSettings.Username;
+				document.getElementById('Password').value = theSettings.Password;
+				document.getElementById('Age').value = theSettings.Age;
+			} else {
+				alert("No settings found!");
+			}
+		} // function(theSettings)
+	);
+	alert("Recalled!");
+}
+
+function doDelete() { // Tell the data store to delete the record with a key of 'settings'
+	theData.remove('settings');
+	alert("Deleted!");
+}
+
+function doNuke() { // Delete all records
+	theData.nuke();
+	alert("Nuked!");
+}
+
 
 function startProg(){
             //alert("We can reach Google! Trying location");
@@ -67,7 +105,7 @@ function startProg(){
              $.each(parsed_json.hourly_forecast, function (i, zone) {
             
             var ws = (parseInt(zone.wspd.metric) * 5) + 5;
-            var temp = (parseInt(zone.temp.metric) * 2) + 5;
+            var temp = (parseInt(zone.temp.metric) * 5) + 5;
             var hour = zone.FCTTIME.hour_padded;
             
             var userhtml = "<table style=\"width: 100%\"><tr><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.FCTTIME.hour + "</div></td><td style\"width: 20%\"><div class=\"normal_small\">" + zone.temp.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.wspd.metric + "</td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.sky + "</div></td><td style=\"width: 20%\"><div class=\"normal_small\">" + zone.qpf.metric + "</div></td></tr></table>";
@@ -87,7 +125,7 @@ function startProg(){
     	ctx2d.fillStyle = '#FFFFFF';
         ctx2d.fillText(zone.wspd.metric,ws-2,posyt);
         
-        ctx2d.fillStyle = "rgb(0,73,0)";
+        ctx2d.fillStyle = "rgb(255,165,0)";
         ctx2d.fillRect(22 + ws,posy,temp,14);
         ctx2d.font = '9px Arial';
     	ctx2d.fillStyle = '#FFFFFF';

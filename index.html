@@ -34,7 +34,22 @@
 		
 		
    </script>
+    <form id="theForm" name="theForm" method="post" action="">
+  <table width="90%" border="1" cellpadding="5" cellspacing="0">
+    <tr>
+      <td width="160" align="right">Username</td>
+      <td><input name="Username" id="Username" type="text" size="20" maxlength="20" /></td>
+      <td align="right">Password</td>
+      <td><input name="Password" id="Password" type="text" size="20" maxlength="20" /></td>
+      <td align="right">Age</td>
+      <td><input name="Age" id="Age" type="text" size="5" maxlength="2" /></td>
+    </tr>
+  </table>
+</form>
     
+    <button onClick="doSave();">Save</button>
+    
+    <button onClick="doRecall();">Recall</button>
     
  		<div> <img src="assets/img/banner.png"></div>
          <div class="normaltxt" id="chart">
