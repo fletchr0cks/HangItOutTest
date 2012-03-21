@@ -80,7 +80,7 @@ function startProg(){
             $('#data_result').html("Connected to Weather Underground API.");
             navigator.geolocation.getCurrentPosition(function (position) {
                 var loc = "" + position.coords.latitude + "," + position.coords.longitude;
-                                
+                //cutoff
                  $.ajax({
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/56.058168,-2.719811.json",
 		dataType: "jsonp",
@@ -98,7 +98,7 @@ function startProg(){
              $.each(parsed_json.hourly_forecast, function (i, zone) {
             
           
-          var ws = (parseInt(zone.wspd.metric) * 3) + 5;
+                    var ws = (parseInt(zone.wspd.metric) * 3) + 5;
                     var temp = (parseInt(zone.temp.metric) * 4) + 5;
                     var hour = zone.FCTTIME.civil;
                     var sky = parseInt(zone.sky);
@@ -115,14 +115,7 @@ function startProg(){
                     var hour_padded = parseInt(zone.FCTTIME.hour);
                     var civil = parseInt(zone.FCTTIME.civil);
 
-                    if (hour_padded > cutoff || hour_padded < 8) {
-
-
-                       
-                        //if (ni == 1) {
-                            hour_bg_bk = "8695B7";
-
-                                                    
+                    
                         ctx2d.fillStyle = hour_bg_bk;
                         ctx2d.fillRect(2, posy, 50, 14);
                         ctx2d.font = '9px Arial';
@@ -130,111 +123,12 @@ function startProg(){
                         ctx2d.fillText(hour, 5, posyt);
 
 
-                        ctx2d.fillStyle = hour_bg_bk;
-                        ctx2d.fillRect(52, posy, ws, 14);
-                        ctx2d.font = '9px Arial';
-                        ctx2d.fillStyle = wind_txt;
-                        ctx2d.fillText(zone.wspd.metric, 40 + ws - 2, posyt);
-
-                        ctx2d.fillStyle = hour_bg_bk;
-                        ctx2d.fillRect(52 + ws, posy, temp, 14);
-                        ctx2d.font = '9px Arial';
-                        ctx2d.fillStyle = temp_txt;
-                        ctx2d.fillText(zone.temp.metric, 40 + ws + (temp - 2), posyt);
-
-                        ctx2d.fillStyle = "FFF";
-                        ctx2d.fillRect(52 + ws + temp, posy, 20, 14);
-                        ctx2d.font = '9px Arial';
-                        ctx2d.fillStyle = "#868686";
-                        ctx2d.fillText(cond + (100 - humid) + " " + hour_padded, 52 + ws + temp + 3, posyt);
-
-                        ctx2d.fillStyle = hour_bg_bk;
-                        ctx2d.fillRect(350, posy, 20, 14);
-                        ctx2d.font = '9px Arial';
-                        ctx2d.fillStyle = temp_txt;
-                        ctx2d.fillText(" ", 352, posyt);
-
-                        //}
-
-                    } else {
-
-                        ctx2d.restore();
-
-                        if (rain >= 1 && rain < 5) {
-                            wind_bg = "67BC67";
-                            temp_bg = "D7AA5F";
-
-                        } else if (rain > 4) {
-                            wind_bg = "7DA77D";
-                            temp_bg = "B8A27D";
-
-                        } else {
-                            if (sky < 25) {
-                                hour_bg_bk = "437AFA";
-                            }
-
-                            if (sky < 50 && sky > 26) {
-                                hour_bg_bk = "5682E7";
-                            }
-
-                            if (sky < 75 && sky > 51) {
-                                hour_bg_bk = "6A8AD4";
-                            }
-
-                            if (sky < 101 && sky > 76) {
-                                hour_bg_bk = "8695B7";
-                            }
-
-                        }
-
-                        var userhtml = " ";
-
-                        ctx2d.fillStyle = hour_bg_bk;
-                        ctx2d.fillRect(2, posy, 50, 14);
-                        ctx2d.font = '9px Arial';
-                        ctx2d.fillStyle = '#FFF';
-                        ctx2d.fillText(hour, 5, posyt);
-
-
-                        ctx2d.fillStyle = wind_bg;
-                        ctx2d.fillRect(52, posy, ws, 14);
-                        ctx2d.font = '9px Arial';
-                        ctx2d.fillStyle = wind_txt;
-                        ctx2d.fillText(zone.wspd.metric, 40 + ws - 2, posyt);
-
-                        ctx2d.fillStyle = temp_bg;
-                        ctx2d.fillRect(52 + ws, posy, temp, 14);
-                        ctx2d.font = '9px Arial';
-                        ctx2d.fillStyle = temp_txt;
-                        ctx2d.fillText(zone.temp.metric, 40 + ws + (temp - 2), posyt);
-
-                        ctx2d.fillStyle = "FFF";
-                        ctx2d.fillRect(52 + ws + temp, posy, 20, 14);
-                        ctx2d.font = '9px Arial';
-                        ctx2d.fillStyle = "#868686";
-                        ctx2d.fillText(cond + (100 - humid) + " " + hour_padded, 52 + ws + temp + 3, posyt);
-
-                        ctx2d.fillStyle = temp_bg;
-                        ctx2d.fillRect(350, posy, 20, 14);
-                        ctx2d.font = '9px Arial';
-                        ctx2d.fillStyle = temp_txt;
-                        ctx2d.fillText(score, 352, posyt);
-
-                        ctx2d.save();
-
-                        ni = 1;
-
-                      
-                    }
-
-                    //if (ni == 1) {
 
                         posy = posy + 15;
                         posyt = posyt + 15;
-
-                    //}
           
 	});
+    
       $('#chart').html("<img src=\"http://chart.apis.google.com/chart?chxt=y&chs=300x150&cht=gm&chl=Do%20it&chtt=Washing-O-Meter%20Says:&chts=DE613F,20,c&chco=FF9900&chd=t:70\" />");
     
     
