@@ -4,7 +4,7 @@
 
 
     function checkConnection() {
-    alert("con check");
+   // alert("con check");
         var networkState = navigator.network.connection.type;
 
         var states = {};
@@ -26,10 +26,10 @@
     // onSuccess: Display the current acceleration
     //Get the current Acceleration data if Successful
         function onSuccess(acceleration){
-            alert('Acceleration X: ' + acceleration.x + '\n' +
-              'Acceleration Y: ' + acceleration.y + '\n' +
-              'Acceleration Z: ' + acceleration.z + '\n' +
-              'Timestamp: '      + acceleration.timestamp + '\n');
+           // alert('Acceleration X: ' + acceleration.x + '\n' +
+           //   'Acceleration Y: ' + acceleration.y + '\n' +
+           //   'Acceleration Z: ' + acceleration.z + '\n' +
+           //   'Timestamp: '      + acceleration.timestamp + '\n');
         }
  
         // alert if there is an error
@@ -82,7 +82,7 @@ function startProg(){
                 var loc = "" + position.coords.latitude + "," + position.coords.longitude;
                var cutoff = parseInt("16");
                  $.ajax({
-		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/56.058168,-2.719811.json",
+		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
 		dataType: "jsonp",
 		success: function(parsed_json) {
 			var location = parsed_json['location']['city'];
@@ -289,7 +289,7 @@ function startProg(){
                         ctx2d.fillRect(52 + ws + temp, posy, 20, 14);
                         ctx2d.font = '9px Arial';
                         ctx2d.fillStyle = "#868686";
-                        ctx2d.fillText(cond + total_score, 52 + ws + temp + 3, posyt);
+                        ctx2d.fillText(cond, 52 + ws + temp + 3, posyt);
                         
                         ctx2d.fillStyle = temp_bg;
                         ctx2d.fillRect(350, posy, 18, 14);
