@@ -47,6 +47,8 @@ body {
 .redtxt {
  font-size: 9px;
  color:#DE613F;
+ padding-bottom:10px;
+ padding-top:10px;
 }
 
 .normal_small {
