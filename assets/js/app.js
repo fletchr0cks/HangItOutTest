@@ -16,7 +16,7 @@
         states[Connection.CELL_4G]  = 'Cell 4G connection';
         states[Connection.NONE]     = 'No network connection';
 
-        alert('Connection type: ' + states[networkState] + networkState);
+        alert('Connection type: ' + states[networkState]);
         
         navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
         
@@ -34,7 +34,7 @@
  
         // alert if there is an error
         function onError(){
-            alert("Error");
+            //alert("Error");
         }
         
 var theData = new Lawnchair('settings');
