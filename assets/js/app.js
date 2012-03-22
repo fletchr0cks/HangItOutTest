@@ -77,25 +77,24 @@ function doNuke() { // Delete all records
 
 function startProg(){
             //alert("We can reach Google! Trying location");
-            $('#data_result').html("Connected to Weather Underground API.");
+            //$('#data_result').html("Connected to Weather Underground API.");
             navigator.geolocation.getCurrentPosition(function (position) {
-                var loc = "" + position.coords.latitude + "," + position.coords.longitude;
-               var cutoff = parseInt("16");
+                var loc = position.coords.latitude + "," + position.coords.longitude;
+               var cutoff = parseInt("17");
                  $.ajax({
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
 		dataType: "jsonp",
 		success: function(parsed_json) {
 			var location = parsed_json['location']['city'];
             //alert(location + loc);
-            $('#loc_result').html("Location is " + loc + ": " + location);
+            $('#loc_result').html("Location is " + location + " (" + loc + ")");
       
                 var posy = 14;
                 var posyt = 25;
                 var example = document.getElementById('canvhere');
                 var ctx2d = example.getContext('2d');
                 var ni = 1;
-            var ni = 1;
-                
+                        
                  hour_bg_bk = "8695B7";                               
                         ctx2d.fillStyle = hour_bg_bk;
                         ctx2d.fillRect(2, 0, 50, 14);
