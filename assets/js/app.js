@@ -297,7 +297,7 @@ function startProg(){
                         ctx2d.fillStyle = temp_txt;
                         
                         
-                        if (total_score > 60) {
+                        if (total_score > 120) {
                         var res = dt_ct;
                         //ctx2d.fillText(dt_ct, 352, posyt - (dt_ct * 15) + 15);
                         while (dt_ct > 0) {
@@ -349,43 +349,14 @@ function startProg(){
     when('#settings', function() {
     doRecall();
 		// load settings from store and make sure we persist radio buttons.
-		store.get('config', function(saved) {
-			if (saved) {
-				if (saved.map) {
-					x$('input[value=' + saved.map + ']').attr('checked',true);
-				}
-				if (saved.zoom) {
-					x$('input[name=zoom][value="' + saved.zoom + '"]').attr('checked',true);
-				}
-			}
-		});
+		
 	});
     when('#map', function () {
-        store.get('config', function (saved) {
-            // construct a gmap str
-            var map  = saved ? saved.map || ui('map') : ui('map')
-            ,   zoom = saved ? saved.zoom || ui('zoom') : ui('zoom')
-            ,   path = "http://maps.google.com/maps/api/staticmap?center=";
-			
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var location = "" + position.coords.latitude + "," + position.coords.longitude;
-                path += location + "&zoom=" + zoom;
-                path += "&size=250x250&maptype=" + map + "&markers=color:red|label:P|";
-                path += location + "&sensor=false";
-
-                x$('img#static_map').attr('src', path);
-            }, function () {
-                x$('img#static_map').attr('src', "assets/img/gpsfailed.png");
-            });
-        });
+        
     });
     when('#save', function () {
     doSave();
-        store.save({
-            key:'config',
-            map:ui('map'),
-            zoom:ui('zoom')
-        });
+        
         display('#welcome');
     });
 }
