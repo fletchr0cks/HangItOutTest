@@ -74,13 +74,33 @@ function doNuke() { // Delete all records
 	alert("Nuked!");
 }
 
+function PostDetails(){
+
+
+}
 
 function startProg(){
             //alert("We can reach Google! Trying location");
             //$('#data_result').html("Connected to Weather Underground API.");
             navigator.geolocation.getCurrentPosition(function (position) {
                 var loc = position.coords.latitude + "," + position.coords.longitude;
+                var lat = position.coords.latitude.toFixed(6);
+                var longval = position.coords.longitude.toFixed(6);
                var cutoff = parseInt("17");
+                 $.ajax({
+                    type: "POST",
+                    url: "http://washingapp.apphb.com/Home/save",
+                    data: "lat=" + lat + "&lval=" + longval,
+                    dataType: "text/plain",
+                    success: function(data) {
+                    alert("posted" + lat + ":" + longval)
+                    
+                    }
+                 
+                 
+                 });
+               
+               
                  $.ajax({
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
 		dataType: "jsonp",
