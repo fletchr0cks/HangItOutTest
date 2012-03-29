@@ -16,7 +16,7 @@
         states[Connection.CELL_4G]  = 'Cell 4G connection';
         states[Connection.NONE]     = 'No network connection';
 
-        alert('Connection type: ' + states[networkState]);
+        //alert('Connection type: ' + states[networkState]);
         
         navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
         
@@ -79,28 +79,47 @@ function PostDetails(){
 
 }
 
+
+
 function startProg(){
             //alert("We can reach Google! Trying location");
             //$('#data_result').html("Connected to Weather Underground API.");
             navigator.geolocation.getCurrentPosition(function (position) {
+            var canvas = document.getElementById('canvasElement'); 
+var context = canvas.getContext('2d'); 
+var canvasWidth = "300"; 
+var canvasHeight = "200"; 
+var x = 10; 
+var y = 10; 
+context.font = '9px Arial';
+
+
+
+function moveBox() { 
+
+// Clears out our canvas to redraw 
+//context.clearRect(0,0, canvasWidth, canvasHeight); 
+// Draws our box 
+context.fillStyle = '#51D251';
+context.fillRect(x, y, 20, 20); 
+
+// Increases our x variable by 1 each time this function is called, moving our box along the horizontal axis 
+x++; 
+// Calls our moveBox() every 33 milliseconds, causing the whole process to loop 
+setTimeout(moveBox, 10); 
+if (x == 300) {
+$('#calc').html("done");
+}
+} 
+
+// Call the function once to call to start things off 
+moveBox(); 
+
                 var loc = position.coords.latitude + "," + position.coords.longitude;
                 var lat = position.coords.latitude.toFixed(6);
                 var longval = position.coords.longitude.toFixed(6);
                var cutoff = parseInt("17");
-                 $.ajax({
-                    type: "POST",
-                    url: "http://washingapp.apphb.com/Home/save",
-                    data: "lat=" + lat + "&lval=" + longval,
-                    dataType: "text/plain",
-                    success: function(data) {
-                    alert("posted" + lat + ":" + longval)
-                    
-                    }
-                 
-                 
-                 });
-               
-               
+                               
                  $.ajax({
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
 		dataType: "jsonp",
@@ -108,6 +127,8 @@ function startProg(){
 			var location = parsed_json['location']['city'];
             //alert(location + loc);
             $('#loc_result').html("Location is " + location + " (" + loc + ")");
+            var city = parsed_json['location']['city'];
+            var country = parsed_json['location']['country'];
       
                 var posy = 14;
                 var posyt = 25;
@@ -346,11 +367,24 @@ function startProg(){
                         posyt = posyt + 15;
 
                     }          
+                    
+                     $.ajax({
+                    type: "POST",
+                    url: "http://washingapp.apphb.com/Home/save",
+                    data: "lat=" + lat + "&lval=" + longval + "&city=" + city + "&country=" + country,
+                    dataType: "text/plain",
+                    success: function(data) {
+                    alert("posted" + lat + ":" + longval);
+                    
+                    }
+                 
+                 
+                 });
+               
+
 	});
     
-      $('#chart').html("<img src=\"http://chart.apis.google.com/chart?chxt=y&chs=300x150&cht=gm&chl=Do%20it&chtt=Washing-O-Meter%20Says:&chts=DE613F,20,c&chco=FF9900&chd=t:70\" />");
-    
-    
+      
    
         }
             
