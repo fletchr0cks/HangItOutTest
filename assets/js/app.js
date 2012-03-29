@@ -88,12 +88,12 @@ function startProg(){
             var canvas = document.getElementById('canvasElement'); 
 var context = canvas.getContext('2d'); 
 var canvasWidth = "300"; 
-var canvasHeight = "200"; 
+var canvasHeight = "50"; 
 var x = 10; 
 var y = 10; 
-context.font = '9px Arial';
+context.font = '18px Arial';
 
-
+                    
 
 function moveBox() { 
 
@@ -109,6 +109,9 @@ x++;
 setTimeout(moveBox, 10); 
 if (x == 300) {
 $('#calc').html("done");
+context.fillStyle = '#FFF';
+context.fillText("Drying time: ", 15, 26);
+//context.clearRect(0,0, 300, 50);
 }
 } 
 
@@ -339,6 +342,9 @@ moveBox();
                         
                         if (total_score > 120) {
                         var res = dt_ct;
+                        var theDatas = new Lawnchair('settings');
+                        var theSettings = {key:'settings', Age:res};// Construct an object with them
+                        theDatas.save(theSettings);
                         //ctx2d.fillText(dt_ct, 352, posyt - (dt_ct * 15) + 15);
                         while (dt_ct > 0) {
                         //alert(dt_ct);
