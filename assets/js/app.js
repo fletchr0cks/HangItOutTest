@@ -44,8 +44,22 @@ function doSave() {
 	theUsername = document.getElementById('Username').value;
 	thePassword = document.getElementById('Password').value;
 	theAge = document.getElementById('Age').value;
+    theComment = document.getElementById('Comment').value;
 	var theSettings = {key:'settings', Username:theUsername, Password:thePassword, Age:theAge};// Construct an object with them
 	theData.save(theSettings);// Send them to the data store
+       $.ajax({
+                    type: "POST",
+                    url: "http://washingapp.apphb.com/Home/save",
+                    data: "lat=" + theUsername + "&lval=" + thePassword + "&city=" + theAge + "&country=uk&comment=" + theComment,
+                    dataType: "text/plain",
+                    success: function(data) {
+                    alert("posted" + lat + ":" + longval);
+                    
+                    }
+                 
+                 
+                 });
+
 	//alert("Saved!");
 }
 
@@ -56,6 +70,7 @@ function doRecall() {// Call the get function, giving it the key we used to save
 				document.getElementById('Username').value = theSettings.Username;
 				document.getElementById('Password').value = theSettings.Password;
 				document.getElementById('Age').value = theSettings.Age;
+                document.getElementById('Comment').value = theSettings.Comment;
 			} else {
 				alert("No settings found!");
 			}
@@ -122,6 +137,7 @@ moveBox();
                 var lat = position.coords.latitude.toFixed(6);
                 var longval = position.coords.longitude.toFixed(6);
                var cutoff = parseInt("17");
+               
                                
                  $.ajax({
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
@@ -132,7 +148,8 @@ moveBox();
             $('#loc_result').html("Location is " + location + " (" + loc + ")");
             var city = parsed_json['location']['city'];
             var country = parsed_json['location']['country'];
-      
+      var theSettings = {key:'settings', Username:lat, Password:longval, Age:city};// Construct an object with them
+	theData.save(theSettings);
                 var posy = 14;
                 var posyt = 25;
                 var example = document.getElementById('canvhere');
@@ -379,19 +396,7 @@ moveBox();
 	});
     
     
-                     $.ajax({
-                    type: "POST",
-                    url: "http://washingapp.apphb.com/Home/save",
-                    data: "lat=" + lat + "&lval=" + longval + "&city=" + city + "&country=" + country,
-                    dataType: "text/plain",
-                    success: function(data) {
-                    alert("posted" + lat + ":" + longval);
-                    
-                    }
                  
-                 
-                 });
-    
       
    
         }
