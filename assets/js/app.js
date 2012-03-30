@@ -41,9 +41,9 @@ var theData = new Lawnchair('settings');
 
 function doSave() {
 	// Retrieve the values from the form elements
-	theUsername = document.getElementById('Username').value;
-	thePassword = document.getElementById('Password').value;
-	theAge = document.getElementById('Age').value;
+	//theUsername = document.getElementById('Username').value;
+	//thePassword = document.getElementById('Password').value;
+	//theAge = document.getElementById('Age').value;
     theComment = document.getElementById('Comment').value;
 	var theSettings = {key:'settings', Username:theUsername, Password:thePassword, Age:theAge};// Construct an object with them
 	theData.save(theSettings);// Send them to the data store
@@ -147,9 +147,11 @@ moveBox();
             //alert(location + loc);
             $('#loc_result').html("Location is " + location + " (" + loc + ")");
             var city = parsed_json['location']['city'];
+            var theDatas = new Lawnchair('settings');
+
             var country = parsed_json['location']['country'];
       var theSettings = {key:'settings', Username:lat, Password:longval, Age:city};// Construct an object with them
-	theData.save(theSettings);
+	theDatas.save(theSettings);
                 var posy = 14;
                 var posyt = 25;
                 var example = document.getElementById('canvhere');
