@@ -51,7 +51,7 @@ function doSave() {
      $.ajax({
                     type: "POST",
                     url: "http://washingapp.apphb.com/Home/save",
-                    data: "comment=" + comment,
+                    data: "lat=" + lat + "&lval=" + longval + "&city=" + city + "&country=" + country + "&comment=" + comment,
                     dataType: "text/plain",
                     success: function(data) {
                     alert("posted: " + comment);
@@ -147,8 +147,6 @@ moveBox();
                 var lat = position.coords.latitude.toFixed(6);
                 var longval = position.coords.longitude.toFixed(6);
                var cutoff = parseInt("17");
-               var city = "cty";
-               var country = "cntry";
                                
                  $.ajax({
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
@@ -157,8 +155,8 @@ moveBox();
 			var location = parsed_json['location']['city'];
             //alert(location + loc);
             $('#loc_result').html("Location is " + location + " (" + loc + ")");
-            city = parsed_json['location']['city'];
-            country = parsed_json['location']['country'];
+            var city = parsed_json['location']['city'];
+            var country = parsed_json['location']['country'];
             var first_dt = 0;
       
                 var posy = 14;
@@ -417,7 +415,7 @@ moveBox();
                     data: "lat=" + lat + "&lval=" + longval + "&city=" + city + "&country=" + country,
                     dataType: "text/plain",
                     success: function(data) {
-                    alert("posted");
+                    alert("posted" + lat + ":" + longval);
                     
                     }
                     
