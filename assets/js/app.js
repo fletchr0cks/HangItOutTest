@@ -19,7 +19,7 @@
         //alert('Connection type: ' + states[networkState]);
         
         navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
-        
+        doDelete();
         startProg();
     }
     
@@ -137,8 +137,10 @@ moveBox();
                 var lat = position.coords.latitude.toFixed(6);
                 var longval = position.coords.longitude.toFixed(6);
                var cutoff = parseInt("17");
-               
-                               
+                var theDatas = new Lawnchair('settings');
+                var theSettings = {key:'settings', Username:lat, Password:longval};// Construct an object with them
+	theDatas.save(theSettings);
+                               alert("saved: " + lat + longval);
                  $.ajax({
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
 		dataType: "jsonp",
@@ -150,7 +152,7 @@ moveBox();
             var theDatas = new Lawnchair('settings');
 
             var country = parsed_json['location']['country'];
-      var theSettings = {key:'settings', Username:lat, Password:longval, Age:city};// Construct an object with them
+      var theSettings = {key:'settings', Age:city};// Construct an object with them
 	theDatas.save(theSettings);
                 var posy = 14;
                 var posyt = 25;
@@ -362,8 +364,8 @@ moveBox();
                         if (total_score > 120) {
                         var res = dt_ct;
                         var theDatas = new Lawnchair('settings');
-                        var theSettings = {key:'settings', Age:res};// Construct an object with them
-                        theDatas.save(theSettings);
+                        //var theSettings = {key:'settings', Age:res};// Construct an object with them
+                        //theDatas.save(theSettings);
                         //ctx2d.fillText(dt_ct, 352, posyt - (dt_ct * 15) + 15);
                         while (dt_ct > 0) {
                         //alert(dt_ct);
