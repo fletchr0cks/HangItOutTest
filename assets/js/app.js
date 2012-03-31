@@ -137,11 +137,11 @@ moveBox();
                 var loc = position.coords.latitude + "," + position.coords.longitude;
                 var lat = position.coords.latitude.toFixed(6);
                 var longval = position.coords.longitude.toFixed(6);
-                var testlat = "2.777233";
+                var testlat = "2777233";
                var cutoff = parseInt("17");
-                var theDatas = new Lawnchair('settings');
+                var theDataSet = new Lawnchair('settings');
                 var theSettings = {key:'settings', Username:testlat, Password:longval.toString()};// Construct an object with them
-	theDatas.save(theSettings);
+	theDataSet.save(theSettings);
                                alert("saved: "+ testlat + lat.toString() + longval.toString());
                  $.ajax({
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
