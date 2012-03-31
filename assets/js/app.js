@@ -70,7 +70,7 @@ function doRecall() {// Call the get function, giving it the key we used to save
 				document.getElementById('Username').value = theSettings.Username;
 				document.getElementById('Password').value = theSettings.Password;
 				document.getElementById('Age').value = theSettings.Age;
-                document.getElementById('Comment').value = theSettings.Comment;
+                //document.getElementById('Comment').value = theSettings.Comment;
 			} else {
 				alert("No settings found!");
 			}
@@ -138,9 +138,9 @@ moveBox();
                 var longval = position.coords.longitude.toFixed(6);
                var cutoff = parseInt("17");
                 var theDatas = new Lawnchair('settings');
-                var theSettings = {key:'settings', Username:lat, Password:longval};// Construct an object with them
+                var theSettings = {key:'settings', Username:lat.toString(), Password:longval.toString()};// Construct an object with them
 	theDatas.save(theSettings);
-                               alert("saved: " + lat + longval);
+                               alert("saved: " + lat.toString() + longval.toString());
                  $.ajax({
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
 		dataType: "jsonp",
