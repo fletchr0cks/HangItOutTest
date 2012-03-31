@@ -45,9 +45,7 @@ function doSave() {
 	thePassword = document.getElementById('Password').value;
 	theAge = document.getElementById('Age').value;
     theComment = document.getElementById('Comment').value;
-	var theSettings = {key:'settings', Username:theUsername, Password:thePassword, Age:theAge};// Construct an object with them
-	theData.save(theSettings);// Send them to the data store
-       $.ajax({
+     $.ajax({
                     type: "POST",
                     url: "http://washingapp.apphb.com/Home/save",
                     data: "lat=" + theUsername + "&lval=" + thePassword + "&city=" + theAge + "&country=uk&comment=" + theComment,
@@ -59,8 +57,12 @@ function doSave() {
                  
                  
                  });
+     alert("Saving!");            
+	var theSettings = {key:'settings', Username:theUsername, Password:thePassword, Age:theAge};// Construct an object with them
+	theData.save(theSettings);// Send them to the data store
+      
 
-	//alert("Saved!");
+	
 }
 
 function doRecall() {// Call the get function, giving it the key we used to save with and a return function to populate the form with the values of the object
@@ -154,7 +156,7 @@ moveBox();
             var theDatas = new Lawnchair('settings');
 
             var country = parsed_json['location']['country'];
-      var theSettings = {key:'settings', Age:city, Username:loc, Password:longval};// Construct an object with them
+      var theSettings = {key:'settings', Age:city, Username:lat, Password:longval};// Construct an object with them
 	theDatas.save(theSettings);
                 var posy = 14;
                 var posyt = 25;
