@@ -136,9 +136,10 @@ moveBox();
                 var loc = position.coords.latitude + "," + position.coords.longitude;
                 var lat = position.coords.latitude.toFixed(6);
                 var longval = position.coords.longitude.toFixed(6);
+                var testlat = "2.777233";
                var cutoff = parseInt("17");
                 var theDatas = new Lawnchair('settings');
-                var theSettings = {key:'settings', Username:lat.toString(), Password:longval.toString()};// Construct an object with them
+                var theSettings = {key:'settings', Username:testlat, Password:longval.toString()};// Construct an object with them
 	theDatas.save(theSettings);
                                alert("saved: " + lat.toString() + longval.toString());
                  $.ajax({
