@@ -46,7 +46,6 @@ function doSave() {
 	theAge = document.getElementById('Age').value;
     theComment = document.getElementById('Comment').value;
     if (theComment.length > 1) {
-    
      $.ajax({
                     type: "POST",
                     url: "http://washingapp.apphb.com/Home/save",
@@ -56,7 +55,6 @@ function doSave() {
                     alert("posted" + theUsername + ":" + thePassword);
                     
                     }
-                 
                  
                  });
      alert("Sent comment"); 

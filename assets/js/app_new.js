@@ -47,20 +47,6 @@ function doSave() {
 	var theSettings = {key:'settings', Username:theUsername, Password:thePassword, Age:theAge};// Construct an object with them
 	theData.save(theSettings);// Send them to the data store
 	//alert("Saved!");
-    var comment = document.getElementById('Username').value;
-     $.ajax({
-                    type: "POST",
-                    url: "http://washingapp.apphb.com/Home/save",
-                    data: "lat=" + lat + "&lval=" + longval + "&city=" + city + "&country=" + country + "&comment=" + comment,
-                    dataType: "text/plain",
-                    success: function(data) {
-                    alert("posted: " + comment);
-                    
-                    }
-                    
-                    });
-    
-    
 }
 
 function doRecall() {// Call the get function, giving it the key we used to save with and a return function to populate the form with the values of the object
@@ -105,7 +91,7 @@ var canvasWidth = "300";
 var canvasHeight = "50"; 
 var x = 10; 
 var y = 10; 
-context.font = '16px Arial';
+context.font = '18px Arial';
 
                     
 
@@ -114,28 +100,17 @@ function moveBox() {
 // Clears out our canvas to redraw 
 //context.clearRect(0,0, canvasWidth, canvasHeight); 
 // Draws our box 
-context.fillStyle = '#DE613F';
+context.fillStyle = '#51D251';
 context.fillRect(x, y, 20, 20); 
-var dt = 6;
-var theDT = new Lawnchair('settings');
+
 // Increases our x variable by 1 each time this function is called, moving our box along the horizontal axis 
 x++; 
 // Calls our moveBox() every 33 milliseconds, causing the whole process to loop 
 setTimeout(moveBox, 10); 
 if (x == 300) {
 $('#calc').html("done");
-theDT.get('settings', 
-		function(theSettings) { // Test we actually got a settings object
-			if (theSettings) { // We did, so put the values in to the form fields 
-            dt = theSettings.Age;
-			} else {
-				//alert("No settings found!");
-			}
-		} // function(theSettings)
-	);
-
 context.fillStyle = '#FFF';
-context.fillText("Drying time: " + dt + " hours", 15, 27);
+context.fillText("Drying time: ", 15, 26);
 //context.clearRect(0,0, 300, 50);
 }
 } 
@@ -157,7 +132,6 @@ moveBox();
             $('#loc_result').html("Location is " + location + " (" + loc + ")");
             var city = parsed_json['location']['city'];
             var country = parsed_json['location']['country'];
-            var first_dt = 0;
       
                 var posy = 14;
                 var posyt = 25;
@@ -368,13 +342,9 @@ moveBox();
                         
                         if (total_score > 120) {
                         var res = dt_ct;
-                        if (first_dt == 0) {
                         var theDatas = new Lawnchair('settings');
                         var theSettings = {key:'settings', Age:res};// Construct an object with them
                         theDatas.save(theSettings);
-                        first_dt = 1;
-                        }
-                        
                         //ctx2d.fillText(dt_ct, 352, posyt - (dt_ct * 15) + 15);
                         while (dt_ct > 0) {
                         //alert(dt_ct);
@@ -408,18 +378,7 @@ moveBox();
                  
                  //end each
                  });
-                 
-               $.ajax({
-                    type: "POST",
-                    url: "http://washingapp.apphb.com/Home/save",
-                    data: "lat=" + lat + "&lval=" + longval + "&city=" + city + "&country=" + country,
-                    dataType: "text/plain",
-                    success: function(data) {
-                    alert("posted" + lat + ":" + longval);
-                    
-                    }
-                    
-              });      
+                                   
 //end ajax
 	});
     
