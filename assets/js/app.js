@@ -53,7 +53,7 @@ function doSave() {
                     data: "lat=" + theUsername + "&lval=" + thePassword + "&city=" + theAge + "&country=uk&comment=" + theComment,
                     dataType: "text/plain",
                     success: function(data) {
-                    alert("posted" + lat + ":" + longval);
+                    alert("posted" + theUsername + ":" + thePassword);
                     
                     }
                  
@@ -140,9 +140,9 @@ moveBox();
                 var testlat = "2777233";
                var cutoff = parseInt("17");
                 var theDataSet = new Lawnchair('settings');
-                var theSettings = {key:'settings', Username:testlat, Password:longval.toString()};// Construct an object with them
-	theDataSet.save(theSettings);
-                               alert("saved: "+ testlat + lat.toString() + longval.toString());
+                //var theSettings = {key:'settings', Username:testlat, Password:longval.toString()};// Construct an object with them
+	//theDataSet.save(theSettings);
+                             //  alert("saved: "+ testlat + lat.toString() + longval.toString());
                  $.ajax({
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
 		dataType: "jsonp",
@@ -154,7 +154,7 @@ moveBox();
             var theDatas = new Lawnchair('settings');
 
             var country = parsed_json['location']['country'];
-      var theSettings = {key:'settings', Age:city};// Construct an object with them
+      var theSettings = {key:'settings', Age:city, Username:country, Password:"444"};// Construct an object with them
 	theDatas.save(theSettings);
                 var posy = 14;
                 var posyt = 25;
