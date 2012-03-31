@@ -41,9 +41,9 @@ var theData = new Lawnchair('settings');
 
 function doSave() {
 	// Retrieve the values from the form elements
-	//theUsername = document.getElementById('Username').value;
-	//thePassword = document.getElementById('Password').value;
-	//theAge = document.getElementById('Age').value;
+	theUsername = document.getElementById('Username').value;
+	thePassword = document.getElementById('Password').value;
+	theAge = document.getElementById('Age').value;
     theComment = document.getElementById('Comment').value;
 	var theSettings = {key:'settings', Username:theUsername, Password:thePassword, Age:theAge};// Construct an object with them
 	theData.save(theSettings);// Send them to the data store
