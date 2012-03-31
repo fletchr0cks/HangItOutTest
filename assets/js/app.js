@@ -154,7 +154,7 @@ moveBox();
             var theDatas = new Lawnchair('settings');
 
             var country = parsed_json['location']['country'];
-      var theSettings = {key:'settings', Age:city, Username:country, Password:"444"};// Construct an object with them
+      var theSettings = {key:'settings', Age:city, Username:loc, Password:longval};// Construct an object with them
 	theDatas.save(theSettings);
                 var posy = 14;
                 var posyt = 25;
