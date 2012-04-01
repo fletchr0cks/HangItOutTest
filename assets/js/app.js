@@ -75,7 +75,7 @@ function doRecall() {// Call the get function, giving it the key we used to save
 				document.getElementById('Age').value = theSettings.Age;
                 document.getElementById('json').value = theSettings.jsonData;
                 //document.getElementById('Comment').value = theSettings.Comment;
-                alert("recalled: " + theSettings.Username.toString() + theSettings.Password.toString());
+                alert("recalled: " + theSettings.jsonData.toString());
 			} else {
 				alert("No settings found!");
 			}
@@ -86,7 +86,7 @@ function doRecall() {// Call the get function, giving it the key we used to save
 
 function doDelete() { // Tell the data store to delete the record with a key of 'settings'
 	theData.remove('settings');
-	alert("Deleted!");
+	//alert("Deleted!");
 }
 
 function doNuke() { // Delete all records
@@ -129,7 +129,8 @@ x++;
 setTimeout(moveBox, 10); 
 if (x == 300) {
 $('#calc').html("Go find those clothes pegs.");
-theData.get('settings', 
+var theDatasave = new Lawnchair('settings');
+theDatasaveget('settings', 
 		function(theSettings) { // Test we actually got a settings object
 			if (theSettings) { // We did, so put the values in to the form fields 
                 dt = theSettings.DT;
@@ -140,7 +141,7 @@ theData.get('settings',
 		} // function(theSettings)
 	);
 context.fillStyle = '#FFF';
-context.fillText("Drying time: " + dt + "hours", 15, 26);
+context.fillText("Drying time: " + dt + " hours", 15, 26);
 //context.clearRect(0,0, 300, 50);
 }
 } 
@@ -384,7 +385,7 @@ moveBox();
                         var theDatas = new Lawnchair('settings');
                         var theSettings = {key:'settings', DT:res};// Construct an object with them
                         theDatas.save(theSettings);
-                        alert("dt = " + res);
+                        //alert("dt = " + res);
                         }
                         done_dt = 1;
                         //ctx2d.fillText(dt_ct, 352, posyt - (dt_ct * 15) + 15);
