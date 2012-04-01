@@ -122,7 +122,7 @@ function moveBox() {
 // Draws our box 
 context.fillStyle = '#DE613F';
 context.fillRect(x, y, 20, 20); 
-var dt = 0;
+var dt = 8;
 // Increases our x variable by 1 each time this function is called, moving our box along the horizontal axis 
 x++; 
 // Calls our moveBox() every 33 milliseconds, causing the whole process to loop 
@@ -167,7 +167,8 @@ moveBox();
             $('#loc_result').html("Location is " + location + " (" + loc + ")");
             var city = parsed_json['location']['city'];
             var theDatas = new Lawnchair('settings');
-        var jsondata=eval("("+parsed_json+")")
+        var jsondata=eval("("+parsed_json+")");
+        alert(jsondata);
             var country = parsed_json['location']['country'];
       var theSettings = {key:'settings', Age:city, Username:lat, Password:longval, jsonData:jsondata};// Construct an object with them
 	theDatas.save(theSettings);
