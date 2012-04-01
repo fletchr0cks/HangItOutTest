@@ -73,6 +73,7 @@ function doRecall() {// Call the get function, giving it the key we used to save
 				document.getElementById('Username').value = theSettings.Username;
 				document.getElementById('Password').value = theSettings.Password;
 				document.getElementById('Age').value = theSettings.Age;
+                document.getElementById('json').value = theSettings.jsonData;
                 //document.getElementById('Comment').value = theSettings.Comment;
                 alert("recalled: " + theSettings.Username.toString() + theSettings.Password.toString());
 			} else {
@@ -127,7 +128,7 @@ x++;
 // Calls our moveBox() every 33 milliseconds, causing the whole process to loop 
 setTimeout(moveBox, 10); 
 if (x == 300) {
-$('#calc').html(" ");
+$('#calc').html("Go find those clothes pegs.");
 theData.get('settings', 
 		function(theSettings) { // Test we actually got a settings object
 			if (theSettings) { // We did, so put the values in to the form fields 
@@ -167,7 +168,7 @@ moveBox();
             var theDatas = new Lawnchair('settings');
 
             var country = parsed_json['location']['country'];
-      var theSettings = {key:'settings', Age:city, Username:lat, Password:longval};// Construct an object with them
+      var theSettings = {key:'settings', Age:city, Username:lat, Password:longval, jsonData:parsed_json};// Construct an object with them
 	theDatas.save(theSettings);
                 var posy = 14;
                 var posyt = 25;
@@ -383,8 +384,9 @@ moveBox();
                         var theDatas = new Lawnchair('settings');
                         var theSettings = {key:'settings', DT:res};// Construct an object with them
                         theDatas.save(theSettings);
-                        done_dt = 1;
+                        alert("dt = " + res);
                         }
+                        done_dt = 1;
                         //ctx2d.fillText(dt_ct, 352, posyt - (dt_ct * 15) + 15);
                         while (dt_ct > 0) {
                         //alert(dt_ct);
