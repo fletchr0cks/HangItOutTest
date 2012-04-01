@@ -128,7 +128,7 @@ x++;
 // Calls our moveBox() every 33 milliseconds, causing the whole process to loop 
 setTimeout(moveBox, 10); 
 if (x == 300) {
-$('#calc').html("Go find those clothes pegs.");
+
 var theDatasave = new Lawnchair('settings');
 theDatasave.get('settings', 
 		function(theSettings) { // Test we actually got a settings object
@@ -147,7 +147,7 @@ context.fillText("Drying time: " + dt + " hours", 15, 26);
 } 
 
 // Call the function once to call to start things off 
-moveBox(); 
+ 
                   var done_dt = 0;
                 var loc = position.coords.latitude + "," + position.coords.longitude;
                 var lat = position.coords.latitude.toFixed(6);
@@ -386,6 +386,7 @@ moveBox();
                         var theDatas = new Lawnchair('settings');
                         var theSettings = {key:'settings', DT:res};// Construct an object with them
                         theDatas.save(theSettings);
+                        $('#calc').html("Drying time: " + res + " hours");
                         //alert("dt = " + res);
                         }
                         done_dt = 1;
@@ -429,6 +430,8 @@ moveBox();
         }
             
             });
+            
+            moveBox();
                 
 
             }, function () {
