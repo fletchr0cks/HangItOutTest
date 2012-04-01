@@ -75,7 +75,7 @@ function doRecall() {// Call the get function, giving it the key we used to save
 				document.getElementById('Age').value = theSettings.Age;
                 //document.getElementById('json').value = theSettings.jsonData;
                 //document.getElementById('Comment').value = theSettings.Comment;
-                alert("recalled: " + theSettings.jsonData.toString());
+                //alert("recalled: " + theSettings.jsonData.toString());
 			} else {
 				alert("No settings found!");
 			}
@@ -134,14 +134,14 @@ theDatasave.get('settings',
 		function(theSettings) { // Test we actually got a settings object
 			if (theSettings) { // We did, so put the values in to the form fields 
                 dt = theSettings.DT;
-                
+                alert(dt);
 			} else {
 				alert("No settings found!");
 			}
 		} // function(theSettings)
 	);
 context.fillStyle = '#FFF';
-context.fillText("Drying time: " + dt + " hours", 15, 26);
+//context.fillText("Drying time: " + dt + " hours", 15, 26);
 //context.clearRect(0,0, 300, 50);
 }
 } 
