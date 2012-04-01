@@ -73,7 +73,7 @@ function doRecall() {// Call the get function, giving it the key we used to save
 				document.getElementById('Username').value = theSettings.Username;
 				document.getElementById('Password').value = theSettings.Password;
 				document.getElementById('Age').value = theSettings.Age;
-                document.getElementById('json').value = theSettings.jsonData;
+                //document.getElementById('json').value = theSettings.jsonData;
                 //document.getElementById('Comment').value = theSettings.Comment;
                 alert("recalled: " + theSettings.jsonData.toString());
 			} else {
@@ -167,10 +167,10 @@ moveBox();
             $('#loc_result').html("Location is " + location + " (" + loc + ")");
             var city = parsed_json['location']['city'];
             var theDatas = new Lawnchair('settings');
-        var jsondata=eval("("+parsed_json+")");
-        alert(jsondata);
+        //var jsondata=eval("("+parsed_json+")");
+        //alert(jsondata);
             var country = parsed_json['location']['country'];
-      var theSettings = {key:'settings', Age:city, Username:lat, Password:longval, jsonData:jsondata};// Construct an object with them
+      var theSettings = {key:'settings', Age:city, Username:lat, Password:longval};// Construct an object with them
 	theDatas.save(theSettings);
                 var posy = 14;
                 var posyt = 25;
