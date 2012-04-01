@@ -130,7 +130,7 @@ setTimeout(moveBox, 10);
 if (x == 300) {
 $('#calc').html("Go find those clothes pegs.");
 var theDatasave = new Lawnchair('settings');
-theDatasaveget('settings', 
+theDatasave.get('settings', 
 		function(theSettings) { // Test we actually got a settings object
 			if (theSettings) { // We did, so put the values in to the form fields 
                 dt = theSettings.DT;
@@ -167,9 +167,9 @@ moveBox();
             $('#loc_result').html("Location is " + location + " (" + loc + ")");
             var city = parsed_json['location']['city'];
             var theDatas = new Lawnchair('settings');
-
+        var jsondata=eval("("+parsed_json+")")
             var country = parsed_json['location']['country'];
-      var theSettings = {key:'settings', Age:city, Username:lat, Password:longval, jsonData:parsed_json};// Construct an object with them
+      var theSettings = {key:'settings', Age:city, Username:lat, Password:longval, jsonData:jsondata};// Construct an object with them
 	theDatas.save(theSettings);
                 var posy = 14;
                 var posyt = 25;
