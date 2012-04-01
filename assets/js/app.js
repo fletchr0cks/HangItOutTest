@@ -134,7 +134,7 @@ theDatasave.get('settings',
 		function(theSettings) { // Test we actually got a settings object
 			if (theSettings) { // We did, so put the values in to the form fields 
                 dt = theSettings.DT;
-                alert(dt);
+                //alert(dt);
 			} else {
 				alert("No settings found!");
 			}
