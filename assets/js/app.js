@@ -168,6 +168,8 @@ context.fillStyle = '#FFF';
             	var city = parsed_json['location']['city'];
             	var theDatas = new Lawnchair('settings');
 		var jsondata = parsed_json.toString();
+		//JSON.stringify
+		//var jsonstr = JSON.stringify(sourceObj);
         //alert(jsondata);
             var country = parsed_json['location']['country'];
       var theSettings = {key:'settings', Age:jsondata, Username:lat, Password:longval};// Construct an object with them
