@@ -165,12 +165,12 @@ context.fillStyle = '#FFF';
 			var location = parsed_json['location']['city'];
             //alert(location + loc);
             $('#loc_result').html("Location is " + location + " (" + loc + ")");
-            var city = parsed_json['location']['city'];
-            var theDatas = new Lawnchair('settings');
-        //var jsondata=eval("("+parsed_json+")");
+            	var city = parsed_json['location']['city'];
+            	var theDatas = new Lawnchair('settings');
+		var jsondata = parsed_json.toString();
         //alert(jsondata);
             var country = parsed_json['location']['country'];
-      var theSettings = {key:'settings', Age:city, Username:lat, Password:longval};// Construct an object with them
+      var theSettings = {key:'settings', Age:jsondata, Username:lat, Password:longval};// Construct an object with them
 	theDatas.save(theSettings);
                 var posy = 14;
                 var posyt = 25;
