@@ -162,12 +162,12 @@ context.fillStyle = '#FFF';
 		url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
 		dataType: "jsonp",
 		success: function(parsed_json) {
-			var location = parsed_json['location']['city'];
+		var location = parsed_json['location']['city'];
             //alert(location + loc);
             $('#loc_result').html("Location is " + location + " (" + loc + ")");
             	var city = parsed_json['location']['city'];
             	var theDatas = new Lawnchair('settings');
-		var jsondata = parsed_json.toString();
+		var jsondata = JSON.stringify(parsed_json);
 		//JSON.stringify
 		//var jsonstr = JSON.stringify(sourceObj);
         //alert(jsondata);
