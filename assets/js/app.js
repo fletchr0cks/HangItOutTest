@@ -45,7 +45,7 @@
         
 function checkCacheDate() {
 	
-	checkConnection();
+	//checkConnection();
 	
 	var now = new Date();
 	var epoch = Math.round(new Date().getTime() / 1000);
@@ -402,7 +402,8 @@ context.fillStyle = '#FFF';
 
  				
  			} else {
- 				alert("No settings found!");
+ 				alert("No cached data found");
+ 				navigator.app.exitApp();
  			}
  			
  		} // function(theSettings)		
