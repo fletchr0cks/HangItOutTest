@@ -20,7 +20,7 @@
         
         navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
         
-        checkCacheDate();
+        //checkCacheDate();
     }
     
     // onSuccess: Display the current acceleration
