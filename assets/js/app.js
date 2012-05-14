@@ -49,7 +49,7 @@ theData.get('data',
 		function(theJsonData) { // Test we actually got a settings object
         alert("jsondata1");
 			if (theJsonData) { // We did, so put the values in to the form fields 
-            alert("jsondata2");
+            alert("jsondata2 " + theJsonData.hoursaved);
 				hoursaved = theJsonData.hoursaved;
 				datesaved = theJsonData.datesaved;
                 minsaved = theJsonData.minsaved;
@@ -457,7 +457,7 @@ context.fillStyle = '#FFF';
 		var today = timenow.getDate();		
 		var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};// Construct an object with them
 	        theDatas.save(theSettings);
-	        //alert("saved= " + jsontext + " " + epoch); 
+        alert("saved= " + jsontext + " " + hour_now + minute_now); 
         alert(data_success);
         if (data_success == 0) {
         //no connection, get cache
