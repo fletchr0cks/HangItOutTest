@@ -31,7 +31,7 @@
 function checkCacheDate() {
 	
 	//checkConnection();
-	
+	alert("start1");
 	var now = new Date();
 	var epoch = Math.round(new Date().getTime() / 1000);
 	var hour_now = now.getHours();
@@ -44,7 +44,7 @@ var datesaved;
 var minsaved;
 var epochsaved;
 var hourdiff = 0;
-
+alert("start2");
 theData.get('data', 
 		function(theJsonData) { // Test we actually got a settings object
         alert("jsondata1");
@@ -458,10 +458,6 @@ context.fillStyle = '#FFF';
 		var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};// Construct an object with them
 	        theDatas.save(theSettings);
 	        //alert("saved= " + jsontext + " " + epoch); 
-                           
-	        }
-                          
-        });
         alert(data_success);
         if (data_success == 0) {
         //no connection, get cache
@@ -471,7 +467,11 @@ context.fillStyle = '#FFF';
         //connection, got data, get from cache
           getCache('newdata');
         }
-        
+
+	        }
+                          
+        });
+                
        
         
         }
