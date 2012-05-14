@@ -45,29 +45,12 @@ var minsaved;
 var epochsaved;
 var hourdiff = 0;
 alert("start2");
-try {
+
 theData.get('data', 
 		function(theJsonData) { // Test we actually got a settings object
-        alert("jsondata1");
+        
 			if (theJsonData) { // We did, so put the values in to the form fields 
-            alert("jsondata2 " + theJsonData.hoursaved);
-				hoursaved = theJsonData.hoursaved;
-				datesaved = theJsonData.datesaved;
-                minsaved = theJsonData.minsaved;
-				epochsaved = theJsonData.epoch;
-				hourdiff = epoch - epochsaved;
-				
-				alert("saved data from: " + hoursaved + ":" + minsaved + "diff: " + hourdiff);
-				
-				if (hourdiff >= 60) {
-				
-				//tryData();
-					getData();
-				
-				} else {
-				
-					getCache('olddata');
-				}
+          
 				
 			} else {
 				alert("No settings found!");
@@ -78,26 +61,7 @@ theData.get('data',
 		} // function(theSettings)		
 			
 	);	
-    
-    } catch(err) {
-    alert("catch" + err.message);
-				//get data
-				getData();
-    }
-    
-     when('#welcome');
-    when('#settings', function() {
-    //doRecall();
-		// load settings from store and make sure we persist radio buttons.
 
-	});
-    
-    when('#save', function () {
-    //doSave();
-        
-        display('#welcome');
-    });
-    
     
 }
 
