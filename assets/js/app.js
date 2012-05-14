@@ -426,13 +426,13 @@ context.fillStyle = '#FFF';
  function getData() {
  var deviceID = device.uuid;
   alert("get data " + deviceID);
-  navigator.geolocation.getCurrentPosition(function (position) {
-  var loc = position.coords.latitude + "," + position.coords.longitude;
+  //navigator.geolocation.getCurrentPosition(function (position) {
+  //var loc = position.coords.latitude + "," + position.coords.longitude;
   
-  }, function () {
-                $('#loc_result').html("Location not available. Using North Berwick.");
+  //}, function () {
+    //            $('#loc_result').html("Location not available. Using North Berwick.");
                 var loc = "56.058168,-2.719811";
-            });
+      //      });
   
   var data_success = 0;
         $.ajax({
