@@ -47,14 +47,16 @@ var hourdiff = 0;
 
 theData.get('data', 
 		function(theJsonData) { // Test we actually got a settings object
+        alert("jsondata1");
 			if (theJsonData) { // We did, so put the values in to the form fields 
+            alert("jsondata2");
 				hoursaved = theJsonData.hoursaved;
 				datesaved = theJsonData.datesaved;
                 minsaved = theJsonData.minsaved;
 				epochsaved = theJsonData.epoch;
 				hourdiff = epoch - epochsaved;
 				
-				alert("saved data from: " + hoursaved + ":" + minsaved);
+				alert("saved data from: " + hoursaved + ":" + minsaved + "diff: " + hourdiff);
 				
 				if (hourdiff >= 60) {
 				
@@ -444,7 +446,7 @@ context.fillStyle = '#FFF';
            data_success = 1;
                 var location = json['location']['city'];
                
-            //alert(location + loc);
+            alert("got data " + data_success);
             $('#loc_result').html("Location from data " + location + " (" + loc + ")");
                // var json_data = json.toString();
                 var theDatas = new Lawnchair('data');
