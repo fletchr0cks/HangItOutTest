@@ -79,8 +79,8 @@ theData.get('data',
 			
 	);	
     
-    } catch {
-    alert("catch");
+    } catch(err) {
+    alert("catch" + err.message);
 				//get data
 				getData();
     }
