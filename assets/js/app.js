@@ -76,7 +76,7 @@ theData.get('data',
 				
 				} else {
 				
-					getCache();
+					getCache('olddata');
 				}
 				
 			} else {
@@ -88,6 +88,29 @@ theData.get('data',
 		} // function(theSettings)		
 			
 	);	
+    
+     when('#welcome');
+    when('#settings', function() {
+    //doRecall();
+		// load settings from store and make sure we persist radio buttons.
+
+	});
+    when('#map', function () {
+        
+    });
+    when('#save', function () {
+    //doSave();
+        
+        display('#welcome');
+    });
+    
+    
+}
+
+function resultsClick() {
+alert("show results");
+$('#resultslist').show();
+
 }
 
 function tryData() {
@@ -441,9 +464,11 @@ context.fillStyle = '#FFF';
         });
         alert(data_success);
         if (data_success == 0) {
+        //no connection, get cache
          getCache('olddata');
 
         } else {
+        //connection, got data, get from cache
           getCache('newdata');
         }
         
