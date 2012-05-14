@@ -18,29 +18,14 @@
 
         alert('Connection type: ' + states[networkState] + networkState);
         
-        navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
+        //navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
         
         //checkCacheDate();
     }
     
     // onSuccess: Display the current acceleration
     //Get the current Acceleration data if Successful
-        function onSuccess(acceleration){
-            alert('Acceleration X: ' + acceleration.x + '\n' +
-              'Acceleration Y: ' + acceleration.y + '\n' +
-              'Acceleration Z: ' + acceleration.z + '\n' +
-              'Timestamp: '      + acceleration.timestamp + '\n');
-        }
- 
-        // alert if there is an error
-        function onError(){
-            alert("Error");
-        }
-
-        function canvcheck(canvas, context) {
-            
-
-        }
+    
         
         
 function checkCacheDate() {
@@ -56,6 +41,7 @@ function checkCacheDate() {
 var theData = new Lawnchair('data');
 var hoursaved;
 var datesaved;
+var minsaved;
 var epochsaved;
 var hourdiff = 0;
 
@@ -64,10 +50,11 @@ theData.get('data',
 			if (theJsonData) { // We did, so put the values in to the form fields 
 				hoursaved = theJsonData.hoursaved;
 				datesaved = theJsonData.datesaved;
+                minsaved = theJsonData.minsaved;
 				epochsaved = theJsonData.epoch;
 				hourdiff = epoch - epochsaved;
 				
-			//	alert("e diff" + hourdiff);
+				alert("saved data from: " + hoursaved + ":" + minsaved);
 				
 				if (hourdiff >= 60) {
 				
@@ -437,23 +424,37 @@ context.fillStyle = '#FFF';
         }
 
  function getData() {
-  alert("get data");
+ var deviceID = device.uuid;
+  alert("get data " + deviceID);
+  navigator.geolocation.getCurrentPosition(function (position) {
+  var loc = position.coords.latitude + "," + position.coords.longitude;
+  
+  }, function () {
+                $('#loc_result').html("Location not available. Using North Berwick.");
+                var loc = "56.058168,-2.719811";
+            });
+  
+  }
   var data_success = 0;
         $.ajax({
-            url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/56.058168,-2.719811.json",
+            url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
             dataType: "jsonp",
             success: function(json) {
  //               var parsed_json = eval('(' + json + ')');
            var jsontext =  JSON.stringify(json);
-           data_success = jsontext.length;
+           data_success = 1;
                 var location = json['location']['city'];
+               
+            //alert(location + loc);
+            $('#loc_result').html("Location from data " + location + " (" + loc + ")");
                // var json_data = json.toString();
                 var theDatas = new Lawnchair('data');
                 var epoch = Math.round(new Date().getTime() / 1000)
 		var timenow = new Date();
 		var hour_now  = timenow.getHours();
+        var minute_now = timenow.getMinutes();
 		var today = timenow.getDate();		
-		var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, datesaved:today, epoch:epoch};// Construct an object with them
+		var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};// Construct an object with them
 	        theDatas.save(theSettings);
 	        //alert("saved= " + jsontext + " " + epoch); 
                            
