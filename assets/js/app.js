@@ -434,7 +434,6 @@ context.fillStyle = '#FFF';
                 var loc = "56.058168,-2.719811";
             });
   
-  }
   var data_success = 0;
         $.ajax({
             url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
