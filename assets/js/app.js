@@ -95,9 +95,7 @@ theData.get('data',
 		// load settings from store and make sure we persist radio buttons.
 
 	});
-    when('#map', function () {
-        
-    });
+    
     when('#save', function () {
     //doSave();
         
@@ -109,7 +107,7 @@ theData.get('data',
 
 function resultsClick() {
 alert("show results");
-$('#resultslist').show();
+$('#map').show();
 
 }
 
