@@ -35,10 +35,10 @@ var myStore = new Lawnchair();
         if (i == null) {
             // user did not login before, no saved credentials.
             alert("no deets");
-            login('nick','pw');
+            //login('nick','pw');
         } else {
         alert("has logged in");
-        getData();
+        //getData();
             // user DID login, we can now auto-login for the user.
         }
     });
