@@ -37,7 +37,7 @@ var lawnchair = new Lawnchair({table:'mytable'}, function(){
 
 // Getting some data out of the lawnchair database
 lawnchair.get('my_data_key', function(obj) {
-    if (obj !== undefined) {
+    if (obj !== null) {
     alert("have data " + obj);
         lastSyncDate = obj.lastSync;
         dataList = obj.dataList;
