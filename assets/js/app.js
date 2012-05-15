@@ -37,15 +37,13 @@ var lawnchair = new Lawnchair({table:'mytable'}, function(){
 });
 
 // Getting some data out of the lawnchair database
-lawnchair.get('data', function(obj) {
+lawnchair.get('mydata', function(obj) {
     if (obj !== null) {
-    //var hsaved = obj.hoursaved;
-    alert("have data " + obj);
-    //getCache('olddata');
+    alert("have data");
         
     } else {
-    alert("no data" + obj);
-    //getData();
+    alert("no data");
+  
     }
     
 });
