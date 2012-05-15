@@ -31,18 +31,18 @@
 function checkCacheDate() {
 alert("start");
 // Open local DB connection
-var lawnchair = new Lawnchair({table:'mytable'}, function(){
-    // Lawnchair setup! 
-});
+var lawnchair = new Lawnchair('data');
 
 // Getting some data out of the lawnchair database
-lawnchair.get('my_data_key', function(obj) {
+lawnchair.get('data', function(obj) {
     if (obj !== null) {
-    alert("have data " + obj);
-        lastSyncDate = obj.lastSync;
-        dataList = obj.dataList;
+    var hsaved = obj.hoursaved;
+    alert("have data " + hsaved);
+    getCache('olddata');
+        
     } else {
     alert("no data" + obj);
+    getData();
     }
     
 });
@@ -418,9 +418,12 @@ context.fillStyle = '#FFF';
 	        theDatas.save(theSettings);
         //alert("saved= " + jsontext + " " + hour_now + minute_now); 
         //alert(data_success);
-        
+            getCache('newdata');
 
-	        }
+	        },
+            error: function(json) {
+            alert("data error");
+             } 
                           
         });
       
