@@ -36,7 +36,7 @@ function checkCacheDate() {
 lawnchair.get('mydata', function(obj) {
     if (obj !== null) {
     alert("have data");
-    getCache('olddata');
+    getCache("olddata");
     } else {
     alert("no data");
     getData();
