@@ -29,44 +29,29 @@
         
         
 function checkCacheDate() {
-	
-	//checkConnection();
-	alert("start1");
-	var now = new Date();
-	var epoch = Math.round(new Date().getTime() / 1000);
-	var hour_now = now.getHours();
-	hour_now = hour_now + 5;
-//	alert("epoch now: " + epoch);
-	
-var theData = new Lawnchair('data');
-var hoursaved;
-var datesaved;
-var minsaved;
-var epochsaved;
-var hourdiff = 0;
-alert("start2");
+
 
 theData.get('data', 
 		function(theJsonData) { // Test we actually got a settings object
         
 			if (theJsonData) { // We did, so put the values in to the form fields 
-          
+            
 				
 			} else {
 				alert("No settings found!");
-				//get data
-				getData();
+				
 			}
 			
 		} // function(theSettings)		
 			
 	);	
-
+    
     
 }
 
 function resultsClick() {
 alert("show results");
+getData();
 $('#map').show();
 
 }
