@@ -53,8 +53,8 @@ lawnchair.get('data', function(obj) {
 }
 
 function resultsClick() {
-alert("show results");
-getCache('olddata');
+//alert("show results");
+//getCache('olddata');
 $('#map').show();
 
 }
@@ -408,17 +408,19 @@ context.fillStyle = '#FFF';
             alert("got data " + data_success);
             $('#loc_result').html("Location from data " + location + " (" + loc + ")");
                // var json_data = json.toString();
-                var theDatas = new Lawnchair('data');
+                
                 var epoch = Math.round(new Date().getTime() / 1000)
 		var timenow = new Date();
 		var hour_now  = timenow.getHours();
         var minute_now = timenow.getMinutes();
-		var today = timenow.getDate();		
-		var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};// Construct an object with them
-	        theDatas.save(theSettings);
+		var today = timenow.getDate();
+        
+        var theDatas = new Lawnchair('data');		
+		var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};
+        theDatas.save(theSettings);
         //alert("saved= " + jsontext + " " + hour_now + minute_now); 
         //alert(data_success);
-            getCache('newdata');
+            //getCache('newdata');
 
 	        },
             error: function(json) {
