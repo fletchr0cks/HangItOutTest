@@ -31,7 +31,13 @@
 function checkCacheDate() {
 alert("start");
 // Open local DB connection
-var lawnchair = new Lawnchair('data');
+
+var lawnchair = new Lawnchair({table:'mytable'}, function(){
+    // Lawnchair setup! 
+});
+//lawnchair.save({key:'my_data_key', lastSync: currentTime, dataList: someData});
+
+//var lawnchair = new Lawnchair('data');
 
 // Getting some data out of the lawnchair database
 lawnchair.get('data', function(obj) {
@@ -95,10 +101,13 @@ context.fillStyle = '#FFF';
  
 
  
- var theData = new Lawnchair('data');
+ //var theData = new Lawnchair('data');
+ var lawnchairc = new Lawnchair({table:'mytable'}, function(){
+    // Lawnchair setup! 
+});
  //var jsondata;
  alert(age);
- theData.get('data', 
+ lawnchairc.get('data', 
  		function(theJsonData) { // Test we actually got a settings object
  			if (theJsonData) { // We did, so put the values in to the form fields 
  				var jsondata = theJsonData.json;
@@ -107,7 +116,7 @@ context.fillStyle = '#FFF';
  				    var cutoff = parseInt("16");				
                 				var parsed_json = eval('(' + jsondata + ')');
 				                var location = parsed_json['location']['city'];
-				                var theDatas = new Lawnchair('data');
+				                //var theDatas = new Lawnchair('data');
 						var timenow = new Date();
 						var hour_now  = timenow.getHours();
 						var today = timenow.getDate();
@@ -325,9 +334,7 @@ context.fillStyle = '#FFF';
                         if (total_score > 120) {
                         var res = dt_ct;
                         if (done_dt == 0) {
-                        var theDatas = new Lawnchair('settings');
-                        var theSettings = {key:'settings', DT:res};// Construct an object with them
-                        theDatas.save(theSettings);
+                        
                         $('#calc').html(" time: " + res + " hours");
                         //alert("dt = " + res);
                         }
@@ -415,13 +422,16 @@ context.fillStyle = '#FFF';
         var minute_now = timenow.getMinutes();
 		var today = timenow.getDate();
         
-        var theDatas = new Lawnchair('data');		
-		var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};
-        theDatas.save(theSettings);
-        //alert("saved= " + jsontext + " " + hour_now + minute_now); 
-        //alert(data_success);
-            //getCache('newdata');
-
+        var lawnchaird = new Lawnchair({table:'mytable'}, function(){
+    // Lawnchair setup! 
+        });
+        lawnchaird.save({key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};
+        );
+        
+        //var theDatas = new Lawnchair('data');		
+		//var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};
+        //theDatas.save(theSettings);
+        
 	        },
             error: function(json) {
             alert("data error");
