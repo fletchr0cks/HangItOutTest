@@ -35,20 +35,17 @@ alert("start");
 var lawnchair = new Lawnchair({table:'mytable'}, function(){
     // Lawnchair setup! 
 });
-//lawnchair.save({key:'my_data_key', lastSync: currentTime, dataList: someData});
-
-//var lawnchair = new Lawnchair('data');
 
 // Getting some data out of the lawnchair database
 lawnchair.get('data', function(obj) {
     if (obj !== null) {
-    var hsaved = obj.hoursaved;
-    alert("have data " + hsaved);
-    getCache('olddata');
+    //var hsaved = obj.hoursaved;
+    alert("have data " + obj);
+    //getCache('olddata');
         
     } else {
     alert("no data" + obj);
-    getData();
+    //getData();
     }
     
 });
