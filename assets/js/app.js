@@ -30,28 +30,38 @@
         
 function checkCacheDate() {
 
-
-theData.get('data', 
-		function(theJsonData) { // Test we actually got a settings object
+var myStore = new Lawnchair();
+    myStore.get('login', function(i) {
+        if (i == null) {
+            // user did not login before, no saved credentials.
+            alert("no deets");
+            login('nick','pw');
+        } else {
+        alert("has logged in");
+        getData();
+            // user DID login, we can now auto-login for the user.
+        }
+    });
+    
         
-			if (theJsonData) { // We did, so put the values in to the form fields 
-            
-				
-			} else {
-				alert("No settings found!");
-				
-			}
-			
-		} // function(theSettings)		
-			
-	);	
+                
     
-    
+}
+
+function login(username, password) {
+    /* 
+     * Do the login stuff here
+     */
+    if (/* login was successful */) {
+        myStore.save({key:'login',value:{username:username, password:password}});
+    } else {
+        alert('Could not log you in!');
+    }
 }
 
 function resultsClick() {
 alert("show results");
-getData();
+getCache('olddata');
 $('#map').show();
 
 }
@@ -415,20 +425,12 @@ context.fillStyle = '#FFF';
 	        theDatas.save(theSettings);
         //alert("saved= " + jsontext + " " + hour_now + minute_now); 
         //alert(data_success);
-        if (data_success == 0) {
-        //no connection, get cache
-         getCache('olddata');
-
-        } else {
-        //connection, got data, get from cache
-          getCache('olddata5');
-        }
+        
 
 	        }
                           
         });
-                
-       
+      
         
         }
         
