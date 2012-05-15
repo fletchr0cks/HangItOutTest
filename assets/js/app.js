@@ -41,14 +41,17 @@ lawnchair.get('mydata', function(obj) {
     alert("no data");
     gotdata = -1
     }
-    
+    doSomething(gotdata);
 });
-alert(gotdata);
+
 // Saving to the database
 //lawnchair.save({key:'my_data_key', lastSync: currentTime, dataList: someData});         
     
 }
 
+function doSomething(datar) {
+alert("func" + datar);
+}
 
 function resultsClick() {
 var somedata = "hihi";
