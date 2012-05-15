@@ -36,10 +36,10 @@ function checkCacheDate() {
 lawnchair.get('mydata', function(obj) {
     if (obj !== null) {
     alert("have data");
-        
+    getCache('olddata');
     } else {
     alert("no data");
-  
+    getData();
     }
     
 });
@@ -51,8 +51,6 @@ lawnchair.get('mydata', function(obj) {
 
 
 function resultsClick() {
-var somedata = "hihi";
-lawnchair.save({key:'mydata', lastSync:somedata});
 $('#map').show();
 
 }
@@ -95,12 +93,9 @@ context.fillStyle = '#FFF';
 
  
  //var theData = new Lawnchair('data');
- var lawnchairc = new Lawnchair({table:'mytable'}, function(){
-    // Lawnchair setup! 
-});
  //var jsondata;
  alert(age);
- lawnchairc.get('data', 
+ lawnchair.get('mydata', 
  		function(theJsonData) { // Test we actually got a settings object
  			if (theJsonData) { // We did, so put the values in to the form fields 
  				var jsondata = theJsonData.json;
@@ -415,10 +410,8 @@ context.fillStyle = '#FFF';
         var minute_now = timenow.getMinutes();
 		var today = timenow.getDate();
         
-        var lawnchaird = new Lawnchair({table:'mytable'}, function(){
-    // Lawnchair setup! 
         });
-        lawnchaird.save({key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch});
+        lawnchair.save({key:'mydata', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch});
         
         //var theDatas = new Lawnchair('data');		
 		//var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};
