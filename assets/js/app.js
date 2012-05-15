@@ -30,6 +30,27 @@
         
 function checkCacheDate() {
 
+// Open local DB connection
+var lawnchair = new Lawnchair({table:'mytable', adaptor:'webkit'}, function(){
+    // Lawnchair setup! 
+});
+
+// Getting some data out of the lawnchair database
+lawnchair.get('my_data_key', function(obj) {
+    if (obj !== undefined) {
+        lastSyncDate = obj.lastSync;
+        dataList = obj.dataList;
+    } else {
+    alert("no data" + obj);
+    }
+    
+});
+
+// Saving to the database
+//lawnchair.save({key:'my_data_key', lastSync: currentTime, dataList: someData});
+
+
+
 var myStore = new Lawnchair();
     myStore.get('login', function(i) {
         if (i == null) {
