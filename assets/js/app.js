@@ -51,6 +51,11 @@ lawnchair.get('mydata', function(obj) {
 
 function doSomething(datar) {
 alert("func" + datar);
+if (datar == -1) {
+getData();
+} else {
+getCache("olddata");
+}
 }
 
 function resultsClick() {
@@ -103,7 +108,7 @@ context.fillStyle = '#FFF';
 });
  //var jsondata;
  alert(age);
- lawnchairc.get('data', 
+ lawnchairc.get('mydata', 
  		function(theJsonData) { // Test we actually got a settings object
  			if (theJsonData) { // We did, so put the values in to the form fields 
  				var jsondata = theJsonData.json;
@@ -421,7 +426,7 @@ context.fillStyle = '#FFF';
         var lawnchaird = new Lawnchair({table:'mytable'}, function(){
     // Lawnchair setup! 
         });
-        lawnchaird.save({key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch});
+        lawnchaird.save({key:'mydata', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch});
         
         //var theDatas = new Lawnchair('data');		
 		//var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};
