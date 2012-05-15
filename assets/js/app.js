@@ -47,18 +47,17 @@ lawnchair.get('mydata', function(obj) {
     }
     
 });
+function resultsClick() {
+lawnchair.save({key:'mydata', lastSync: "somedata"});
+$('#map').show();
 
+}
 // Saving to the database
 //lawnchair.save({key:'my_data_key', lastSync: currentTime, dataList: someData});         
     
 }
 
-function resultsClick() {
-//alert("show results");
-//getCache('olddata');
-$('#map').show();
 
-}
 
 function tryData() {
 alert("trying");
