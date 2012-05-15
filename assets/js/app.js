@@ -48,17 +48,6 @@ var myStore = new Lawnchair();
     
 }
 
-function login(username, password) {
-    /* 
-     * Do the login stuff here
-     */
-    if (/* login was successful */) {
-        myStore.save({key:'login',value:{username:username, password:password}});
-    } else {
-        alert('Could not log you in!');
-    }
-}
-
 function resultsClick() {
 alert("show results");
 getCache('olddata');
