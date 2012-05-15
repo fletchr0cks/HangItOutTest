@@ -25,16 +25,12 @@
     
     // onSuccess: Display the current acceleration
     //Get the current Acceleration data if Successful
-    
+var lawnchair = new Lawnchair({table:'mytable'}, function(){
+    // Lawnchair setup! 
+});    
         
         
 function checkCacheDate() {
-alert("start");
-// Open local DB connection
-
-var lawnchair = new Lawnchair({table:'mytable'}, function(){
-    // Lawnchair setup! 
-});
 
 // Getting some data out of the lawnchair database
 lawnchair.get('mydata', function(obj) {
@@ -47,16 +43,19 @@ lawnchair.get('mydata', function(obj) {
     }
     
 });
-function resultsClick() {
-lawnchair.save({key:'mydata', lastSync: "somedata"});
-$('#map').show();
 
-}
 // Saving to the database
 //lawnchair.save({key:'my_data_key', lastSync: currentTime, dataList: someData});         
     
 }
 
+
+function resultsClick() {
+var somedata = "hihi";
+lawnchair.save({key:'mydata', lastSync:somedata});
+$('#map').show();
+
+}
 
 
 function tryData() {
