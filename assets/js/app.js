@@ -29,15 +29,16 @@
         
         
 function checkCacheDate() {
-
+alert("start");
 // Open local DB connection
-var lawnchair = new Lawnchair({table:'mytable', adaptor:'webkit'}, function(){
+var lawnchair = new Lawnchair({table:'mytable'}, function(){
     // Lawnchair setup! 
 });
 
 // Getting some data out of the lawnchair database
 lawnchair.get('my_data_key', function(obj) {
     if (obj !== undefined) {
+    alert("have data " + obj);
         lastSyncDate = obj.lastSync;
         dataList = obj.dataList;
     } else {
@@ -47,25 +48,7 @@ lawnchair.get('my_data_key', function(obj) {
 });
 
 // Saving to the database
-//lawnchair.save({key:'my_data_key', lastSync: currentTime, dataList: someData});
-
-
-
-var myStore = new Lawnchair();
-    myStore.get('login', function(i) {
-        if (i == null) {
-            // user did not login before, no saved credentials.
-            alert("no deets");
-            //login('nick','pw');
-        } else {
-        alert("has logged in");
-        //getData();
-            // user DID login, we can now auto-login for the user.
-        }
-    });
-    
-        
-                
+//lawnchair.save({key:'my_data_key', lastSync: currentTime, dataList: someData});         
     
 }
 
