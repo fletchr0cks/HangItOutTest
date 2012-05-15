@@ -425,8 +425,7 @@ context.fillStyle = '#FFF';
         var lawnchaird = new Lawnchair({table:'mytable'}, function(){
     // Lawnchair setup! 
         });
-        lawnchaird.save({key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};
-        );
+        lawnchaird.save({key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch});
         
         //var theDatas = new Lawnchair('data');		
 		//var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};
