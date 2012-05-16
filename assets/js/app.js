@@ -427,6 +427,7 @@ context.fillStyle = '#FFF';
         //var theDatas = new Lawnchair('data');		
 		//var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};
         //theDatas.save(theSettings);
+        getCache("newdata");
         
 	        },
             error: function(json) {
