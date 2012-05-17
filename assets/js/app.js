@@ -100,13 +100,15 @@ context.fillStyle = '#FFF';
 	
  function getCache(age) {
  
-
+var lawnchair_g = new Lawnchair({table:'mytable'}, function(){
+    // Lawnchair setup! 
+});
  
  //var theData = new Lawnchair('data');
  
  //var jsondata;
  alert(age);
- lawnchair.get('mydata', 
+ lawnchair_g.get('mydata', 
  		function(theJsonData) { // Test we actually got a settings object
  			if (theJsonData) { // We did, so put the values in to the form fields 
  				var jsondata = theJsonData.json;
@@ -396,6 +398,9 @@ getCache("newdata");
 }
 
  function getData() {
+ var lawnchair_s = new Lawnchair({table:'mytable'}, function(){
+    // Lawnchair setup! 
+});
  var deviceID = device.uuid;
   alert("get data " + deviceID);
   //navigator.geolocation.getCurrentPosition(function (position) {
@@ -426,7 +431,7 @@ getCache("newdata");
         var minute_now = timenow.getMinutes();
 		var today = timenow.getDate();
         
-        lawnchair.save({key:'mydata', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch});
+        lawnchair_s.save({key:'mydata', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch});
                
         setTimeout("alertMsg()",5000);
 	        },
