@@ -25,12 +25,13 @@
     
     // onSuccess: Display the current acceleration
     //Get the current Acceleration data if Successful
-var lawnchair = new Lawnchair({table:'mytable'}, function(){
-    // Lawnchair setup! 
-});    
+    
         
         
 function checkCacheDate() {
+var lawnchair = new Lawnchair({table:'mytable'}, function(){
+    // Lawnchair setup! 
+});
 var gotdata = 0;
 // Getting some data out of the lawnchair database
 lawnchair.get('mydata', function(obj) {
@@ -380,7 +381,8 @@ var lawnchair_g = new Lawnchair({table:'mytable'}, function(){
  				
  			} else {
  				alert("No cached data found");
- 				navigator.app.exitApp();
+                checkCacheDate();
+ 				//navigator.app.exitApp();
  			}
  			
  		} // function(theSettings)		
