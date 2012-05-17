@@ -389,6 +389,11 @@ context.fillStyle = '#FFF';
 
         
         }
+        
+function alertMsg()
+{
+getCache("newdata");
+}
 
  function getData() {
  var deviceID = device.uuid;
@@ -421,14 +426,9 @@ context.fillStyle = '#FFF';
         var minute_now = timenow.getMinutes();
 		var today = timenow.getDate();
         
-        
         lawnchair.save({key:'mydata', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch});
-        
-        //var theDatas = new Lawnchair('data');		
-		//var theSettings = {key:'data', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch};
-        //theDatas.save(theSettings);
-        checkCacheDate();
-        
+               
+        setTimeout("alertMsg()",5000);
 	        },
             error: function(json) {
             alert("data error");
