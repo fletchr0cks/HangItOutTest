@@ -25,13 +25,12 @@
     
     // onSuccess: Display the current acceleration
     //Get the current Acceleration data if Successful
-    
+var lawnchair = new Lawnchair({table:'mytable'}, function(){
+    // Lawnchair setup! 
+});    
         
         
 function checkCacheDate() {
-var lawnchair = new Lawnchair({table:'mytable'}, function(){
-    // Lawnchair setup! 
-});
 var gotdata = 0;
 // Getting some data out of the lawnchair database
 lawnchair.get('mydata', function(obj) {
@@ -381,8 +380,7 @@ var lawnchair_g = new Lawnchair({table:'mytable'}, function(){
  				
  			} else {
  				alert("No cached data found");
-                checkCacheDate();
- 				//navigator.app.exitApp();
+ 				navigator.app.exitApp();
  			}
  			
  		} // function(theSettings)		
@@ -394,24 +392,23 @@ var lawnchair_g = new Lawnchair({table:'mytable'}, function(){
         
         }
         
-function alertMsg()
-{
-getCache("newdata");
-}
+
 
  function getData() {
  var lawnchair_s = new Lawnchair({table:'mytable'}, function(){
     // Lawnchair setup! 
 });
  var deviceID = device.uuid;
+ var loc = "56.058168,-2.719811";
+
   alert("get data " + deviceID);
-  //navigator.geolocation.getCurrentPosition(function (position) {
-  //var loc = position.coords.latitude + "," + position.coords.longitude;
-  
-  //}, function () {
-    //            $('#loc_result').html("Location not available. Using North Berwick.");
-                var loc = "56.058168,-2.719811";
-      //      });
+  navigator.geolocation.getCurrentPosition(function (position) {
+  loc = position.coords.latitude + "," + position.coords.longitude;
+  alert(loc);
+  }, function () {
+  alert("no location");
+     
+        });
   
   var data_success = 0;
         $.ajax({
@@ -434,9 +431,8 @@ getCache("newdata");
 		var today = timenow.getDate();
         
         lawnchair_s.save({key:'mydata', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch});
-               
-        setTimeout("alertMsg()",5000);
-	        },
+           getCache("newdata");    
+       	        },
             error: function(json) {
             alert("data error");
              } 
