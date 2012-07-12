@@ -124,8 +124,9 @@ function get_contacts() {
 }
 
 function check_network() {
+try {
     var networkState = navigator.network.connection.type;
-
+  alert("check" + networkState);
     var states = {};
     states[Connection.UNKNOWN]  = 'Unknown connection';
     states[Connection.ETHERNET] = 'Ethernet connection';
@@ -135,7 +136,11 @@ function check_network() {
     states[Connection.CELL_4G]  = 'Cell 4G connection';
     states[Connection.NONE]     = 'No network connection';
 
-    confirm('Connection type:\n ' + states[networkState]);
+    //confirm('Connection type:\n ' + states[networkState]);
+    alert('Connection type:\n ' + states[networkState]);
+    } catch(Error) {
+     return "PC";
+    }
 }
 
 var watchID = null;
@@ -162,4 +167,181 @@ function init() {
     // doesn't have a scroll button
     // document.addEventListener("touchmove", preventBehavior, false);
     document.addEventListener("deviceready", deviceInfo, true);
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+    //store.nuke();
+   
+    var network = check_network();
+    //alert(network);
+
+    if (network == "NONE" || network == null) {
+        checkCache(0,network);
+    } else {
+        checkCache(1,network);
+    }
+    
+    //checkDataMain();
+    //getDatalocal();
+
+
+   
+}
+
+function checkCache(data,network) {
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+});
+
+if (data == 1) {
+
+    store.exists('app_data', function(available) {
+
+        if (available) {
+            //check data age, get epoch, have location
+            checkDataAge();
+
+        } else {
+            //no stored data, first time login
+            $("#loc_result").append('<br />no stored data, first time login:');
+            var loc = checkLocation(network);
+            if (loc == 1) {
+                getDatalocalNew();
+            } else {
+            $("#loc_result").append('<br />cant get location');
+            }
+
+        }
+    });
+} else {
+//no data, check cache
+store.exists('app_data', function(available) {
+
+    if (available) {
+        //check data age, get epoch, have location
+        getCacheNew("olddata");
+
+    } else {
+        //no data, first time login
+    var loc = checkLocation(network);
+    if (loc == 1) {
+        $("#loc_result").append('<br />no data, can get location');
+    } else {
+        $("#loc_result").append('<br />no data, cant get location');
+    }
+
+    }
+});
+
+
+//quit
+
+}
+}
+
+function checkDataAge() {
+
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+});
+
+store.get('app_data', function(theJsonData) {
+    var epochdata = theJsonData.epoch;
+    $("#loc_result").append('<br />stored:' + epochdata + 'now: ' + Math.round(new Date().getTime() / 1000));
+    var diff = Math.round(new Date().getTime() / 1000) - epochdata;
+    if (diff > 60) {
+        $("#loc_result").append('<br />' + diff + ' exp data, get new');
+        getDatalocalNew();
+    } else {
+    $("#loc_result").append('<br />' + diff + ' recent data, get cache');
+    getCacheNew("olddata");
+    }
+});
+
+
+
+    return 1;
+
+}
+
+
+function checkLocation(network) {
+    if (network == "PC") {
+        var store = new Lawnchair({
+            adapter: "dom",
+            name: "data_store"
+        }, function(store) {
+        });
+
+        var me = {
+            key: 'loc_data',
+            lat: "56.058168",
+            longval: "-2.719811"
+        };
+
+        // save it
+        store.save(me);
+
+        return 1;
+    } else {
+      
+      var suc = function(p) {
+            alert(p.coords.latitude + " " + p.coords.longitude);
+            var store = new Lawnchair({
+                adapter: "dom",
+                name: "data_store"
+            }, function(store) {
+            });
+
+            var me = {
+                key: 'loc_data',
+                lat: p.coords.latitude,
+                longval: p.coords.longitude
+            };
+
+            // save it
+            store.save(me);
+            return 1;
+        };
+        var locFail = function() {
+
+            return 0;
+        };
+        navigator.geolocation.getCurrentPosition(suc, locFail);
+
+
+    }
+  
+}
+
+function checkDataMain() {
+
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+
+    store.exists('loc', function(available) {
+
+        if (available) {
+            store.get('loc', function(me) {
+            $("#loc_result").append('<br />Found loc:' + me.value);
+                //checkData();
+            });
+        } else {
+        $("#loc_result").append('<br />no location');
+
+          
+        }
+    });
+
+
+
 }

@@ -22,8 +22,7 @@
     <meta name="viewport" content="width=320; user-scalable=no" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>PhoneGap</title>
-	    <link rel="stylesheet" href="themes/fire2.min.css" />
-	    <link rel="stylesheet" href="themes/jquery.mobile-1.1.0.css" />
+      <link rel="stylesheet" href="master.css" type="text/css" media="screen" title="no title">
       <script type="text/javascript" charset="utf-8" src="cordova-1.9.0.js"></script>
       <script type="text/javascript" charset="utf-8" src="main.js"></script>
 		<script src="assets/js/xui.js" type="text/javascript" charset="utf-8"></script>
@@ -38,34 +37,33 @@
 
   </head>
   <body onload="init();" id="stage" class="theme">
- <div data-role="page" data-theme="a">
-			<div data-role="header" data-position="inline">
-				<div data-role="navbar" data-iconpos="bottom">
-					<ul>
-						<li><a data-icon="home" href="index.html" class="ui-btn-active">Home</a></li>
-						<li><a data-icon="home" href="social.html">Social</a></li>
-						<li><a data-icon="home" href="settings.html">Settings</a></li>
-					</ul>
-				</div><!-- /navbar -->
-			</div>
-			<div data-role="content" data-theme="a">
-			<img src="assets/img/banner.png" />
-			<h3><div id="calc">
-					
-        	 </div>	</h3>		
-        <div data-role="collapsible" data-theme="a" data-inset="true" data-content-theme="b">
-		<h3>Data</h3>
-			   <canvas id="canvhere" width="450" height="1000">text here eq no canvas</canvas>
-			   </div>
-			   <div data-role="collapsible" data-theme="a" data-inset="true" data-content-theme="b">
-		<h3>Log</h3>
-		   
-			   <div class="normaltxt" id="loc_result">
-					result
-        	 </div></div>
-			</div> 
-		</div>
-    
-    
+    <h1>Welcome to Cordova!</h1>
+    <h2>this file is located at assets/www/index.html</h2>
+    <div id="info">
+        <h4>Platform: <span id="platform"> &nbsp;</span>,   Version: <span id="version">&nbsp;</span></h4>
+        <h4>UUID: <span id="uuid"> &nbsp;</span>,   Name: <span id="name">&nbsp;</span></h4>
+        <h4>Width: <span id="width"> &nbsp;</span>,   Height: <span id="height">&nbsp;
+                   </span>, Color Depth: <span id="colorDepth"></span></h4>
+     </div>
+    <dl id="accel-data">
+      <dt>X:</dt><dd id="x">&nbsp;</dd>
+      <dt>Y:</dt><dd id="y">&nbsp;</dd>
+      <dt>Z:</dt><dd id="z">&nbsp;</dd>
+    </dl>
+    <a href="#" class="btn large" onclick="toggleAccel();">Toggle Accelerometer</a>
+    <a href="#" class="btn large" onclick="getLocation();">Get Location</a>
+    <a href="tel:411" class="btn large">Call 411</a>
+    <a href="#" class="btn large" onclick="beep();">Beep</a>
+    <a href="#" class="btn large" onclick="vibrate();">Vibrate</a>
+    <a href="#" class="btn large" onclick="show_pic();">Get a Picture</a>
+    <a href="#" class="btn large" onclick="get_contacts();return false;">Get Phone's Contacts</a>
+    <a href="#" class="btn large" onclick="check_network();return false;">Check Network</a>
+    <dl>
+    <dt>Compass Heading:</dt><dd id="h">Off</dd>
+    </dl>
+    <a href="#" class="btn large" onclick="toggleCompass();return false;">Toggle Compass</a>
+    <div id="viewport" class="viewport" style="display: none;">
+      <img style="width:60px;height:60px" id="test_img" src="" />
+    </div>
   </body>
 </html>

@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>jQuery Mobile: Theme Download</title>
+		<link rel="stylesheet" href="themes/fire.min.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile.structure-1.1.0.min.css" />
+		<script src="phonegap.js" type="text/javascript" charset="utf-8"></script>
+		<script src="assets/js/xui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="assets/js/lawnchair/adaptors/LawnchairAdaptorHelpers.js" type="text/javascript" charset="utf-8"></script>
+		<script src="assets/js/lawnchair/adaptors/DOMStorageAdaptor.js" type="text/javascript" charset="utf-8"></script>
+		<script src="assets/js/lawnchair/adaptors/WebkitSQLiteAdaptor.js" type="text/javascript" charset="utf-8"></script>
+		<script src="assets/js/lawnchair/Lawnchair.js" type="text/javascript" charset="utf-8"></script>
+		<script src="assets/js/dsl.js" type="text/javascript" charset="utf-8"></script>
+		<script src="assets/js/app_local.js" type="text/javascript" charset="utf-8"></script>
+		<script src="assets/js/jquery-1.6.4.js" type="text/javascript" charset="utf-8"></script>
+		<script src="assets/js/jquery-mobile-1.1.0.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body onLoad="checkCacheDate()">
+		<div data-role="page" data-theme="a">
+			<div data-role="header" data-position="inline">
+				<div data-role="navbar" data-iconpos="bottom">
+					<ul>
+						<li><a data-icon="home" href="index.html" >Home</a></li>
+						<li><a data-icon="home" href="social.html">Social</a></li>
+						<li><a data-icon="home" href="settings.html"class="ui-btn-active">Settings</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div>
+			<div data-role="content" data-theme="a">
+			 <div class="normaltxt" id="loc_result">
+
+        	 </div>
+        <div data-role="collapsible" data-theme="a" data-inset="true" data-content-theme="b">
+		<h3>Location Settings</h3>
+
+			   </div>
+	    <div data-role="collapsible" data-theme="a" data-inset="true" data-content-theme="b">
+	    <h3>Social Settings</h3>
+	    <div class="ui-grid-a">
+		 <div class="ui-block-a">
+		  <p>Phone ID</p>
+		 </div>
+		 <div class="ui-block-b">
+		  <p></p>
+ 		</div>
+ 		</div>
+ 		 <div class="ui-grid-a">
+				 <div class="ui-block-a">
+				  <p>Name</p>
+				 </div>
+				 <div class="ui-block-b">
+				  <p></p>
+		 		</div>
+ 		</div>
+ 		 <div class="ui-grid-a">
+						 <div class="ui-block-a">
+						  <p> <input type="text" type="text" name="name" id="name" data-mini="true" style="width:180px"/>
+</p>
+						 </div>
+						 <div class="ui-block-b">
+						  <p>Save</p>
+				 		</div>
+ 		</div>
+
+			   </div>
+			</div>
+		</div>
+	</body>
+</html>
