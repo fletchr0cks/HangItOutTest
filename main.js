@@ -126,7 +126,7 @@ function get_contacts() {
 function check_network() {
 try {
     var networkState = navigator.network.connection.type;
-  alert("check" + networkState);
+ 
     var states = {};
     states[Connection.UNKNOWN]  = 'Unknown connection';
     states[Connection.ETHERNET] = 'Ethernet connection';
@@ -136,9 +136,10 @@ try {
     states[Connection.CELL_4G]  = 'Cell 4G connection';
     states[Connection.NONE]     = 'No network connection';
 
-    //confirm('Connection type:\n ' + states[networkState]);
-    alert('Connection type:\n ' + states[networkState]);
-    } catch(Error) {
+    confirm('Connection type:\n ' + states[networkState]);
+    
+} catch (Error) {
+alert(Error);
      return "PC";
     }
 }
