@@ -175,7 +175,7 @@ function init() {
     //store.nuke();
    
     var network = check_network();
-    //alert(network);
+    alert(network);
 
     if (network == "NONE" || network == null) {
         checkCache(0,network);
