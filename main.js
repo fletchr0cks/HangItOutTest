@@ -163,11 +163,16 @@ function toggleCompass() {
     }
 }
 
+var timer1;
+
 function init() {
     // the next line makes it impossible to see Contacts on the HTC Evo since it
     // doesn't have a scroll button
     // document.addEventListener("touchmove", preventBehavior, false);
     document.addEventListener("deviceready", deviceInfo, false);
+    $('#calc').html("Calculating ...");
+    
+    timer1 = setTimeout(start, 5000);
  //   var store = new Lawnchair({
  //       adapter: "dom",
  //       name: "data_store"
@@ -177,7 +182,7 @@ function init() {
   
 }
 
-function deviceInfo() {
+function start() {
        alert("ready");
     var network = check_network();
     alert(network);
