@@ -168,13 +168,17 @@ function init() {
     // doesn't have a scroll button
     // document.addEventListener("touchmove", preventBehavior, false);
     document.addEventListener("deviceready", deviceInfo, true);
-    var store = new Lawnchair({
-        adapter: "dom",
-        name: "data_store"
-    }, function(store) {
-    });
+ //   var store = new Lawnchair({
+ //       adapter: "dom",
+ //       name: "data_store"
+ //   }, function(store) {
+ //   });
     //store.nuke();
-   
+  
+}
+
+function deviceInfo() {
+       alert("ready");
     var network = check_network();
     alert(network);
 
@@ -182,13 +186,7 @@ function init() {
         checkCache(0,network);
     } else {
         checkCache(1,network);
-    }
-    
-    //checkDataMain();
-    //getDatalocal();
-
-
-   
+    }    
 }
 
 function checkCache(data,network) {
