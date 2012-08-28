@@ -142,6 +142,7 @@ try {
 alert(Error);
      return "PC";
     }
+return states[networkState];
 }
 
 var watchID = null;
