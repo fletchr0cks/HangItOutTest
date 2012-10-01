@@ -136,10 +136,10 @@ try {
     states[Connection.CELL_4G]  = 'Cell 4G connection';
     states[Connection.NONE]     = 'No network connection';
 
-    confirm('Connection type:\n ' + states[networkState]);
+    //confirm('Connection type:\n ' + states[networkState]);
     
 } catch (Error) {
-alert(Error);
+//alert(Error);
      return "PC";
     }
 return states[networkState];
@@ -173,7 +173,7 @@ function init() {
     document.addEventListener("deviceready", deviceInfo, false);
     $('#calc').html("Calculating ...");
     
-    timer1 = setTimeout(start, 5000);
+    timer1 = setTimeout(start, 500);
  //   var store = new Lawnchair({
  //       adapter: "dom",
  //       name: "data_store"
@@ -184,10 +184,10 @@ function init() {
 }
 
 function start() {
-       alert("ready");
+       //alert("ready");
     var network = check_network();
-    alert(network);
-
+    //alert(network);
+    $('#connection').html(network);
     if (network == "NONE" || network == null) {
         checkCache(0,network);
     } else {
@@ -260,9 +260,19 @@ store.get('app_data', function(theJsonData) {
     var epochdata = theJsonData.epoch;
     $("#loc_result").append('<br />stored:' + epochdata + 'now: ' + Math.round(new Date().getTime() / 1000));
     var diff = Math.round(new Date().getTime() / 1000) - epochdata;
-    if (diff > 60) {
+    if (diff > 120) {
         $("#loc_result").append('<br />' + diff + ' exp data, get new');
-        getDatalocalNew();
+        var network = check_network();
+        //alert(network);
+        $('#connection').html(network);
+        if (network == "NONE" || network == null) {
+            $("#loc_result").append('<br />' + diff + ' old data, get cache anyway');
+            getCacheNew("olddata");
+        } else {
+            getDatalocalNew();
+            
+        }    
+        
     } else {
     $("#loc_result").append('<br />' + diff + ' recent data, get cache');
     getCacheNew("olddata");
