@@ -18,13 +18,17 @@
 */
 
 var deviceInfo = function() {
-    document.getElementById("platform").innerHTML = device.platform;
-    document.getElementById("version").innerHTML = device.version;
-    document.getElementById("uuid").innerHTML = device.uuid;
-    document.getElementById("name").innerHTML = device.name;
-    document.getElementById("width").innerHTML = screen.width;
-    document.getElementById("height").innerHTML = screen.height;
-    document.getElementById("colorDepth").innerHTML = screen.colorDepth;
+    //document.getElementById("platform").innerHTML = device.platform;
+    //document.getElementById("version").innerHTML = device.version;
+    try {
+        document.getElementById("uuid").innerHTML = device.uuid;
+        document.getElementById("name").innerHTML = device.name;
+    } catch (Error) {
+        document.getElementById("uuid").innerHTML = "PC";
+    }
+    //document.getElementById("width").innerHTML = screen.width;
+    //document.getElementById("height").innerHTML = screen.height;
+    //document.getElementById("colorDepth").innerHTML = screen.colorDepth;
 };
 
 var getLocation = function() {
@@ -170,7 +174,14 @@ function init() {
     // the next line makes it impossible to see Contacts on the HTC Evo since it
     // doesn't have a scroll button
     // document.addEventListener("touchmove", preventBehavior, false);
-    document.addEventListener("deviceready", start, false);
+    var network = check_network();
+    alert(network);
+    if (network == "PC") {
+        checkCache(1, network);
+    } else {
+        document.addEventListener("deviceready", start, false);
+    }
+    
     $('#calc').html("Calculating ...");
     
     //timer1 = setTimeout(start, 500);
@@ -180,12 +191,55 @@ function init() {
  //   }, function(store) {
  //   });
     //store.nuke();
-  
+
+}
+
+function initsocial() {
+    var network = check_network();
+    alert(network);
+    if (network == "PC") {
+        startmap();
+    } else {
+        document.addEventListener("deviceready", startmap, false);
+    }
+}
+
+function startmap() {
+    $('#map_canvas').gmap().bind('init', function(event, map) {
+        $.ajax({
+            type: "GET",
+            //url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
+            url: "http://washingapp.apphb.com/Home/GetAllUsersNew",
+            dataType: "jsonp",
+            success: function(json) {
+                var jsontext = JSON.stringify(json);
+                $.each(json, function(i, marker) {
+                    console.log(marker.latitude);
+
+                    $('#map_canvas').gmap('addMarker', {
+                        'position': new google.maps.LatLng(marker.latitude, marker.longitude),
+                        'bounds': true
+
+                    }).click(function() {
+                        $('#map_canvas').gmap('openInfoWindow', { 'content': '<div class=strong_blue>' + marker.title + '</div><div class=strong_blue_sml>' + marker.content + '</div><div class=strong_blue_sml>' + marker.timestamp + '</div>' }, this);
+                    });
+                });
+            },
+            error: function(xhr, error) {
+                console.debug(xhr); console.debug(error);
+
+            },
+            complete: function(xhr, status) {
+
+            }
+        });
+    });
 }
 
 var start = function() {
     //function start() {
     alert("ready");
+   
     var network = check_network();
     //alert(network);
     $('#connection').html(network);
@@ -261,7 +315,7 @@ store.get('app_data', function(theJsonData) {
     var epochdata = theJsonData.epoch;
     $("#loc_result").append('<br />stored:' + epochdata + 'now: ' + Math.round(new Date().getTime() / 1000));
     var diff = Math.round(new Date().getTime() / 1000) - epochdata;
-    if (diff > 120) {
+    if (diff > 600) {
         $("#loc_result").append('<br />' + diff + ' exp data, get new');
         var network = check_network();
         //alert(network);

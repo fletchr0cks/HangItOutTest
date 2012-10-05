@@ -7,7 +7,9 @@
 		<title>jQuery Mobile: Theme Download</title>
 		<link rel="stylesheet" href="themes/fire.min.css" />
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile.structure-1.1.0.min.css" />
-		<script src="phonegap.js" type="text/javascript" charset="utf-8"></script>
+      <script type="text/javascript" charset="utf-8" src="cordova-1.9.0.js"></script>
+      <script type="text/javascript" charset="utf-8" src="main.js"></script>
+      
 		<script src="assets/js/xui.js" type="text/javascript" charset="utf-8"></script>
 		<script src="assets/js/lawnchair/adaptors/LawnchairAdaptorHelpers.js" type="text/javascript" charset="utf-8"></script>
 		<script src="assets/js/lawnchair/adaptors/DOMStorageAdaptor.js" type="text/javascript" charset="utf-8"></script>
@@ -18,7 +20,7 @@
 		<script src="assets/js/jquery-1.6.4.js" type="text/javascript" charset="utf-8"></script>
 		<script src="assets/js/jquery-mobile-1.1.0.js" type="text/javascript" charset="utf-8"></script>
 	</head>
-	<body onLoad="checkCacheDate()">
+	<body onLoad="deviceInfo();">
 		<div data-role="page" data-theme="a">
 			<div data-role="header" data-position="inline">
 				<div data-role="navbar" data-iconpos="bottom">
@@ -44,7 +46,7 @@
 		  <p>Phone ID</p>
 		 </div>
 		 <div class="ui-block-b">
-		  <p></p>
+		  <span id="uuid"> &nbsp;uuid</span><span id="name"> &nbsp;</span>
  		</div>
  		</div>
  		 <div class="ui-grid-a">
