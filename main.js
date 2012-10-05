@@ -174,14 +174,10 @@ function init() {
     // the next line makes it impossible to see Contacts on the HTC Evo since it
     // doesn't have a scroll button
     // document.addEventListener("touchmove", preventBehavior, false);
-    var network = check_network();
-    alert(network);
-    if (network == "PC") {
-        checkCache(1, network);
-    } else {
+    //var network = check_network();
+   
         document.addEventListener("deviceready", start, false);
-    }
-    
+       
     $('#calc').html("Calculating ...");
     
     //timer1 = setTimeout(start, 500);
