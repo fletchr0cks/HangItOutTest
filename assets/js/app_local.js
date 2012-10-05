@@ -3,31 +3,6 @@
 //
 
 
-    function checkConnection() {
-    alert("con check");
-        var networkState = navigator.network.connection.type;
-
-        var states = {};
-        states[Connection.UNKNOWN]  = 'Unknown connection';
-        states[Connection.ETHERNET] = 'Ethernet connection';
-        states[Connection.WIFI]     = 'WiFi connection';
-        states[Connection.CELL_2G]  = 'Cell 2G connection';
-        states[Connection.CELL_3G]  = 'Cell 3G connection';
-        states[Connection.CELL_4G]  = 'Cell 4G connection';
-        states[Connection.NONE]     = 'No network connection';
-
-        alert('Connection type: ' + states[networkState] + networkState);
-        
-        //navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
-        
-        //checkCacheDate();
-    }
-    
-    // onSuccess: Display the current acceleration
-    //Get the current Acceleration data if Successful
-var lawnchair = new Lawnchair({table:'mytable'}, function(){
-    // Lawnchair setup! 
-});    
         
         
 function checkCacheDate() {
@@ -98,6 +73,9 @@ context.fillStyle = '#FFF';
 }
 
 
+
+
+
 function getCacheNew(age) {
 
     var store = new Lawnchair({
@@ -128,15 +106,17 @@ function getCacheNew(age) {
         var ctx2d = example.getContext('2d');
         var ni = 1;
         var done_dt = 0;
+        var first_hour = -1;
         hour_bg_bk = "8695B7";
-        
+
 
         var dt = parseInt(0);
         var dt_ct = parseInt(0);
         var total_score = parseInt(0);
 
         $.each(parsed_json.hourly_forecast, function(i, zone) {
-
+            var imgi = new Image();
+            imgi.src = "http://icons.wxug.com/i/c/i/" + zone.icon + ".gif";
             var ws = (parseInt(zone.wspd.english) * 6) + 10;
             var temp = (parseInt(zone.temp.metric) * 3) + 10;
             var hour = zone.FCTTIME.hour;
@@ -148,10 +128,22 @@ function getCacheNew(age) {
             var wind_txt = "FFF";
             var temp_txt = "FFF";
             var ampm = zone.FCTTIME.ampm;
-            var cond = zone.condition;
+            if (first_hour == -1) {
+                first_hour = zone.FCTTIME.hour;
+            }
             var humid = parseInt(zone.humidity);
             var score = Math.round(((parseInt(zone.wspd.english) * 2) + (parseInt(zone.temp.metric) * 2) + (((100 - sky) / 5) * 4) + (((100 - humid) / 10) * 15)) / 2);
+            var new_score = 0;
 
+            if (humid < 80) {
+                new_score = Math.round((parseInt(zone.wspd.metric) * 3) + (parseInt(zone.temp.metric) * 2) + (100 - sky));
+
+            }
+
+
+
+
+            var cond = zone.condition + new_score;
 
             var yday = parseInt(zone.FCTTIME.yday);
             var hour_padded = parseInt(zone.FCTTIME.hour);
@@ -161,6 +153,7 @@ function getCacheNew(age) {
 
             ctx2d.fillStyle = "#77A3D7";
             ctx2d.fillRect(2, posy, 180, 44);
+            //ctx2d.drawImage(imgi, 2, posy)
             //here
             ctx2d.font = '20px Arial';
             ctx2d.fillStyle = '#FFF';
@@ -186,7 +179,7 @@ function getCacheNew(age) {
             ctx2d.fillStyle = temp_txt;
             ctx2d.fillText(zone.temp.metric, 40 + temp, posyt + 16);
 
-            total_score = total_score + score;
+            total_score = total_score + new_score;
 
             dt_ct = dt_ct + 1;
 
@@ -194,37 +187,32 @@ function getCacheNew(age) {
             ctx2d.fillStyle = "#FFFFFF";
             ctx2d.fillText(cond, 53, posyt);
 
-            ctx2d.font = '11px Arial Bold ';
-            //ctx2d.fillStyle = temp_bg;
-            //alert(dt_ct);
+            ctx2d.font = '13px Arial Bold ';
 
-            if (total_score > 120) {
+            if (first_hour >= 0) {
+                alert(first_hour);
+                if (first_hour > 18) {
+                    $('#calc').html("It's a bit late to hang out the washing now.");
+                }
+                first_hour = -2;
+            }
+
+            if (total_score > 270) {
                 var res = dt_ct;
                 if (done_dt == 0) {
 
                     $('#calc').html("Drying time: " + res + " hours");
-                    //alert("dt = " + res);
+
+
                 }
                 done_dt = 1;
-                //ctx2d.fillText(dt_ct, 352, posyt - (dt_ct * 15) + 15);
-                while (dt_ct > 0) {
-                    //alert(dt_ct);
-                    if (res == 1) {
-                        ctx2d.fillText(res + " Hour", 4, posyt - (dt_ct * 50) + 30);
-                    } else {
-                        ctx2d.fillText(res + " Hours", 4, posyt - (dt_ct * 50) + 30);
-                    }
-                    dt_ct = dt_ct - 1;
-                }
-
 
 
                 total_score = 0;
             }
 
-
-            posy = posy + 50;
-            posyt = posyt + 50;
+            posy = posy + 60;
+            posyt = posyt + 60;
 
         });
 
