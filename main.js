@@ -195,8 +195,8 @@ function initsocial() {
 }
 
 function startmap() {
+        alert("one");
     $('#map_canvas').gmap().bind('init', function(event, map) {
-           alert("one");
         $.ajax({
             type: "GET",
             //url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
@@ -217,7 +217,7 @@ function startmap() {
                 });
             },
             error: function(xhr, error) {
-                console.debug(xhr); console.debug(error);
+                //.debug(xhr); console.debug(error);
 
             },
             complete: function(xhr, status) {
