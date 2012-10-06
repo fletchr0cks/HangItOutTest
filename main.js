@@ -196,6 +196,7 @@ function initsocial() {
 
 function startmap() {
     $('#map_canvas').gmap().bind('init', function(event, map) {
+           alert("one");
         $.ajax({
             type: "GET",
             //url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
@@ -203,6 +204,7 @@ function startmap() {
             dataType: "jsonp",
             success: function(json) {
                 var jsontext = JSON.stringify(json);
+                alert(jsontext);
                 $.each(json, function(i, marker) {
                     alert(marker);
                     $('#map_canvas').gmap('addMarker', {
