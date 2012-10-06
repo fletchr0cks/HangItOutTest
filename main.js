@@ -229,14 +229,15 @@ function startmap() {
 
 var start = function() {
     //function start() {
-    alert("ready");
-   startmap();
+    alert("ready map");
+   
     var network = check_network();
     //alert(network);
     $('#connection').html(network);
     if (network == "NONE" || network == null) {
         checkCache(0, network);
     } else {
+           startmap();
         checkCache(1, network);
     }
 };
