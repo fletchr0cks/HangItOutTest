@@ -191,13 +191,7 @@ function init() {
 }
 
 function initsocial() {
-    var network = check_network();
-    alert(network);
-    if (network == "PC") {
-        startmap();
-    } else {
         document.addEventListener("deviceready", startmap, false);
-    }
 }
 
 function startmap() {
@@ -210,8 +204,7 @@ function startmap() {
             success: function(json) {
                 var jsontext = JSON.stringify(json);
                 $.each(json, function(i, marker) {
-                    console.log(marker.latitude);
-
+                    alert(marker);
                     $('#map_canvas').gmap('addMarker', {
                         'position': new google.maps.LatLng(marker.latitude, marker.longitude),
                         'bounds': true
@@ -235,7 +228,7 @@ function startmap() {
 var start = function() {
     //function start() {
     alert("ready");
-   
+   startmap();
     var network = check_network();
     //alert(network);
     $('#connection').html(network);
