@@ -1,4 +1,3 @@
-<!DOCTYPE HTML>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -9,13 +8,11 @@
 	      <script type="text/javascript" charset="utf-8" src="cordova-1.9.0.js"></script>	
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
 <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
-		
+<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>	
 		<script src="main.js" type="text/javascript" charset="utf-8"></script>
-
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 	</head>
-	<body id="stage" class="theme">	 
+	<body onload="init_social();">	 
  <div data-role="page" data-theme="a">
 			<div data-role="header" data-position="inline">
 				<div data-role="navbar" data-iconpos="bottom">
@@ -32,7 +29,8 @@
 			 <div class="normaltxt" id="loc_result">
 
         	 </div>
-        	
+        	 
+       
        </div>
         <div data-role="collapsible" data-theme="a" data-inset="true" data-content-theme="b">
 		<h3>Location Settings</h3>

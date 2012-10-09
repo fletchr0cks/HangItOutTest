@@ -177,8 +177,9 @@ function init() {
     // document.addEventListener("touchmove", preventBehavior, false);
     //var network = check_network();
    
-        document.addEventListener("deviceready", start, false);
-        //start();
+    document.addEventListener("deviceready", start, false);
+    //start();
+    //startmap();
     $('#calc').html("Calculating ...");
     
     //timer1 = setTimeout(start, 500);
@@ -195,7 +196,7 @@ function init_social() {
  //alert("map");
     //document.addEventListener("deviceready", GoogleMap, false);
     document.addEventListener("deviceready", startmap, false);
-   // startmap();
+    //startmap();
     
     //startmarkers();
 }
@@ -300,13 +301,13 @@ function startmap() {
 
     var map = new GoogleMap();
     map.initialize();
- 
+
 }
 
 var start = function() {
     //function start() {
-alert("ready");
-startmap();
+    alert("ready");
+    startmap();
     document.getElementById("uuidi").innerHTML = device.uuid;
     var network = check_network();
     //alert(network);
