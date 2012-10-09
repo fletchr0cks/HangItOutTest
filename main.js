@@ -22,6 +22,7 @@ var deviceInfo = function() {
     //document.getElementById("version").innerHTML = device.version;
     try {
         document.getElementById("uuid").innerHTML = device.uuid;
+        document.getElementById("uuidi").innerHTML = device.uuid;
         document.getElementById("name").innerHTML = device.name;
     } catch (Error) {
         document.getElementById("uuid").innerHTML = "PC";
@@ -177,7 +178,7 @@ function init() {
     //var network = check_network();
    
         document.addEventListener("deviceready", start, false);
-       
+        //start();
     $('#calc').html("Calculating ...");
     
     //timer1 = setTimeout(start, 500);
@@ -190,54 +191,128 @@ function init() {
 
 }
 
+function init_social() {
+ //alert("map");
+    //document.addEventListener("deviceready", GoogleMap, false);
+    document.addEventListener("deviceready", startmap, false);
+   // startmap();
+    
+    //startmarkers();
+}
+
+function setMarkers(map) {
+    //loop through and place markers
+    var marktxt = "";
+    $.ajax({
+        type: "GET",
+        //url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
+        url: "http://washingapp.apphb.com/Home/GetAllUsersNew",
+        dataType: "jsonp",
+        success: function(json) {
+            var jsontext = JSON.stringify(json);
+            $.each(json, function(i, markers) {
+            console.log(markers.latitude, markers.longitude, markers.title);
+                var siteLatLng = new google.maps.LatLng(markers.latitude, markers.longitude);
+                var marker = new google.maps.Marker({
+                    position: siteLatLng,
+                    map: map,
+                    title: markers.title,
+                    zIndex: i,
+                    html: markers.content
+                });
+
+                marktxt = marktxt + "<p>" + markers.title + "</p>";
+               
+                //initial content string
+                var contentString = "Some content";
+
+                //attach infowindow on click
+                google.maps.event.addListener(marker, "click", function() {
+                    infowindow.setContent(this.html);
+                    infowindow.open(map, this);
+                });
+
+            });
+
+        $('#map_markers').html(marktxt);
+
+        },
+        error: function(xhr, error) {
+            console.debug(xhr); console.debug(error);
+
+        },
+        complete: function(xhr, status) {
+
+        }
+    });
+ 
+}
+   
+
+
+function GoogleMap() {
+
+    this.initialize = function() {
+
+        var map = showMap();
+    }
+     var showMap = function() {
+        var mapOptions = {
+            zoom: 6,
+            center: new google.maps.LatLng(52.991472,-2.279515),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+       var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions)
+
+       setMarkers(map);
+       infowindow = new google.maps.InfoWindow({
+           content: "holding..."
+       });
+   
+        return map;
+    }
+
+}
+function startmarkers() {
+    var map = new google.maps.Map(document.getElementById("map_canvas"))
+    var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(-33, 155),
+        title: "Hello World!"
+    });
+    marker.setMap(map);
+}
+
+// To add the marker to the map, call setMap();
+
 function initsocial() {
+    var network = check_network();
+    alert(network);
+    if (network == "PC") {
+        startmap();
+    } else {
         document.addEventListener("deviceready", startmap, false);
+    }
+    
+    
 }
 
 function startmap() {
-        alert("one");
-    $('#map_canvas').gmap().bind('init', function(event, map) {
-        $.ajax({
-            type: "GET",
-            //url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
-            url: "http://washingapp.apphb.com/Home/GetAllUsersNew",
-            dataType: "jsonp",
-            success: function(json) {
-                var jsontext = JSON.stringify(json);
-                alert(jsontext);
-                $.each(json, function(i, marker) {
-                    alert(marker);
-                    $('#map_canvas').gmap('addMarker', {
-                        'position': new google.maps.LatLng(marker.latitude, marker.longitude),
-                        'bounds': true
 
-                    }).click(function() {
-                        $('#map_canvas').gmap('openInfoWindow', { 'content': '<div class=strong_blue>' + marker.title + '</div><div class=strong_blue_sml>' + marker.content + '</div><div class=strong_blue_sml>' + marker.timestamp + '</div>' }, this);
-                    });
-                });
-            },
-            error: function(xhr, error) {
-                //.debug(xhr); console.debug(error);
-
-            },
-            complete: function(xhr, status) {
-
-            }
-        });
-    });
+    var map = new GoogleMap();
+    map.initialize();
+ 
 }
 
 var start = function() {
     //function start() {
-    alert("ready map");
-   
+alert("ready");
+    document.getElementById("uuidi").innerHTML = device.uuid;
     var network = check_network();
     //alert(network);
     $('#connection').html(network);
     if (network == "NONE" || network == null) {
         checkCache(0, network);
     } else {
-           startmap();
         checkCache(1, network);
     }
 };
