@@ -306,6 +306,7 @@ function startmap() {
 var start = function() {
     //function start() {
 alert("ready");
+startmap();
     document.getElementById("uuidi").innerHTML = device.uuid;
     var network = check_network();
     //alert(network);
