@@ -172,23 +172,12 @@ function toggleCompass() {
 var timer1;
 
 function init() {
-    // the next line makes it impossible to see Contacts on the HTC Evo since it
-    // doesn't have a scroll button
-    // document.addEventListener("touchmove", preventBehavior, false);
-    //var network = check_network();
-   
+    
     document.addEventListener("deviceready", start, false);
     //start();
     //startmap();
     $('#calc').html("Calculating ...");
-    
-    //timer1 = setTimeout(start, 500);
- //   var store = new Lawnchair({
- //       adapter: "dom",
- //       name: "data_store"
- //   }, function(store) {
- //   });
-    //store.nuke();
+  
 
 }
 
