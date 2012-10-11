@@ -169,7 +169,7 @@ function toggleCompass() {
     }
 }
 
-var timer1;
+
 
 function init() {
     
@@ -190,9 +190,14 @@ function init_social() {
     //startmarkers();
 }
 
-function setMarkers(map) {
+function setMarkers(map,bounds_map) {
     //loop through and place markers
+    //$.mobile.changePage("#myDialog", { role: "dialog", overlayTheme: "e" });
+    
+    var bounds = new google.maps.LatLngBounds(bounds_map);
     var marktxt = "";
+    var markers_array = [];
+    $('#map_markers').html("Details here");
     $.ajax({
         type: "GET",
         //url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
@@ -201,30 +206,35 @@ function setMarkers(map) {
         success: function(json) {
             var jsontext = JSON.stringify(json);
             $.each(json, function(i, markers) {
-            console.log(markers.latitude, markers.longitude, markers.title);
+                console.log(markers.latitude, markers.longitude, markers.title, i);
                 var siteLatLng = new google.maps.LatLng(markers.latitude, markers.longitude);
-                var marker = new google.maps.Marker({
-                    position: siteLatLng,
-                    map: map,
-                    title: markers.title,
-                    zIndex: i,
-                    html: markers.content
-                });
-
-                marktxt = marktxt + "<p>" + markers.title + "</p>";
-               
-                //initial content string
-                var contentString = "Some content";
+                //var marker = new google.maps.Marker({
+                //    position: siteLatLng,
+                //    map: map,
+                //    title: markers.title,
+                //    zIndex: i,
+                //    html: markers.content
+                //});
+                var markerp = new google.maps.Marker({ 'position': siteLatLng });
+                markers_array.push(markerp);
+                marktxt = marktxt + "<p>" + markers.title + i + "</p>";
 
                 //attach infowindow on click
-                google.maps.event.addListener(marker, "click", function() {
-                    infowindow.setContent(this.html);
-                    infowindow.open(map, this);
+                google.maps.event.addListener(markerp, "click", function() {
+                    // infowindow.setContent(this.html);
+                    // infowindow.open(map, this);
+                    //$('#map_markers');
+                    $('#map_markers').fadeOut().html("<p>Click: " + markers.title + "</p>").fadeIn();
+                    //$('#map_markers');
                 });
 
             });
-
-        $('#map_markers').html(marktxt);
+            var mcOptions = { gridSize: 100, maxZoom: 15 };
+            //$("#popupPadded").popup("close");
+            $("#map_overlay").fadeOut();
+            var markerCluster = new MarkerClusterer(map, markers_array, mcOptions);
+            //console.log(markers_array);
+            // $('#map_markers').html(marktxt);
 
         },
         error: function(xhr, error) {
@@ -232,7 +242,7 @@ function setMarkers(map) {
 
         },
         complete: function(xhr, status) {
-
+            $("#map_msg").html("Done.");
         }
     });
  
@@ -241,24 +251,29 @@ function setMarkers(map) {
 
 
 function GoogleMap() {
-
+    $("#map_overlay").fadeIn();
     this.initialize = function() {
 
         var map = showMap();
     }
-     var showMap = function() {
+    var showMap = function() {
         var mapOptions = {
-            zoom: 6,
-            center: new google.maps.LatLng(52.991472,-2.279515),
+            zoom: 8,
+            center: new google.maps.LatLng(52.991472, -2.279515),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
-       var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions)
+        var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions)
+        var bounds;
+        google.maps.event.addListener(map, 'bounds_changed', function() {
+            bounds = map.getBounds();
+            $("#map_msg").html(bounds + "bds");
+        });
+        setMarkers(map, bounds);
+        infowindow = new google.maps.InfoWindow({
+            content: "holding..."
+        });
+        $("#map_msg").html("Loading markers ... ");
 
-       setMarkers(map);
-       infowindow = new google.maps.InfoWindow({
-           content: "holding..."
-       });
-   
         return map;
     }
 
@@ -282,22 +297,30 @@ function initsocial() {
     } else {
         document.addEventListener("deviceready", startmap, false);
     }
-    
-    
+
+
 }
+
+var timera;
 
 function startmap() {
-
+    clearTimeout(timera);
     var map = new GoogleMap();
     map.initialize();
+    //google.maps.event.trigger(map, 'resize');
 
 }
+
+function showmap() {
+    timera = setInterval(function() { startmap() }, 1000);
+}
+
 
 var start = function() {
     //function start() {
     alert("ready");
-    startmap();
-    document.getElementById("uuidi").innerHTML = device.uuid;
+    //startmap();
+    //document.getElementById("uuidi").innerHTML = device.uuid;
     var network = check_network();
     //alert(network);
     $('#connection').html(network);
