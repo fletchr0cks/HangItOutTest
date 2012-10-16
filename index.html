@@ -19,6 +19,16 @@
 		<script src="assets/js/dsl.js" type="text/javascript" charset="utf-8"></script>
 		<script src="assets/js/app_local.js" type="text/javascript" charset="utf-8"></script>
 			<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+
+    $(window.document).bind('mobileinit', function() {
+    //$.mobile.defaultTransition = 'slideup';
+    $.mobile.phonegapNavigationEnabled = true;
+    $.mobile.allowCrossDomainPages = true;
+    });
+
+</script>
+
 
   </head>
   <body onload="init();" id="stage" class="theme">
@@ -31,13 +41,31 @@
 	</div><!-- /header -->
 
 	<div data-role="content" >	
-		<h2>One</h2>
-		
+				
 		 <ul data-role="listview" data-inset="true">
-
-		<li><a href="#two" onclick="showmap()">Show page "two"</a></li>	
-		<li><a href="#popup" data-rel="dialog" data-transition="pop">Show page "popup" (as a dialog)</a></li>
+		<li id="showmaplink" class="ui-disabled"><a href="#two" onclick="showmap()">Local Sites</a></li>	
+		<li id="add_site_link" class="ui-disabled"><a href="#add_site"  onclick="add_site_map()">Add a Site</a></li>
+		<li id="my_sites_link" class="ui-disabled"><a href="#my_sites" >My Sites<span class="ui-li-count">328</span></a></li>
+		<li id="my_details_link" class="ui-disabled"><a href="#my_details" data-rel="dialog"  data-transition="pop">My Details</a></li>
 	</ul>
+	
+	 <ul data-role="listview" data-inset="true" id="thelist">          
+    <li data-icon="arrow-r" data-iconpos="right" >
+    <a href="#setloc" data-rel="dialog" data-transition="pop">My Location: <div style="display:inline" id="loc_here">ssd</div></a>
+        <p class="ui-btn-inner">Click to change</p>
+        </li>
+</ul>
+
+<ul data-role="listview" data-inset="true">
+<li><p class="ui-li-aside"><a href="#my_details" data-rel="dialog" data-transition="flip" data-inline="true" data-icon="gear" data-theme="e" data-role="button" data-mini="true">Edit</a></p>
+<h3>glah</h3>
+<p>foo</p>
+</li>
+			
+		</ul><h6 id="data_status">Data Connection: </h6>
+		<h6 >Location: </h6>
+		<h6 id="uuid">Ready ...</h6>
+	
 	</div><!-- /content -->
 	
 	<div data-role="footer" data-theme="d">
@@ -70,28 +98,75 @@
 	</div><!-- /footer -->
 </div><!-- /page two -->
 
+<div data-role="page" id="add_site" data-theme="a">
+
+	<div data-role="header">
+		
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="a">	
+		<h4>Drag marker</h4>
+		
+		<div id="set_map_overlay" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:350px;width:300px"><h4 style="text-align:center;padding-top:100px">Loading map ....</h4></div>
+		<div id="set_map_canvas" style="height:350px;"></div>
+		<div id="marker_coords"></div>
+		<input type="text" name="pc" id="comment" value="" />
+		<div id="save_site" data-role="button" onclick="saveSite()">Save</div>
+		<p><a href="#one" data-direction="reverse" data-role="button" data-theme="b">Back to page "one"</a></p>	
+		
+	</div><!-- /content -->
+	
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div><!-- /footer -->
+</div><!-- /p
+
 <div id="myDialog" style="opacity:0.5" data-role="dialog">
     <div id="myMessage">text here</div>
     <input id="button1" type="button" value="Button 1" data-theme="b"  />
     <input id="button2" type="button" value="Button 2" data-theme="c"  />
 </div>
 <!-- Start of third page: #popup -->
-<div data-role="page" id="popup">
+<div data-role="page" id="setloc">
 
 	<div data-role="header" data-theme="e">
-		<h1>Dialog</h1>
+		<h1>Set Location</h1>
 	</div><!-- /header -->
 
-	<div data-role="content" data-theme="d">	
-		<h2>Popup</h2>
-		<p>I have an id of "popup" on my page container and only look like a dialog because the link to me had a <code>data-rel="dialog"</code> attribute which gives me this inset look and a <code>data-transition="pop"</code> attribute to change the transition to pop. Without this, I'd be styled as a normal page.</p>		
+<div data-role="content" data-theme="d">
+<div class="ui-grid-a">
+	<div class="ui-block-a"><label  for="search1">Enter your UK postcode:</label><div id="pc_results"></div></div>
+	<div class="ui-block-b" id="pc_search_btn"><input data-theme="e" type="search" name="pc" id="postcode" value=""/><div data-theme="e" id="set_pc" data-role="button" onclick="setPC()"> Search </div>	
+</div>
+</div>
+<h2>Or:</h2>
+
+<div class="ui-grid-a">
+	<div class="ui-block-a"><label  for="search2">Enter your lat long:</label></div>
+	<div class="ui-block-b"><input data-theme="e" type="text" name="pc" id="latlng" value=""/><div data-theme="e" id="set_latlng" data-role="button" onclick="setLL()"> Set </div>	
+</div>
+</div>	
 		<p><a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back to page "one"</a></p>	
 	</div><!-- /content -->
+	</div>
 	
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
-</div><!-- /page popup -->
+<!-- Start of third page: #popup -->
+<div data-role="page" id="my_details">
+
+	<div data-role="header" data-theme="e">
+		<h1>Enter your name</h1>
+	</div><!-- /header -->
+
+<div data-role="content" data-theme="d">
+<div><h4>Phone ID:</h4></div>
+<div id="save_response">
+<div><input data-theme="e" type="text" name="username" id="username1" value=""/></div></div>
+<div data-theme="e" data-role="button" onclick="saveName()">Save</div>	
+
+		<p><a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Close</a></p>	
+	</div><!-- /content -->
+	</div>
+
 
 </body>
 </html>

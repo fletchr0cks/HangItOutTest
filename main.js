@@ -1,21 +1,3 @@
-/*
-       Licensed to the Apache Software Foundation (ASF) under one
-       or more contributor license agreements.  See the NOTICE file
-       distributed with this work for additional information
-       regarding copyright ownership.  The ASF licenses this file
-       to you under the Apache License, Version 2.0 (the
-       "License"); you may not use this file except in compliance
-       with the License.  You may obtain a copy of the License at
-
-         http://www.apache.org/licenses/LICENSE-2.0
-
-       Unless required by applicable law or agreed to in writing,
-       software distributed under the License is distributed on an
-       "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-       KIND, either express or implied.  See the License for the
-       specific language governing permissions and limitations
-       under the License.
-*/
 
 var deviceInfo = function() {
     //document.getElementById("platform").innerHTML = device.platform;
@@ -34,7 +16,8 @@ var deviceInfo = function() {
 
 var getLocation = function() {
     var suc = function(p) {
-        alert(p.coords.latitude + " " + p.coords.longitude);
+        //alert(p.coords.latitude + " " + p.coords.longitude);
+        return (p.coords.latitude + "," + p.coords.longitude);
     };
     var locFail = function() {
     };
@@ -169,25 +152,133 @@ function toggleCompass() {
     }
 }
 
+function setPC(postcode) {
+    //$("setloc").dialog("close");
+    //var postcode = $("set_pc").val();
+    var postcode = document.getElementById("postcode").value;
+    var pc_uri = encodeURI(postcode);
+    
+    getLatLng(pc_uri);
+}
+
+function saveName() {
+    //$("setloc").dialog("close");
+    //var postcode = $("set_pc").val();
+    var username = document.getElementById("username1").value;
+    //alert(username);
+ 
+    $('#my_details').dialog('close')
+//    $.mobile.changePage('#my_details', { allowSamePageTransition: true, transition: "none" });
+  
+}
+
+
+var start = function() {
+    alert("ready");
+    var position = getPosition();
+    //should be get locatin from gps then save
+    var latlng = position.split(',');
+    var lat = latlng[0];
+    var lng = latlng[1];
+    getPlace(lat, lng);
+    $("#showmaplink").removeClass("ui-disabled");
+    $("#showmaplink").addClass("ui-enabled");
+
+    $("#my_details_link").removeClass("ui-disabled");
+    $("#my_details_link").addClass("ui-enabled");
+
+    $("#add_site_link").removeClass("ui-disabled");
+    $("#add_site_link").addClass("ui-enabled");
+
+    $("#my_sites_link").removeClass("ui-disabled");
+    $("#my_sites_link").addClass("ui-enabled");
+
+    //startmap();
+    //document.getElementById("uuidi").innerHTML = device.uuid;
+    var network = check_network();
+    //alert(network);
+    $('#connection').html(network);
+    if (network == "NONE" || network == null) {
+        checkCache(0, network);
+    } else {
+        checkCache(1, network);
+    }
+};
 
 
 function init() {
-    
-    document.addEventListener("deviceready", start, false);
+    //  $("#set_pc").buttonMarkup({ inline: true });
+    document.addEventListener("deviceready", save_id, false);
     //start();
-    //startmap();
+    //save_id();
     $('#calc').html("Calculating ...");
-  
 
 }
 
-function init_social() {
- //alert("map");
-    //document.addEventListener("deviceready", GoogleMap, false);
-    document.addEventListener("deviceready", startmap, false);
-    //startmap();
+function save_id() {
+    $.mobile.loading('show', {
+        text: 'foo',
+        textVisible: true,
+        theme: 'a',
+        html: "<p>Loading data ...</p>"
+    });
+    try {
+    var phoneid = device.uuid;
+} catch (Error) {
+    var phoneid = "laptop2";
+    }
+    $.ajax({
+        type: "POST",
+        url: "http://washingapp.apphb.com/Home/Save",
+        //url: "http://localhost:3192/Home/Save",
+        data: "lat=22&lval=37&city=nb&country=uk&comment=" + phoneid,
+        dataType: "text/plain",
+        success: function(response) {
+            //alert("posted" + lat + ":" + lval);
+            //var json = eval('(' + response + ')');
+            //alert("out=" + json);
+        },
+        error: function(xhr, error) {
+            console.debug(xhr); console.debug(error);
+
+            //alert("save error" + data);
+        },
+        complete: function(xhr, status) {
+
+            load_data();
+        }
+    });
+
+}
+
+//get name + userID, API calls #
+function load_data() {
+   
+
+    $.ajax({
+        type: "GET",
+        url: "http://washingapp.apphb.com/Home/GetAllUsersNew",
+        dataType: "jsonp",
+        success: function(json) {
+            var jsontext = JSON.stringify(json);
+            $.each(json, function(i, markers) {
+                var siteLatLng = new google.maps.LatLng(markers.latitude, markers.longitude);
+            });
+
+        },
+        error: function(xhr, error) {
+            console.debug(xhr); console.debug(error);
+
+        },
+        complete: function(xhr, status) {
+
+        $("#data_status").html("Done...");
+    $.mobile.loading('hide');
+    start();
+          
+        }
+    });
     
-    //startmarkers();
 }
 
 function setMarkers(map,bounds_map) {
@@ -208,27 +299,21 @@ function setMarkers(map,bounds_map) {
             $.each(json, function(i, markers) {
                 console.log(markers.latitude, markers.longitude, markers.title, i);
                 var siteLatLng = new google.maps.LatLng(markers.latitude, markers.longitude);
-                //var marker = new google.maps.Marker({
-                //    position: siteLatLng,
-                //    map: map,
-                //    title: markers.title,
-                //    zIndex: i,
-                //    html: markers.content
-                //});
-                var markerp = new google.maps.Marker({ 'position': siteLatLng });
+                var markerp = new google.maps.Marker({ 'position': siteLatLng, draggable:true });
                 markers_array.push(markerp);
                 marktxt = marktxt + "<p>" + markers.title + i + "</p>";
 
                 //attach infowindow on click
                 google.maps.event.addListener(markerp, "click", function() {
-                    // infowindow.setContent(this.html);
-                    // infowindow.open(map, this);
-                    //$('#map_markers');
                     $('#map_markers').fadeOut().html("<p>Click: " + markers.title + "</p>").fadeIn();
-                    //$('#map_markers');
                 });
 
-            });
+                google.maps.event.addListener(markerp,"drag", function() {
+                $('#map_msg').html(markerp.position.lat());
+                });
+
+
+           });
             var mcOptions = { gridSize: 100, maxZoom: 15 };
             //$("#popupPadded").popup("close");
             $("#map_overlay").fadeOut();
@@ -245,21 +330,66 @@ function setMarkers(map,bounds_map) {
             $("#map_msg").html("Done.");
         }
     });
- 
+
+}
+
+function setMarker_site(map, bounds_map,lat,lng) {
+    var bounds = new google.maps.LatLngBounds(bounds_map);
+    var marktxt = "";
+    var markers_array = [];
+    var siteLatLng = new google.maps.LatLng(lat,lng);
+    var markerp = new google.maps.Marker({ 'position': siteLatLng, draggable: true, map:map });
+   //             markers_array.push(markerp);
+
+                //attach infowindow on click
+                google.maps.event.addListener(markerp, "drag", function() {
+                    $('#marker_coords').html(markerp.position.lat());
+                });
+
+ //           var mcOptions = { gridSize: 100, maxZoom: 15 };
+            //$("#popupPadded").popup("close");
+            $("#set_map_overlay").fadeOut();
+   //         var markerCluster = new MarkerClusterer(map, markers_array, mcOptions);
+            //console.log(markers_array);
+            // $('#map_markers').html(marktxt);
+
+}
+
+function getPosition() {
+    var lat = "";
+    var longval = "";
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+
+    store.get('loc_data', function(theJsonData) {
+        lat = theJsonData.lat;
+        longval = theJsonData.longval;
+       // $("#loc").html("lat " + lat + "long " + longval);
+
+    });
+
+    var loc = lat + "," + longval;
+   
+    return loc;
+
 }
    
 
 
-function GoogleMap() {
+function GoogleMap(lat,lng) {
     $("#map_overlay").fadeIn();
+    alert(lat + lng);
     this.initialize = function() {
 
         var map = showMap();
     }
     var showMap = function() {
         var mapOptions = {
-            zoom: 8,
-            center: new google.maps.LatLng(52.991472, -2.279515),
+        zoom: 10,
+            center: new google.maps.LatLng(parseFloat(lat),parseFloat(lng)),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
         var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions)
@@ -278,6 +408,39 @@ function GoogleMap() {
     }
 
 }
+
+function GoogleMap_set(lat, lng) {
+    $("#set_map_overlay").fadeIn();
+    var siteLatLng = lat + "," + lng;
+    this.initialize = function() {
+
+        var map = showMap();
+    }
+    var showMap = function() {
+        var mapOptions = {
+            zoom: 16,
+            center: new google.maps.LatLng(parseFloat(lat), parseFloat(lng)),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(document.getElementById("set_map_canvas"), mapOptions)
+        var bounds;
+        google.maps.event.addListener(map, 'bounds_changed', function() {
+            bounds = map.getBounds();
+        });
+        setMarker_site(map, bounds, lat, lng);
+       
+        var markerp = new google.maps.Marker({ 'position': siteLatLng, draggable: true, map: map });
+        $("#set_map_overlay").fadeOut();
+        
+        infowindow = new google.maps.InfoWindow({
+            content: "holding..."
+        });
+
+        return map;
+    }
+
+}
+
 function startmarkers() {
     var map = new google.maps.Map(document.getElementById("map_canvas"))
     var marker = new google.maps.Marker({
@@ -301,11 +464,109 @@ function initsocial() {
 
 }
 
-var timera;
+function getPlace(lat,lng) {
+    var town;
+    $.ajax({
+        type: "GET",
+        //url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
+        url: "http://api.geonames.org/findNearbyPlaceNameJSON?lat=" + lat + "&lng=" + lng + "&username=fletch1",
+        dataType: "jsonp",
+        success: function(json) {
+            $.each(json.geonames, function(i, geo) {
+                town = geo.toponymName;
 
+            });
+            $("#loc_here").html(town);
+            //SaveNewLocation(lat, lng, town);
+
+        },
+        error: function(xhr, error) {
+            $("#loc_here").html("No town listed for: " + lat + "," + lng);
+
+        },
+        complete: function(xhr, status) {
+            //$("#map_msg").html("Done.");
+        }
+
+    });
+}
+
+function getLatLng(postcode) {
+    var lat;
+    var lng;
+    var town;
+    alert(postcode);
+    $.ajax({
+        type: "GET",
+        url: "http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=" + postcode + "&country=GB&username=fletch1",
+        dataType: "jsonp",
+        success: function(json) {
+            $.each(json.postalCodes, function(i, geo) {
+                town = geo.placeName;
+                lat = geo.lat;
+                lng = geo.lng;
+            });
+            $("#pc_results").html("<h4>" + town + "</h4><h4>Lat: " + lat + "</h4><h4>Long: " + lng + "</h4>");
+            SaveNewLocation(lat, lng, town);
+            $("#loc_here").html(town);
+            $("#showmaplink").removeClass("ui-disabled");
+            $("#showmaplink").addClass("ui-enabled");
+
+        },
+        error: function(xhr, error) {
+            $("#pc_results").html("No town listed for: " + lat + "," + lng);
+            alert("fail");
+
+        },
+        complete: function(xhr, status) {
+            //$("#map_msg").html("Done.");
+        }
+
+    });
+}
+
+function SaveNewLocation(lat, lng, town) {
+
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+
+    var me = {
+        key: 'loc_data',
+        lat: lat,
+        longval: lng
+    };
+
+    // save it
+    store.save(me);
+}
+//pc_results = <h3>lat lng here</h3><h3>34343 343444433</h3>
+
+var timera;
+var timerb;
 function startmap() {
     clearTimeout(timera);
-    var map = new GoogleMap();
+    var position = getPosition();
+
+    var latlng = position.split(',');
+    var lat = latlng[0];
+    var lng = latlng[1];
+    var map = new GoogleMap(lat,lng);
+    map.initialize();
+    //google.maps.event.trigger(map, 'resize');
+
+}
+
+function startmap_set() {
+    clearTimeout(timerb);
+    var position = getPosition();
+
+    var latlng = position.split(',');
+    var lat = latlng[0];
+    var lng = latlng[1];
+    var map = new GoogleMap_set(lat, lng);
     map.initialize();
     //google.maps.event.trigger(map, 'resize');
 
@@ -315,21 +576,10 @@ function showmap() {
     timera = setInterval(function() { startmap() }, 1000);
 }
 
+function add_site_map() {
+    timerb = setInterval(function() { startmap_set() }, 1000);
+}
 
-var start = function() {
-    //function start() {
-    alert("ready");
-    //startmap();
-    //document.getElementById("uuidi").innerHTML = device.uuid;
-    var network = check_network();
-    //alert(network);
-    $('#connection').html(network);
-    if (network == "NONE" || network == null) {
-        checkCache(0, network);
-    } else {
-        checkCache(1, network);
-    }
-};
 
 function checkCache(data,network) {
     var store = new Lawnchair({
@@ -443,7 +693,7 @@ function checkLocation(network) {
     } else {
       
       var suc = function(p) {
-            alert(p.coords.latitude + " " + p.coords.longitude);
+            //alert(p.coords.latitude + " " + p.coords.longitude);
             var store = new Lawnchair({
                 adapter: "dom",
                 name: "data_store"

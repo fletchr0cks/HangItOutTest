@@ -2,9 +2,9 @@
 <widget xmlns		= "http://www.w3.org/ns/widgets"
 	xmlns:gap	= "http://phonegap.com/ns/1.0"
 	id		= "com.phonegap.hangitouttest"
-	version 	= "1.0.0">
+	version 	= "2.0.0">
 
-	<name>Shall I Hang It Out?</name>
+	<name>UK Sledge</name>
 
 	<description>
 		Testing
@@ -19,6 +19,6 @@
 
 	<feature name="http://api.phonegap.com/1.0/geolocation"/>
 	<feature name="http://api.phonegap.com/1.0/network"/>
-
+	<preference name="phonegap-version" value="2.1.0" />
 	<preference name="orientation" value="portrait" />
 </widget>
