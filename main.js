@@ -55,6 +55,8 @@ var getGPSLocation = function() {
         }
     };
     var locFail = function() {
+        alert("GPS fail");
+        $("#data_status").append("<br /> GPS fail");
         return 0;
     };
     navigator.geolocation.getCurrentPosition(suc, locFail);
@@ -256,10 +258,11 @@ function save_id() {
         text: 'foo',
         textVisible: true,
         theme: 'a',
-        html: "<p>Please be patient ...</p><p></p><p>Checking connection</p>"
+        html: "<p>Please be patient ...</p><p></p><p>Checking connection id</p>"
     });
     try {
-    var phoneid = device.uuid;
+        var phoneid = device.uuid;
+        $("#uuid").html(phoneid);
 } catch (Error) {
     var phoneid = "laptop2";
     }
