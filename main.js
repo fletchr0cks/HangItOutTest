@@ -24,6 +24,37 @@ var getLocation = function() {
     navigator.geolocation.getCurrentPosition(suc, locFail);
 };
 
+function SaveGPSLocation(lat,lng) {
+
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+
+    var me = {
+        key: 'loc_data',
+        lat: lat,
+        longval: lng
+    };
+
+    // save it
+    store.save(me);
+}
+
+var getGPSLocation = function() {
+    var suc = function(p) {
+        //alert(p.coords.latitude + " " + p.coords.longitude);
+        SaveGPSLocation(p.coords.latitude,p.coords.longitude);
+        return 1;
+    };
+    var locFail = function() {
+        return 0;
+    };
+    navigator.geolocation.getCurrentPosition(suc, locFail);
+};
+
+
 var beep = function() {
     navigator.notification.beep(2);
 };
@@ -95,22 +126,6 @@ function close() {
     viewport.style.display = "none";
 }
 
-function contacts_success(contacts) {
-    alert(contacts.length
-            + ' contacts returned.'
-            + (contacts[2] && contacts[2].name ? (' Third contact is ' + contacts[2].name.formatted)
-                    : ''));
-}
-
-function get_contacts() {
-    var obj = new ContactFindOptions();
-    obj.filter = "";
-    obj.multiple = true;
-    navigator.contacts.find(
-            [ "displayName", "name" ], contacts_success,
-            fail, obj);
-}
-
 function check_network() {
 try {
     var networkState = navigator.network.connection.type;
@@ -169,18 +184,35 @@ function saveName() {
  
     $('#my_details').dialog('close')
 //    $.mobile.changePage('#my_details', { allowSamePageTransition: true, transition: "none" });
-  
+
+}
+
+function GetGPSData() {
+    $.mobile.loading('show', {
+        text: 'foo',
+        textVisible: true,
+        theme: 'a',
+        html: "<p>Please be patient ...</p><p></p><p>Getting location</p>"
+    });
+    var GPS_state = getGPSLocation;
+    if (GPS_state == 1) {
+        var position = getPosition();
+        //should be get locatin from gps then save
+        var latlng = position.split(',');
+        var lat = latlng[0];
+        var lng = latlng[1];
+        getPlace(lat, lng);
+    } else {
+    $.mobile.loading('hide');
+    $("#loc_here").html("Click here to set manually");
+    }
+    
 }
 
 
 var start = function() {
-    alert("ready");
-    var position = getPosition();
-    //should be get locatin from gps then save
-    var latlng = position.split(',');
-    var lat = latlng[0];
-    var lng = latlng[1];
-    getPlace(lat, lng);
+alert("ready");
+    
     $("#showmaplink").removeClass("ui-disabled");
     $("#showmaplink").addClass("ui-enabled");
 
@@ -209,10 +241,8 @@ var start = function() {
 function init() {
     //  $("#set_pc").buttonMarkup({ inline: true });
     document.addEventListener("deviceready", save_id, false);
-    //start();
-    //save_id();
-    $('#calc').html("Calculating ...");
-
+        //save_id();
+  
 }
 
 function save_id() {
@@ -220,7 +250,7 @@ function save_id() {
         text: 'foo',
         textVisible: true,
         theme: 'a',
-        html: "<p>Loading data ...</p>"
+        html: "<p>Please be patient ...</p><p></p><p>Checking connection</p>"
     });
     try {
     var phoneid = device.uuid;
@@ -253,7 +283,12 @@ function save_id() {
 
 //get name + userID, API calls #
 function load_data() {
-   
+    $.mobile.loading('show', {
+        text: 'foo',
+        textVisible: true,
+        theme: 'a',
+        html: "<p>Please be patient ...</p><p></p><p>Loading data</p>"
+    });
 
     $.ajax({
         type: "GET",
@@ -271,11 +306,9 @@ function load_data() {
 
         },
         complete: function(xhr, status) {
+            GetGPSData();
+            $("#data_status").html("Almost done...");
 
-        $("#data_status").html("Done...");
-    $.mobile.loading('hide');
-    start();
-          
         }
     });
     
@@ -485,6 +518,9 @@ function getPlace(lat,lng) {
 
         },
         complete: function(xhr, status) {
+        $.mobile.loading('hide');
+            start();
+            
             //$("#map_msg").html("Done.");
         }
 
