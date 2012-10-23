@@ -44,14 +44,15 @@ function SaveGPSLocation(lat,lng) {
 }
 
 var getGPSLocation = function() {
+    alert("here");
     var suc = function(p) {
         alert("GPS1= " + p.coords.latitude + " " + p.coords.longitude);
         var GPS_saved = SaveGPSLocation(p.coords.latitude, p.coords.longitude);
         if (GPS_saved == 1) {
             $("#data_status").append("<br /> saved GPS");
-            return 1;
+            GPS_done(1);
         } else {
-            return 0;
+            GPS_done(0);
         }
     };
     var locFail = function() {
@@ -202,8 +203,15 @@ function GetGPSData() {
         theme: 'a',
         html: "<p>Please be patient ...</p><p></p><p>Getting location</p>"
     });
-    var GPS_state = getGPSLocation;
-    if (GPS_state == 1) {
+    getGPSLocation();
+        
+}
+
+
+function GPS_done(retval) {
+
+
+    if (retval == 1) {
         var position = getPosition();
         //should be get locatin from gps then save
         var latlng = position.split(',');
@@ -211,12 +219,11 @@ function GetGPSData() {
         var lng = latlng[1];
         getPlace(lat, lng);
     } else {
-    $.mobile.loading('hide');
-    $("#loc_here").html("Click here to set manually");
+        $.mobile.loading('hide');
+        $("#loc_here").html("Click here to set manually");
     }
-    
-}
 
+}
 
 var start = function() {
 alert("ready");
@@ -249,7 +256,7 @@ alert("ready");
 function init() {
     //  $("#set_pc").buttonMarkup({ inline: true });
     document.addEventListener("deviceready", save_id, false);
-        //save_id();
+    //    save_id();
   
 }
 
@@ -304,14 +311,14 @@ function load_data() {
         url: "http://washingapp.apphb.com/Home/GetAllUsersNew",
         dataType: "jsonp",
         success: function(json) {
-            var jsontext = JSON.stringify(json);
-            $.each(json, function(i, markers) {
-                var siteLatLng = new google.maps.LatLng(markers.latitude, markers.longitude);
-            });
+            //var jsontext = JSON.stringify(json);
+           // $.each(json, function(i, markers) {
+           //     var siteLatLng = new google.maps.LatLng(markers.latitude, markers.longitude);
+           // });
 
         },
         error: function(xhr, error) {
-            console.debug(xhr); console.debug(error);
+           // console.debug(xhr); console.debug(error);
 
         },
         complete: function(xhr, status) {
