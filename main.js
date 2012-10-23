@@ -44,12 +44,11 @@ function SaveGPSLocation(lat,lng) {
 }
 
 var getGPSLocation = function() {
-    alert("here");
+    
     var suc = function(p) {
-        alert("GPS1= " + p.coords.latitude + " " + p.coords.longitude);
         var GPS_saved = SaveGPSLocation(p.coords.latitude, p.coords.longitude);
         if (GPS_saved == 1) {
-            $("#data_status").append("<br /> saved GPS");
+            $("#data_status").append("<br /> saved GPS:" + p.coords.latitude, p.coords.longitude);
             GPS_done(1);
         } else {
             GPS_done(0);
@@ -159,22 +158,129 @@ return states[networkState];
 
 var watchID = null;
 
-function updateHeading(h) {
-    document.getElementById('h').innerHTML = h.magneticHeading;
+function nuke() {
+    var storea = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(storea) {
+});
+
+
+storea.nuke();
+
+alert("nuked");
+
 }
 
-function toggleCompass() {
-    if (watchID !== null) {
-        navigator.compass.clearWatch(watchID);
-        watchID = null;
-        updateHeading({ magneticHeading : "Off"});
-    } else {        
-        var options = { frequency: 1000 };
-        watchID = navigator.compass.watchHeading(updateHeading, function(e) {
-            alert('Compass Error: ' + e.code);
-        }, options);
-    }
+function checkStore(APIcalls) {
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+
+    store.exists('app_data', function(available) {
+
+        if (available) {
+            store.get('app_data', function(theJsonData) {
+                var epochdata = theJsonData.epoch;
+                $("#data_status").append('<br />stored:' + epochdata + 'now: ' + Math.round(new Date().getTime() / 1000));
+                var diff = Math.round(new Date().getTime() / 1000) - epochdata;
+                if (diff > 600) {
+                    $("#data_status").append('<br />' + diff + ' exp data, get new');
+                    getWeather(APIcalls, 1);
+
+                } else {
+                $("#data_status").append('<br />' + diff + ' recent data, get cache');
+                    getWeather(APIcalls, 0);
+                }
+            });
+        } else {
+        $("#data_status").append('<br />no app data');
+        getWeather(APIcalls, 1);
+
+
+        }
+    });
+
+
+
 }
+
+
+
+function getWeather(APIcalls,timediff) {
+
+    var lat = "";
+    var longval = "";
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+
+    store.get('loc_data', function(theJsonData) {
+        lat = theJsonData.lat;
+        longval = theJsonData.longval;
+        $('#data_status').append("<br /> lat " + lat + "long " + longval);
+
+    });
+
+    var loc = lat + "," + longval;
+
+    if (timediff == 1) {
+
+        $.ajax({
+            type: "GET",
+            url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
+            dataType: "jsonp",
+            success: function(json) {
+                //var json = eval('(' + jsontxt + ')');
+                var jsontext = JSON.stringify(json);
+                var location = json['location']['city'];
+                $('#data_status').append("<br /> Location from data local new " + location + " (" + loc + ")");
+                var epoch = Math.round(new Date().getTime() / 1000)
+                var timenow = new Date();
+                var hour_now = timenow.getHours();
+                var minute_now = timenow.getMinutes();
+                var today = timenow.getDate();
+                var me = {
+                    key: 'app_data',
+                    json: jsontext,
+                    hoursaved: hour_now,
+                    minsaved: minute_now,
+                    datesaved: today,
+                    epoch: epoch
+                };
+
+                store.save(me);
+
+                //getCacheNew("newdata");
+            },
+            error: function(xhr, error) {
+                console.debug(xhr); console.debug(error);
+            },
+            complete: function() {
+                //load weather
+                getCacheNew("newdata");
+                $.mobile.loading('hide');
+                start();
+
+
+            }
+
+        });
+
+    } else {
+
+    getCacheNew("olddata");
+    $.mobile.loading('hide');
+    start();
+    }
+
+
+}
+
 
 function setPC(postcode) {
     //$("setloc").dialog("close");
@@ -190,7 +296,7 @@ function saveName() {
     //var postcode = $("set_pc").val();
     var username = document.getElementById("username1").value;
     //alert(username);
- 
+    $("#phone_name").html(username);
     $('#my_details').dialog('close')
 //    $.mobile.changePage('#my_details', { allowSamePageTransition: true, transition: "none" });
 
@@ -204,13 +310,10 @@ function GetGPSData() {
         html: "<p>Please be patient ...</p><p></p><p>Getting location</p>"
     });
     getGPSLocation();
-        
-}
+        }
 
 
 function GPS_done(retval) {
-
-
     if (retval == 1) {
         var position = getPosition();
         //should be get locatin from gps then save
@@ -246,17 +349,17 @@ alert("ready");
     //alert(network);
     $('#connection').html(network);
     if (network == "NONE" || network == null) {
-        checkCache(0, network);
+        //checkCache(0, network);
     } else {
-        checkCache(1, network);
+        //checkCache(1, network);
     }
 };
 
 
 function init() {
     //  $("#set_pc").buttonMarkup({ inline: true });
-    document.addEventListener("deviceready", save_id, false);
-    //    save_id();
+    document.addEventListener("deviceready", load_data, false);
+    //load_data();
   
 }
 
@@ -290,8 +393,10 @@ function save_id() {
             //alert("save error" + data);
         },
         complete: function(xhr, status) {
-
-            load_data();
+        $("#phone_name").html("Dave");
+        GetGPSData();
+        $("#data_status").html("Almost done...");
+            
         }
     });
 
@@ -312,18 +417,17 @@ function load_data() {
         dataType: "jsonp",
         success: function(json) {
             //var jsontext = JSON.stringify(json);
-           // $.each(json, function(i, markers) {
-           //     var siteLatLng = new google.maps.LatLng(markers.latitude, markers.longitude);
-           // });
+            // $.each(json, function(i, markers) {
+            //     var siteLatLng = new google.maps.LatLng(markers.latitude, markers.longitude);
+            // });
 
         },
         error: function(xhr, error) {
-           // console.debug(xhr); console.debug(error);
+            // console.debug(xhr); console.debug(error);
 
         },
         complete: function(xhr, status) {
-            GetGPSData();
-            $("#data_status").html("Almost done...");
+            save_id();
 
         }
     });
@@ -534,9 +638,8 @@ function getPlace(lat,lng) {
 
         },
         complete: function(xhr, status) {
-        $.mobile.loading('hide');
-            start();
-            
+            checkStore(30);
+
             //$("#map_msg").html("Done.");
         }
 

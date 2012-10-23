@@ -38,8 +38,11 @@
 		<li id="showmaplink" class="ui-disabled"><a href="#two" onclick="showmap()">Local Sites</a></li>	
 		<li id="add_site_link" class="ui-disabled"><a href="#add_site"  onclick="add_site_map()">Add a Site</a></li>
 		<li id="my_sites_link" class="ui-disabled"><a href="#my_sites" >My Sites<span class="ui-li-count">328</span></a></li>
-		<li id="my_details_link" class="ui-disabled"><a href="#my_details" data-rel="dialog"  data-transition="pop">My Details</a></li>
 	</ul>
+	       <div data-role="collapsible" data-theme="b" data-inset="true" data-content-theme="b">
+		<h3>Next 24hrs Weather</h3>				
+			   <canvas id="canvhere" width="450" height="2000">text here eq no canvas</canvas>
+			  </div>
 	
 	 <ul data-role="listview" data-inset="true" id="thelist">          
     <li data-icon="arrow-r" data-iconpos="right" >
@@ -50,14 +53,14 @@
 
 <ul data-role="listview" data-inset="true">
 <li><p class="ui-li-aside"><a href="#my_details" data-rel="dialog" data-transition="flip" data-inline="true" data-icon="gear" data-theme="e" data-role="button" data-mini="true">Edit</a></p>
-<h3>glah</h3>
-<p>foo</p>
+<h3>My Details</h3>
+<p>Phone ID: <span id="uuid"></span></p>
+<p>Name: <span id="phone_name"></span></p>
 </li>
 			
 		</ul><h6 id="data_status">Data Connection: </h6>
-		<h6 >Location: </h6>
-		<h6 id="uuid">Ready ...</h6>
-	
+		<p onclick="nuke()">Nuke</p>
+		
 	</div><!-- /content -->
 	
 	<div data-role="footer" data-theme="d">
@@ -86,7 +89,8 @@
 	</div><!-- /content -->
 	
 	<div data-role="footer">
-		<h4>Page Footer</h4>
+		<h4>Page Footer </h4>
+		
 	</div><!-- /footer -->
 </div><!-- /page two -->
 
