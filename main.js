@@ -40,13 +40,19 @@ function SaveGPSLocation(lat,lng) {
 
     // save it
     store.save(me);
+    return 1;
 }
 
 var getGPSLocation = function() {
     var suc = function(p) {
-        //alert(p.coords.latitude + " " + p.coords.longitude);
-        SaveGPSLocation(p.coords.latitude,p.coords.longitude);
-        return 1;
+        alert("GPS1= " + p.coords.latitude + " " + p.coords.longitude);
+        var GPS_saved = SaveGPSLocation(p.coords.latitude, p.coords.longitude);
+        if (GPS_saved == 1) {
+            $("#data_status").append("<br /> saved GPS");
+            return 1;
+        } else {
+            return 0;
+        }
     };
     var locFail = function() {
         return 0;
