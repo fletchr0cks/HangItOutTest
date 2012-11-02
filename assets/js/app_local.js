@@ -1,7 +1,173 @@
 // 
 //  --- our app behavior logic ---
 //
+function getCacheBW(age) {
 
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+
+    store.get('app_data', function(theJsonData) {
+        var jsondata = theJsonData.json;
+        var epochdata = theJsonData.epoch;
+        //alert("cached");
+        var cutoff = parseInt("16");
+        var parsed_json = eval('(' + jsondata + ')');
+        var location = parsed_json['location']['city'];
+        //var theDatas = new Lawnchair('data');
+        var timenow = new Date();
+        var hour_now = timenow.getHours();
+        var today = timenow.getDate();
+        //if (age == "olddata") {
+        $('#loc_result').append("<br /> cached data from: " + age);
+        // }
+        var country = parsed_json['location']['country'];
+        //alert("saved= " + json_data);
+        var posy = 14;
+        var posyt = 25;
+        var example = document.getElementById('canvhere');
+        var ctx2d = example.getContext('2d');
+        var ni = 1;
+        var done_dt = 0;
+        var first_hour = -1;
+        hour_bg_bk = "000";
+        var totalsnow = 0;
+
+        var dt = parseInt(0);
+        var dt_ct = parseInt(0);
+        var total_score = parseInt(0);
+
+        $.each(parsed_json.hourly_forecast, function(i, zone) {
+            var imgi = new Image();
+            imgi.src = "http://icons.wxug.com/i/c/i/" + zone.icon + ".gif";
+            var ws = (parseInt(zone.wspd.english) * 6) + 10;
+            var temp = (parseInt(zone.temp.metric) * 3) + 10;
+            var start = 53;
+            if (parseInt(zone.temp.metric) < 1) {
+                start = 42 + (parseInt(zone.temp.metric) * 3);
+                temp = 53 - start;
+            }
+            var hour = zone.FCTTIME.hour;
+            if (hour > 12) {
+                hour = hour - 12
+            }
+            var sky = parseInt(zone.sky);
+            var rain = parseInt(zone.qpf.metric);
+            var snowlen = Math.round(zone.snow.metric);
+            totalsnow = totalsnow + Math.round(zone.snow.metric);
+           
+            var snow = (parseInt(zone.snow.metric) * 2) + 10;
+            var hour_bg_bk = "9F9F9F";
+            var wind_bg = "51D251";
+            var temp_bg = "FFB336";
+            var wind_txt = "FFF";
+            var temp_txt = "FFF";
+            var ampm = zone.FCTTIME.ampm;
+            if (first_hour == -1) {
+                first_hour = zone.FCTTIME.hour;
+            }
+            var humid = parseInt(zone.humidity);
+            var score = Math.round(((parseInt(zone.wspd.english) * 2) + (parseInt(zone.temp.metric) * 2) + (((100 - sky) / 5) * 4) + (((100 - humid) / 10) * 15)) / 2);
+            var new_score = 0;
+
+            if (humid < 80) {
+                new_score = Math.round((parseInt(zone.wspd.metric) * 3) + (parseInt(zone.temp.metric) * 2) + (100 - sky));
+
+            }
+
+            var cond = zone.condition;
+
+            var yday = parseInt(zone.FCTTIME.yday);
+            var hour_padded = parseInt(zone.FCTTIME.hour);
+            var civil = parseInt(zone.FCTTIME.civil);
+
+            var userhtml = " ";
+
+            //ctx2d.fillStyle = "#778899";
+            //ctx2d.fillRect(0, posy+2, 2, 44);
+            //ctx2d.drawImage(imgi, 2, posy)
+            //here
+            ctx2d.font = '20px Arial';
+            ctx2d.fillStyle = '#FFF';
+            if (hour < 10) {
+   
+               ctx2d.fillText(hour, 16, posyt + 10);
+            } else {
+                ctx2d.fillText(hour, 6, posyt + 10);
+            }
+
+            ctx2d.font = '10px Arial';
+            ctx2d.fillText(ampm, 30, posyt + 10);
+
+
+            ctx2d.fillStyle = "#808080";
+            ctx2d.fillRect(53, posy + 16, ws, 16);
+            ctx2d.font = '10px Arial';
+            ctx2d.fillStyle = wind_txt;
+            ctx2d.fillText(zone.wspd.metric, 40 + ws, posyt + 17);
+
+            ctx2d.fillStyle = "#6495ED";
+            ctx2d.fillRect(start, posy + 32, temp, 16);
+            ctx2d.font = '10px Arial';
+            ctx2d.fillStyle = temp_txt;
+            ctx2d.fillText(zone.temp.metric, (start + 2), posyt + 33);
+
+            ctx2d.fillStyle = "#FFF";
+            ctx2d.fillRect(53, posy + 48, snow, 16);
+            ctx2d.font = '10px Arial';
+            ctx2d.fillStyle = "#000";
+            ctx2d.fillText(parseInt(zone.snow.metric), 53 + snow - (snowlen.toString().length * 12), posyt + 49);
+
+            total_score = total_score + new_score;
+
+            dt_ct = dt_ct + 1;
+
+            ctx2d.font = '12px Arial';
+            ctx2d.fillStyle = "#32CD32";
+            ctx2d.fillText(cond, 53, posyt);
+
+            ctx2d.font = '13px Arial Bold ';
+
+            if (first_hour >= 0) {
+                //alert("f=" + first_hour);
+                if (first_hour > 18) {
+                    $('#calc').html("It's a bit late to hang out the washing now.");
+                }
+                first_hour = -2;
+            }
+
+            if (total_score > 270) {
+                var res = dt_ct;
+                if (done_dt == 0) {
+
+                    $('#calc').html("Drying time: " + res + " hours");
+
+
+                }
+                done_dt = 1;
+
+
+                total_score = 0;
+            }
+
+            posy = posy + 78;
+            posyt = posyt + 78;
+
+        });
+
+        if (totalsnow > 10) {
+            totalsnow = (totalsnow / 10);
+            $('#snowfall').html(": " + Math.round(totalsnow) + "cm of snow on the way :-)");
+        }
+
+    });
+
+
+
+
+}
 
         
         
@@ -190,7 +356,7 @@ function getCacheNew(age) {
             ctx2d.font = '13px Arial Bold ';
 
             if (first_hour >= 0) {
-                alert(first_hour);
+                //alert("f=" + first_hour);
                 if (first_hour > 18) {
                     $('#calc').html("It's a bit late to hang out the washing now.");
                 }

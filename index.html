@@ -33,14 +33,15 @@
 	</div><!-- /header -->
 
 	<div data-role="content" >	
-				
+		<div id="message"></div>		
 		 <ul data-role="listview" data-inset="true">
 		<li id="showmaplink" class="ui-disabled"><a href="#two" onclick="showmap()">Local Sites</a></li>	
 		<li id="add_site_link" class="ui-disabled"><a href="#add_site"  onclick="add_site_map()">Add a Site</a></li>
-		<li id="my_sites_link" class="ui-disabled"><a href="#my_sites" >My Sites<span class="ui-li-count">328</span></a></li>
+		<li id="my_sites_link" class="ui-disabled"><a href="#my_sites" onclick="ListSites()">My Sites<span id="my_sites_ct" class="ui-li-count">328</span></a></li>
 	</ul>
-	       <div data-role="collapsible" data-theme="b" data-inset="true" data-content-theme="b">
-		<h3>Next 24hrs Weather</h3>				
+	       <div data-role="collapsible" data-theme="c" data-inset="true" data-content-theme="a">
+		<h4>Hourly Weather<div style="display:inline" id="snowfall"></div></h4>
+						
 			   <canvas id="canvhere" width="450" height="2000">text here eq no canvas</canvas>
 			  </div>
 	
@@ -73,19 +74,24 @@
 <div data-role="page" id="two" data-theme="a">
 
 	<div data-role="header">
-		<h1>Two</h1>
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="c">Menu</a>
+		<h1>Local Sites</h1>
 	</div><!-- /header -->
 
-	<div data-role="content" data-theme="a">	
-		<h2>Two</h2>
-		<div id="map_msg"></div>
-		<div id="map_msg_2"></div>
-		
-		<div id="map_overlay" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:350px;width:300px"><h4 style="text-align:center;padding-top:100px">Loading sites....</h4></div>
+	<div data-role="content" data-theme="a">
+	    <div id="map_msg" class="ui-bar ui-bar-e"></div>   
+		<div id="map_overlay" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:350px;width:600px"><h4 style="text-align:center;padding-top:100px">Loading sites....</h4></div>
 		<div id="map_canvas" style="height:350px;"></div>
-       <div id="map_markers"></div>
-		<p><a href="#one" data-direction="reverse" data-role="button" data-theme="b">Back to page "one"</a></p>	
-		
+       <div id="place_name" class="ui-bar ui-bar-e">&nbsp</div> 
+       <div class="swatch-preview">
+       <div class="ui-bar ui-bar-b"><div style="display:inline" id="comments_ct"></div></div></div> 
+       <div id="place_comments"></div>
+       <div id="addcomm" class="ui-bar ui-bar-a" style="display:none">
+       <div class="ui-grid-a">
+	<div class="ui-block-a"><input type="text" name="addcomment" id="addcommentid" value="" /></div>
+	<div class="ui-block-b"><a href="index.html#two" data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="c" data-inline="true" onclick="SaveComment()">Add Comment</a></div>
+	</div>
+		</div>
 	</div><!-- /content -->
 	
 	<div data-role="footer">
@@ -95,33 +101,75 @@
 </div><!-- /page two -->
 
 <div data-role="page" id="add_site" data-theme="a">
-
 	<div data-role="header">
-		
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="c">Menu</a>
+		<h1>Add a Site</h1>
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="a">	
-		<h4>Drag marker</h4>
-		
+	    <div class="ui-bar ui-bar-e">Drag marker</div>   		
 		<div id="set_map_overlay" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:350px;width:300px"><h4 style="text-align:center;padding-top:100px">Loading map ....</h4></div>
 		<div id="set_map_canvas" style="height:350px;"></div>
-		<div id="marker_coords"></div>
-		<input type="text" name="pc" id="comment" value="" />
-		<div id="save_site" data-role="button" onclick="saveSite()">Save</div>
-		<p><a href="#one" data-direction="reverse" data-role="button" data-theme="b">Back to page "one"</a></p>	
+	<div id="saveSite" class="ui-bar ui-bar-e">Lat: <div style="display:inline" id="lat_coord"></div>   Long:<div style="display:inline" id="long_coord"></div></div> 
+	<div class="ui-grid-a">
+	<div class="ui-block-a"><p></p>Site Name</div>
+	<div class="ui-block-b"><input type="text" name="sitename" id="sitenameid" value="" /></div>
+	</div>
+	<div class="ui-grid-a">
+	<div class="ui-block-a">Comment</div>
+	<div class="ui-block-b"><input type="text" name="comment" id="commentid" value="" /></div>
+	</div>
+		<div class="ui-grid-a">
+	<div class="ui-block-a">Name</div>
+	<div class="ui-block-b"><input type="text" name="username" id="usernameid" value="" /></div>
+	</div>
+		<div id="saveSiteBtn"><div data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="c" data-inline="true" onclick="saveSite()">Save</div></div>
 		
 	</div><!-- /content -->
 	
 	<div data-role="footer">
 		<h4>Page Footer</h4>
 	</div><!-- /footer -->
-</div><!-- /p
-
-<div id="myDialog" style="opacity:0.5" data-role="dialog">
-    <div id="myMessage">text here</div>
-    <input id="button1" type="button" value="Button 1" data-theme="b"  />
-    <input id="button2" type="button" value="Button 2" data-theme="c"  />
 </div>
+
+<div data-role="page" id="move_site" data-theme="a">
+	<div data-role="header">
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="c">Menu</a>
+		<h1>Move Site</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="a">	
+	    <div class="ui-bar ui-bar-e">Move marker for: <div style="display:inline" id="movePlaceName"></div><div id="MPID" style="display:none"></div></div>   
+		
+		<div id="set_map_overlaym" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:350px;width:300px"><h4 style="text-align:center;padding-top:100px">Loading map ....</h4></div>
+		<div id="set_map_canvasm" style="height:350px;"></div>
+	 <div id="saveSitem" class="ui-bar ui-bar-e">Lat: <div style="display:inline" id="lat_coordm"></div>   Long:<div style="display:inline" id="long_coordm"></div></div> 
+		<div id="saveMovedSite"><div data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="c" data-inline="true" onclick="saveMovedSite()">Save</div></div>
+		
+	</div><!-- /content -->
+	
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div><!-- /footer -->
+</div>
+
+<div data-role="page" id="my_sites" data-theme="a">
+
+	<div data-role="header">
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="c">Menu</a>		
+	<h1>My Sites</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="a">
+   <div id="sites_msg" class="ui-bar ui-bar-b"></div>   
+       <div id="sites_list"></div>
+	</div><!-- /content -->
+	
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div><!-- /footer -->
+</div>
+
 <!-- Start of third page: #popup -->
 <div data-role="page" id="setloc">
 
@@ -139,8 +187,7 @@
 
 <div class="ui-grid-a">
 	<div class="ui-block-a"><label  for="search2">Enter your lat long:</label></div>
-	<div class="ui-block-b"><input data-theme="e" type="text" name="pc" id="latlng" value=""/><div data-theme="e" id="set_latlng" data-role="button" onclick="setLL()"> Set </div>	
-</div>
+	<div class="ui-block-b"><input data-theme="e" type="text" name="pc" id="latlng" value=""/><div data-theme="e" id="set_latlng" data-role="button" onclick="setLL()"> Set </div></div>
 </div>	
 		<p><a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back to page "one"</a></p>	
 	</div><!-- /content -->
