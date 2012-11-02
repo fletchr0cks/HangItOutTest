@@ -320,12 +320,12 @@ function getWeather(timediff) {
             url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
             //url: "json.txt",
             //dataType: "html",
-            dataType: "jsonp",
+           dataType: "jsonp",
             success: function(json) {
-            var jsontxt = eval('(' + json + ')');
+            //var jsontxt = eval('(' + json + ')');
                 
-                var jsontext = JSON.stringify(jsontxt);
-                var location = jsontxt['location']['city'];
+                var jsontext = JSON.stringify(json);
+                var location = json['location']['city'];
                 $('#data_status').append("<br /> Location from data local new " + location);
 
              
@@ -516,7 +516,7 @@ function init() {
     //format_bounds(bds);
     //getCacheBW("newdata");
     //load_data();
-  
+
 }
 
 function save_id() {
