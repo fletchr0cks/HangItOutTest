@@ -53,7 +53,7 @@ function SaveGPSLocation(lat,lng) {
     return 1;
 }
 
-function SaveLoginDetails(APIcalls,phonename,userID) {
+function SaveLoginDetails(APIcalls,phonename,userID,site_ct) {
 
     var store = new Lawnchair({
         adapter: "dom",
@@ -65,7 +65,8 @@ function SaveLoginDetails(APIcalls,phonename,userID) {
         key: 'login_data',
         APIcalls: APIcalls,
         phonename: phonename,
-        userID: userID
+        userID: userID,
+        site_ct: site_ct
     };
 
     // save it
@@ -202,6 +203,42 @@ alert("nuked");
 
 }
 
+function getUserIDstore() {
+    var item;
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+    store.exists("login_data", function(available) {
+        if (available) {
+            store.get("login_data", function(theJsonData) {
+                item = theJsonData.userID;
+            });
+        } else {
+        }
+    });
+    return (item);
+}
+
+function getSiteCtstore() {
+    var item;
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+    store.exists("login_data", function(available) {
+        if (available) {
+            store.get("login_data", function(theJsonData) {
+                item = theJsonData.site_ct;
+            });
+        } else {
+        }
+    });
+    return (item);
+}
+
 function getFromStore(storetype,storeval) {
     var item;
     var store = new Lawnchair({
@@ -221,9 +258,7 @@ function getFromStore(storetype,storeval) {
         } else {
             
         }
-    });
-
-    
+    });    
 }
 
 function checkStore() {
@@ -307,7 +342,7 @@ function getWeather(timediff) {
     var loc = lat + "," + longval;
 
     var APIcalls = getFromStore("login_data", "APIcalls");
-    var userid = 11;
+    var userid = getUserIDstore();
     //getFromStore("login_data", "userID");
     $('#data_status').append("<br /> API from store " + APIcalls);
 
@@ -394,43 +429,102 @@ function saveName() {
 
 }
 
-function saveSite() {
+function saveSite1() {
+    var latval = document.getElementById("lat_coord").innerHTML;
+    var longval = document.getElementById("long_coord").innerHTML;
+    $.mobile.loading('show', {
+        text: 'foo',
+        textVisible: true,
+        theme: 'a',
+        html: "<p>Saving new site ...</p>"
+    });
+    var town;
+    $.ajax({
+        type: "GET",
+        //url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
+        url: "http://api.geonames.org/findNearbyPlaceNameJSON?lat=" + latval + "&lng=" + longval + "&username=fletch1",
+        dataType: "jsonp",
+        success: function(json) {
+            $.each(json.geonames, function(i, geo) {
+                town = geo.toponymName;
+
+            });
+          
+        },
+        error: function(xhr, error) {
+            $("#loc_here").html("No town listed for: " + lat + "," + lng);
+
+        },
+        complete: function(xhr, status) {
+            saveSite2(town);
+            alert(town);
+            //$("#map_msg").html("Done.");
+        }
+
+    });
+
+}
+
+
+function saveSite2(town) {
+   
     var username = document.getElementById("usernameid").value;
     var sitename = document.getElementById("sitenameid").value;
     var comment = document.getElementById("commentid").value;
     var latval = document.getElementById("lat_coord").innerHTML;
     var longval = document.getElementById("long_coord").innerHTML;
-    var userid = 11;
+    var userid = getUserIDstore();
     $.ajax({
         type: "POST",
-        //url: "http://localhost:3192/Home/SavePlace",
-        url: "http://washingapp.apphb.com/Home/SavePlace",
-        data: "username=" + username + "&placename=" + sitename + "&comment=" + comment + "&latval=" + latval + "&longval=" + longval + "&userid=" + userid,
+        url: "http://localhost:3192/Home/SavePlace",
+        //url: "http://washingapp.apphb.com/Home/SavePlace",
+        data: "username=" + username + "&placename=" + sitename + "&comment=" + comment + "&latval=" + latval + "&longval=" + longval + "&userid=" + userid + "&town=" + town,
         dataType: "jsonp",
         success: function(json) {
             var jsontext = JSON.stringify(json);
-        
+            alert(town);
         },
         error: function(xhr, error) {
-        // console.debug(xhr); console.debug(error);
-        $("#saveSite").html("Save Failed");
+            // console.debug(xhr); console.debug(error);
+            $("#saveSite").html("Save Failed");
 
         },
         complete: function(xhr, status) {
-        $("#saveSite").html("Saved");
-        //$.mobile.changePage('index.html#one', { allowSamePageTransition: true, transition: "none" });
-        
+        document.getElementById("usernameid").value = "";
+        document.getElementById("sitenameid").value = "";
+        document.getElementById("commentid").value = "";
+        document.getElementById("lat_coord").innerHTML = "";
+        document.getElementById("long_coord").innerHTML = "";
+            var new_ct = parseInt(getSiteCtstore()) + 1;
+            $("#my_sites_ct").html(new_ct.toString());
+            $.mobile.loading('hide');
+            refreshPage();
+            //$.mobile.changePage('index.html');
+
         }
     });
     //$.mobile.changePage('#my_details', { allowSamePageTransition: true, transition: "none" });
 
 }
 
+function refreshPage() {
+    $.mobile.changePage(
+    'index.html',
+    {
+        allowSamePageTransition: true,
+        transition: 'none',
+        showLoadMsg: false,
+        reloadPage: true
+    }
+  );
+    load_data();
+}
+
 function saveMovedSite() {
     var PID = document.getElementById("MPID").innerHTML;
     var latval = document.getElementById("lat_coordm").innerHTML;
     var longval = document.getElementById("long_coordm").innerHTML;
-    var userid = 11;
+    var userid = getUserIDstore();
     $.ajax({
         type: "POST",
         //url: "http://localhost:3192/Home/MovePlace",
@@ -496,6 +590,9 @@ var start = function() {
     $("#my_sites_link").removeClass("ui-disabled");
     $("#my_sites_link").addClass("ui-enabled");
 
+    $("#search_link").removeClass("ui-disabled");
+    $("#search_link").addClass("ui-enabled");
+
     //startmap();
     //document.getElementById("uuidi").innerHTML = device.uuid;
     var network = check_network();
@@ -511,11 +608,11 @@ var start = function() {
 
 function init() {
     //  $("#set_pc").buttonMarkup({ inline: true });
-    document.addEventListener("deviceready", load_data, false);
+    //document.addEventListener("deviceready", load_data, false);
     //bds = "((55.91794121734191, -3.021798358789056), (56.18635420913567, -2.443642841210931))";
     //format_bounds(bds);
     //getCacheBW("newdata");
-    //load_data();
+    load_data();
 
 }
 
@@ -560,6 +657,10 @@ function save_id() {
 
 //get name + userID, API calls #
 function load_data() {
+    var browser_w = parseInt($(document).width()) - 10;
+    $('#data_status').append("widths: " + browser_w);
+    $('#map_overlay').css('width', browser_w.toString() + 'px');
+    $('#map_overlaym').css('width', browser_w.toString() + 'px');
     $.mobile.loading('show', {
         text: 'foo',
         textVisible: true,
@@ -597,7 +698,7 @@ function load_data() {
 
         },
         complete: function(xhr, status) {
-            SaveLoginDetails(APIcalls, phonename, userID);
+            SaveLoginDetails(APIcalls, phonename, userID, site_ct);
             $("#phone_name").html(phonename);
             GetGPSData();
             $("#data_status").append(userID + " Done 1");
@@ -609,7 +710,7 @@ function load_data() {
 
 var timer_m;
 
-function setMarkers(map, bounds_map) {
+function setMarkers(map, bounds_map, PID) {
     clearTimeout(timer_m);
     //var bds_fmt = "50,-4,60,4";
     var bds_fmt = format_bounds(bounds_map.toString());
@@ -617,9 +718,13 @@ function setMarkers(map, bounds_map) {
     removeMarkers();
     var markers_array = [];
     var ct = 0;
+    var image = 'mrkr.png';
+    if (parseInt(PID) > 0) {
+        var infoWindowLive = new google.maps.InfoWindow({ content: 'This one: ' + PID });
+    }
     $.ajax({
-    type: "GET",
-    url: "http://washingapp.apphb.com/Home/GetSitesInRange",
+        type: "GET",
+        url: "http://washingapp.apphb.com/Home/GetSitesInRange",
         //url: "http://localhost:3192/Home/GetSitesInRange",
         data: "bounds=" + bds_fmt,
         dataType: "jsonp",
@@ -628,17 +733,26 @@ function setMarkers(map, bounds_map) {
             ct = json.ct;
             $.each(json.points, function(i, markers) {
                 console.log(json);
+                var infoWindow = new google.maps.InfoWindow({ content: 'Place ID' + markers.PID });
                 var siteLatLng = new google.maps.LatLng(markers.lat, markers.longval);
-                var markerp = new google.maps.Marker({ 'position': siteLatLng, draggable: true });
+                var markerp = new google.maps.Marker({ 'position': siteLatLng, 'icon': image });
                 markers_array.push(markerp);
                 marktxt = marktxt + "<p>" + markers.name + i + "</p>";
 
                 //attach infowindow on click
                 google.maps.event.addListener(markerp, "click", function() {
                     //$('#map_markers').fadeOut().html("<p>Click: " + markers.name + markers.PID + "</p>").fadeIn();
+                    var infoWindow = new google.maps.InfoWindow({ content: 'Place ID' + markers.PID });
                     ListComments(markers.PID);
                     $('#place_name').html(markers.name);
+                    infoWindow.open(map, markerp);
                 });
+
+               // if (markers.PID == parseInt(PID)) {
+                    //
+               //     infoWindowLive.open(map, markerp);
+              //      alert(PID);
+              //  }
 
                 google.maps.event.addListener(markerp, "drag", function() {
                     $('#map_msg').html(markerp.position.lat());
@@ -660,6 +774,7 @@ function setMarkers(map, bounds_map) {
         },
         complete: function(xhr, status) {
             $("#map_msg").html(ct + " Loaded. Click to see comments ...");
+
         }
     });
 
@@ -719,14 +834,15 @@ function getPosition() {
 }
 
 function ListSites() {
-  
+    
     var sites_html = "";
     var ct = 0;
+    var userID = getUserIDstore();
     $.ajax({
         type: "GET",
         //url: "http://localhost:3192/Home/ListMySites",
         url: "http://washingapp.apphb.com/Home/ListMySites",
-        data: "UserID=11",
+        data: "UserID=" + userID,
         dataType: "jsonp",
         success: function(json) {
             $.each(json.sites, function(i, result) {
@@ -746,6 +862,37 @@ function ListSites() {
 
         $("#sites_list").html(sites_html).trigger('create');
             $("#sites_msg").html("Sites loaded. (" + ct + ")");
+
+        }
+    });
+
+}
+
+function doSearch() {
+    $("#sites_search_msg").html("Searching ...");
+    var search_str = document.getElementById("searchid").value;
+    var sites_html = "<ul data-role=\"listview\" data-theme=\"a\" data-inset=\"true\">";
+    var ct = 0;
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:3192/Home/ListPlaces",
+        //url: "http://washingapp.apphb.com/Home/ListMySites",
+        data: "search_str=" + search_str,
+        dataType: "jsonp",
+        success: function(json) {
+            $.each(json.sites, function(i, result) {
+            sites_html = sites_html + "<li><a href=\"index.html#two\" onClick=\"search_result_map(" +result.latitude + "," + result.longitude + "," + result.PID + ")\">" + result.town + ", " + result.name + ". Added by " + result.username + "</a></li>";
+                ct = json.ct;
+            });
+        },
+        error: function(xhr, error) {
+            // console.debug(xhr); console.debug(error);
+
+        },
+        complete: function(xhr, status) {
+
+            $("#sites_search_list").html(sites_html).trigger('create');
+            $("#sites_search_msg").html("Sites found: (" + ct + ")");
 
         }
     });
@@ -801,14 +948,14 @@ function SaveComment() {
     var PID = document.getElementById("hidPID").innerHTML;
     var comment = document.getElementById("addcommentid").value;
     console.log(PID + "hid");
-  
+    var userID = getUserIDstore();
     var comments_html = "";
     var ct = 0;
     $.ajax({
         type: "POST",
         //url: "http://localhost:3192/Home/SaveComment",
         url: "http://washingapp.apphb.com/Home/SaveComment",
-        data: "PID=" + PID + "&comment=" + comment + "&userID=11",
+        data: "PID=" + PID + "&comment=" + comment + "&userID" + userID,
         dataType: "jsonp",
         success: function(json) {
             $.each(json.cmts, function(i, result) {
@@ -888,7 +1035,7 @@ function GoogleMap(lat,lng) {
     var showMap = function() {
     ;
         var mapOptions = {
-            zoom: 10,
+            zoom: 16,
             center: new google.maps.LatLng(parseFloat(lat), parseFloat(lng)),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
@@ -905,7 +1052,7 @@ function GoogleMap(lat,lng) {
 
                     bounds = map.getBounds();
                     $("#map_msg").html("Downloading sites ...");
-                    setMarkers(map, bounds);
+                    setMarkers(map, bounds, "0");
                 }, 2000);
             }
         } ()));
@@ -982,6 +1129,54 @@ function GoogleMap_move(lat, lng, PID) {
 
         return map;
     }
+
+}
+
+function GoogleMap_result(lat, lng, PID) {
+    var siteLatLng = lat + "," + lng;
+    this.initialize = function() {
+
+        var map = showMap();
+        $('#place_name').html("&nbsp");
+        $('#place_name').html("&nbsp");
+        $('#place_comments').html("&nbsp");
+        $('#comments_ct').html("&nbsp");
+        $("#addcomm").hide();
+    }
+    var showMap = function() {
+        ;
+        var mapOptions = {
+            zoom: 16,
+            center: new google.maps.LatLng(parseFloat(lat), parseFloat(lng)),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions)
+        var bounds;
+
+        google.maps.event.addListener(map, 'bounds_changed', (function() {
+            bounds = map.getBounds();
+            $("#map_msg").html("Map moved ...");
+            var timer;
+            return function() {
+                clearTimeout(timer);
+                timer = setTimeout(function() {
+
+                    bounds = map.getBounds();
+                    $("#map_msg").html("Downloading sites ...");
+                    setMarkers(map, bounds, PID);
+                }, 2000);
+            }
+        } ()));
+
+
+        infowindow = new google.maps.InfoWindow({
+            content: "holding..."
+        });
+        $("#map_msg").html("Loading markers ... ");
+
+        return map;
+    }
+
 
 }
 
@@ -1071,6 +1266,7 @@ function SaveNewLocation(lat, lng, town) {
 var timera;
 var timerb;
 var timerc;
+var timerd;
 function startmap() {
     clearTimeout(timera);
     var position = getPosition();
@@ -1104,6 +1300,15 @@ function startmap_move(lat, lng, PID) {
     map.initialize();
 }
 
+function startmap_result(lat, lng, PID) {
+    clearTimeout(timerd);
+    $("#MPID").html(PID);
+    $("#movePlaceName").html("name here");
+    console.log(name);
+    var map = new GoogleMap_result(lat, lng, PID);
+    map.initialize();
+}
+
 function showmap() {
     timera = setInterval(function() { startmap() }, 1000);
 }
@@ -1115,6 +1320,11 @@ function add_site_map() {
 function move_site_map(lat, lng, PID) {
     //alert(site_name);
     timerc = setInterval(function() { startmap_move(lat, lng, PID) }, 1000);
+}
+
+function search_result_map(lat, lng, PID) {
+    //alert(site_name);
+    timerd = setInterval(function() { startmap_result(lat, lng, PID) }, 1000);
 }
 
 
