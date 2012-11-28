@@ -2,7 +2,7 @@
 <widget xmlns		= "http://www.w3.org/ns/widgets"
 	xmlns:gap	= "http://phonegap.com/ns/1.0"
 	id		= "com.phonegap.hangitouttest"
-	version 	= "2.0.0">
+	version 	= "2.1.0">
 
 	<name>UK Sledge</name>
 
@@ -15,7 +15,7 @@
 		Nick Fletcher
 	</author>
 
-	<icon src="logo.png" gap:role="default" />
+	<icon src="logouks.png" gap:role="default" />
 
 	<feature name="http://api.phonegap.com/1.0/geolocation"/>
 	<feature name="http://api.phonegap.com/1.0/network"/>
