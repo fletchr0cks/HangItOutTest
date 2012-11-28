@@ -35,6 +35,25 @@ return(bds6);
 }
 
 function SaveGPSLocation(lat,lng) {
+   
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+
+    var me = {
+        key: 'loc_data',
+        lat: lat,
+        lng: lng
+    };
+
+    // save it
+    store.save(me);
+    return 1;
+}
+
+function SaveFirstLoginDetails(lat, lng, town) {
 
     var store = new Lawnchair({
         adapter: "dom",
@@ -45,15 +64,16 @@ function SaveGPSLocation(lat,lng) {
     var me = {
         key: 'loc_data',
         lat: lat,
-        longval: lng
+        lng: lng,
+        town: town
     };
 
     // save it
     store.save(me);
-    return 1;
+   
 }
 
-function SaveLoginDetails(APIcalls,phonename,userID,site_ct) {
+function SaveLoginDetails(APIcalls,phonename,userID,site_ct,total,lat_nm,lat_tn) {
 
     var store = new Lawnchair({
         adapter: "dom",
@@ -66,18 +86,21 @@ function SaveLoginDetails(APIcalls,phonename,userID,site_ct) {
         APIcalls: APIcalls,
         phonename: phonename,
         userID: userID,
-        site_ct: site_ct
+        site_ct: site_ct,
+        total: total,
+        lat_nm: lat_nm,
+        lat_tn: lat_tn
     };
 
     // save it
     store.save(me);
-   
+
 }
 
 var getGPSLocation = function() {
-    
-    var suc = function(p) {
-        var GPS_saved = SaveGPSLocation(p.coords.latitude, p.coords.longitude);
+
+var suc = function(p) {
+    var GPS_saved = SaveGPSLocation(p.coords.latitude, p.coords.longitude);
         if (GPS_saved == 1) {
             $("#data_status").append("<br /> saved GPS:" + p.coords.latitude, p.coords.longitude);
             GPS_done(1);
@@ -93,6 +116,24 @@ var getGPSLocation = function() {
     navigator.geolocation.getCurrentPosition(suc, locFail);
 };
 
+var refreshGPSLocation = function() {
+
+    var suc = function(p) {
+        var GPS_saved = SaveGPSLocation(p.coords.latitude, p.coords.longitude);
+        if (GPS_saved == 1) {
+            $("#data_status").append("<br /> saved GPS:" + p.coords.latitude, p.coords.longitude);
+            GPS_refresh(1);
+        } else {
+        GPS_refresh(0);
+        }
+    };
+    var locFail = function() {
+        alert("GPS fail");
+        $("#data_status").append("<br /> GPS fail");
+        GPS_refresh(0);
+    };
+    navigator.geolocation.getCurrentPosition(suc, locFail);
+};
 
 var beep = function() {
     navigator.notification.beep(2);
@@ -221,6 +262,26 @@ function getUserIDstore() {
     return (item);
 }
 
+function getEpochstore() {
+    var item;
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+    store.exists("app_data", function(available) {
+        if (available) {
+            store.get("app_data", function(theJsonData) {
+                item = theJsonData.epoch;
+            });
+        } else {
+        }
+    });
+  
+    return (item);
+}
+
+
 function getSiteCtstore() {
     var item;
     var store = new Lawnchair({
@@ -236,6 +297,97 @@ function getSiteCtstore() {
         } else {
         }
     });
+    return (item);
+}
+
+function getTotalstore() {
+    var item;
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+    store.exists("login_data", function(available) {
+        if (available) {
+            store.get("login_data", function(theJsonData) {
+                item = theJsonData.total;
+            });
+        } else {
+        }
+    });
+    return (item);
+}
+
+function getLat_tn() {
+    var item;
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+    store.exists("login_data", function(available) {
+        if (available) {
+            store.get("login_data", function(theJsonData) {
+                item = theJsonData.lat_tn;
+            });
+        } else {
+        }
+    });
+    return (item);
+}
+
+function getLat_nm() {
+    var item;
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+    store.exists("login_data", function(available) {
+        if (available) {
+            store.get("login_data", function(theJsonData) {
+                item = theJsonData.lat_nm;
+            });
+        } else {
+        }
+    });
+    return (item);
+}
+
+function getTownstore() {
+    var item;
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+    store.exists("loc_data", function(available) {
+        if (available) {
+            store.get("loc_data", function(theJsonData) {
+                item = theJsonData.town;
+            });
+        } else {
+        }
+    });
+    return (item);
+}
+
+function getPhoneNamestore() {
+    var item;
+    var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+    store.exists("login_data", function(available) {
+        if (available) {
+            store.get("login_data", function(theJsonData) {
+                item = theJsonData.phonename;
+            });
+        } else {
+        }
+    });
+   
     return (item);
 }
 
@@ -258,8 +410,77 @@ function getFromStore(storetype,storeval) {
         } else {
             
         }
-    });    
+    });
 }
+
+function FTLcheck() {
+  
+    
+ var store = new Lawnchair({
+        adapter: "dom",
+        name: "data_store"
+    }, function(store) {
+    });
+
+    store.exists('loc_data', function(available) {
+
+        if (available) {
+            $("#data_status").append('<br />have login data');
+            //do epoch check here
+            var epochdata = getEpochstore();
+            var diff = Math.round(new Date().getTime() / 1000) - parseInt(epochdata);
+            $("#data_status").append('<br /> diff= ' + diff);
+            DataCheck(0, diff);
+            
+        } else {
+            $("#data_status").append('<br />no login data');
+            //first time login
+            DataCheck(1,100);
+        }
+
+    });
+
+}
+
+function DataCheck(level,diff) {
+    var network = check_network();
+    //network = "NONE";
+    var hours = Math.round(diff / 360);
+    if (level == 1) {
+        if (network == "NONE" || network == null) {
+            alert("This app needs a data connection for the initial boot up.");
+            alert("Can't find one, so closing, sorry.");
+            close();
+        } else {
+            GetGPSData();
+        }
+    } else {
+    if (network == "NONE" || network == null) {
+        $("#weather").removeClass("ui-disabled");
+        $("#weather").addClass("ui-enabled");
+        $("#status").removeClass("ui-disabled");
+        $("#status").addClass("ui-enabled");
+        $("#twitter").trigger('collapse');
+        $("#statustxt").html("<p>No data connection found. Weather data from " + hours + " hours ago is available.</p>").trigger('create');
+        getCacheBW("olddata");
+    } else {
+
+
+        if (diff <= 5000) {
+            //get site count, town, lat, lng from store
+            $("#data_status").append('<br />less 500, simple refresh');
+            load_data_refresh();
+        } else {
+            //get name, count, etc from store, then weather (checkstore) => start
+            $("#data_status").append('<br />greater than 500, full refresh');
+            load_data_db();
+        }
+    }
+    }
+   
+}
+
+
 
 function checkStore() {
     var store = new Lawnchair({
@@ -300,7 +521,8 @@ function logWeather(userid,latval,longval) {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:3192/Home/GetWeather",
+        url: "http://washingapp.apphb.com/Home/GetWeather",
+        //url: "http://localhost:3192/Home/GetWeather",
         data: "userID=" + userid + "&latval=" + latval + "&longval=" + longval,
         dataType: "text/plain",
         success: function(response) {
@@ -334,17 +556,17 @@ function getWeather(timediff) {
 
     store.get('loc_data', function(theJsonData) {
         lat = theJsonData.lat;
-        longval = theJsonData.longval;
-        $('#data_status').append("<br /> lat " + lat + "long " + longval);
+        longval = theJsonData.lng;
+        $('#data_status').append("<br /> for weather: lat " + lat + "long " + longval);
 
     });
 
     var loc = lat + "," + longval;
 
-    var APIcalls = getFromStore("login_data", "APIcalls");
+    //var APIcalls = getFromStore("login_data", "APIcalls");
     var userid = getUserIDstore();
     //getFromStore("login_data", "userID");
-    $('#data_status').append("<br /> API from store " + APIcalls);
+    $('#data_status').append("<br /> API from store " + userid);
 
     if (timediff == 1) {
 
@@ -355,27 +577,28 @@ function getWeather(timediff) {
             url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
             //url: "json.txt",
             //dataType: "html",
-           dataType: "jsonp",
+            dataType: "jsonp",
             success: function(json) {
-            //var jsontxt = eval('(' + json + ')');
-                
+                //var jsontxt = eval('(' + json + ')');
+
                 var jsontext = JSON.stringify(json);
                 var location = json['location']['city'];
                 $('#data_status').append("<br /> Location from data local new " + location);
 
-             
                 var epoch = Math.round(new Date().getTime() / 1000)
                 var timenow = new Date();
                 var hour_now = timenow.getHours();
                 var minute_now = timenow.getMinutes();
                 var today = timenow.getDate();
-                $('#data_status').append("<br /> save: " + epoch);
+               
+                $('#data_status').append("<br /> save w: " + epoch);
                 var me = {
                     key: 'app_data',
                     json: jsontext,
                     hoursaved: hour_now,
                     minsaved: minute_now,
                     datesaved: today,
+                    timesaved: timenow,
                     epoch: epoch
                 };
 
@@ -388,7 +611,7 @@ function getWeather(timediff) {
             },
             complete: function() {
                 //load weather
-                
+
                 getCacheBW("newdata");
                 $.mobile.loading('hide');
                 start();
@@ -418,18 +641,56 @@ function setPC(postcode) {
     getLatLng(pc_uri);
 }
 
+function closeDetails() {
+
+$('#my_details').dialog('close');
+}
+
 function saveName() {
     //$("setloc").dialog("close");
     //var postcode = $("set_pc").val();
     var username = document.getElementById("username1").value;
-    //alert(username);
-    $("#phone_name").html(username);
-    $('#my_details').dialog('close')
-//    $.mobile.changePage('#my_details', { allowSamePageTransition: true, transition: "none" });
+    var userid = getUserIDstore();
+    //
+
+    $.mobile.loading('show', {
+        text: 'foo',
+        textVisible: true,
+        theme: 'a',
+        html: "<p>Saving name ...</p>"
+    });
+    alert(username + userid);
+    $.ajax({
+        type: "POST",
+        //url: "http://localhost:3192/Home/SavePhonename",
+        url: "http://washingapp.apphb.com/Home/SavePhonename",
+        data: "userid=" + userid + "&phonename=" + username,
+        dataType: "jsonp",
+        success: function(json) {
+
+        },
+        error: function(xhr, error) {
+            // console.debug(xhr); console.debug(error);
+
+        },
+        complete: function(xhr, status) {
+            $("#phone_name").html(username);
+            $('#name_msg').html("");
+            $("#add_site_link").removeClass("ui-disabled");
+            $("#add_site_link").addClass("ui-enabled");
+            $("#my_sites_link").removeClass("ui-disabled");
+            $("#my_sites_link").addClass("ui-enabled");
+            closeDetails();
+            load_data_db();
+            $.mobile.loading('hide');
+
+        }
+    });
 
 }
 
 function saveSite1() {
+    $("#set_map_overlay").fadeIn();
     var latval = document.getElementById("lat_coord").innerHTML;
     var longval = document.getElementById("long_coord").innerHTML;
     $.mobile.loading('show', {
@@ -449,15 +710,16 @@ function saveSite1() {
                 town = geo.toponymName;
 
             });
-          
+
         },
         error: function(xhr, error) {
-            $("#loc_here").html("No town listed for: " + lat + "," + lng);
+            //$("#loc_here").html("No town listed for: " + lat + "," + lng);
+            town = "Unknown";
 
         },
         complete: function(xhr, status) {
             saveSite2(town);
-            alert(town);
+            //alert(town);
             //$("#map_msg").html("Done.");
         }
 
@@ -467,38 +729,40 @@ function saveSite1() {
 
 
 function saveSite2(town) {
-   
-    var username = document.getElementById("usernameid").value;
     var sitename = document.getElementById("sitenameid").value;
     var comment = document.getElementById("commentid").value;
     var latval = document.getElementById("lat_coord").innerHTML;
     var longval = document.getElementById("long_coord").innerHTML;
     var userid = getUserIDstore();
+    var username = getPhoneNamestore();
+
     $.ajax({
         type: "POST",
-        url: "http://localhost:3192/Home/SavePlace",
-        //url: "http://washingapp.apphb.com/Home/SavePlace",
-        data: "username=" + username + "&placename=" + sitename + "&comment=" + comment + "&latval=" + latval + "&longval=" + longval + "&userid=" + userid + "&town=" + town,
+        //url: "http://localhost:3192/Home/SavePlace",
+        url: "http://washingapp.apphb.com/Home/SavePlace",
+        data: "userid=" + userid + "&placename=" + sitename + "&comment=" + comment + "&latval=" + latval + "&longval=" + longval + "&username=" + username + "&town=" + town,
         dataType: "jsonp",
         success: function(json) {
             var jsontext = JSON.stringify(json);
-            alert(town);
         },
         error: function(xhr, error) {
             // console.debug(xhr); console.debug(error);
-            $("#saveSite").html("Save Failed");
+            alert("Save Failed");
 
         },
         complete: function(xhr, status) {
-        document.getElementById("usernameid").value = "";
-        document.getElementById("sitenameid").value = "";
-        document.getElementById("commentid").value = "";
-        document.getElementById("lat_coord").innerHTML = "";
-        document.getElementById("long_coord").innerHTML = "";
+            document.getElementById("sitenameid").value = "";
+            document.getElementById("commentid").value = "";
+            document.getElementById("lat_coord").innerHTML = "";
+            document.getElementById("long_coord").innerHTML = "";
             var new_ct = parseInt(getSiteCtstore()) + 1;
             $("#my_sites_ct").html(new_ct.toString());
-            $.mobile.loading('hide');
-            refreshPage();
+            $.mobile.loading('show', {
+                text: 'foo',
+                textVisible: true,
+                theme: 'a',
+                html: "<p>Saved. Press Menu to return.</p>"
+            });
             //$.mobile.changePage('index.html');
 
         }
@@ -507,23 +771,33 @@ function saveSite2(town) {
 
 }
 
-function refreshPage() {
+function refreshPage(msg) {
     $.mobile.changePage(
     'index.html',
     {
         allowSamePageTransition: true,
         transition: 'none',
         showLoadMsg: false,
-        reloadPage: true
+        reloadPage: true,
+        html: "<p>" + msg + "</p>"
+
     }
   );
-    load_data();
+
 }
 
 function saveMovedSite() {
+    $("#set_map_overlaym").fadeIn();
+    $.mobile.loading('show', {
+        text: 'foo',
+        textVisible: true,
+        theme: 'a',
+        html: "<p>Saving new position</p>"
+    });
     var PID = document.getElementById("MPID").innerHTML;
     var latval = document.getElementById("lat_coordm").innerHTML;
     var longval = document.getElementById("long_coordm").innerHTML;
+   
     var userid = getUserIDstore();
     $.ajax({
         type: "POST",
@@ -533,17 +807,23 @@ function saveMovedSite() {
         dataType: "jsonp",
         success: function(json) {
             var jsontext = JSON.stringify(json);
-        
+
         },
         error: function(xhr, error) {
-        // console.debug(xhr); console.debug(error);
-        $("#saveSitem").html("Move Failed");
+            // console.debug(xhr); console.debug(error);
+            $("#saveSitem").html("Move Failed");
 
         },
         complete: function(xhr, status) {
-        $("#saveSitem").html("New location saved");
-        //$.mobile.changePage('index.html#one', { allowSamePageTransition: true, transition: "none" });
-        
+            //$("#saveSitem").html("New location saved");
+        $.mobile.loading('show', {
+            text: 'foo',
+            textVisible: true,
+            theme: 'a',
+            html: "<p>Saved. Press Menu to return.</p>"
+        });
+            //$.mobile.changePage('index.html#one', { allowSamePageTransition: true, transition: "none" });
+
         }
     });
     //$.mobile.changePage('#my_details', { allowSamePageTransition: true, transition: "none" });
@@ -565,11 +845,24 @@ function GetGPSData() {
 function GPS_done(retval) {
     if (retval == 1) {
         var position = getPosition();
-        //should be get locatin from gps then save
         var latlng = position.split(',');
         var lat = latlng[0];
         var lng = latlng[1];
-        getPlace(lat, lng);
+        getPlace(lat, lng, 0);
+    } else {
+        $.mobile.loading('hide');
+        $("#loc_here").html("Click here to set manually");
+    }
+
+}
+
+function GPS_refresh(retval) {
+    if (retval == 1) {
+        var position = getPosition();
+        var latlng = position.split(',');
+        var lat = latlng[0];
+        var lng = latlng[1];
+        getPlace(lat, lng, 1);
     } else {
         $.mobile.loading('hide');
         $("#loc_here").html("Click here to set manually");
@@ -578,20 +871,35 @@ function GPS_done(retval) {
 }
 
 var start = function() {
+    $.mobile.loading('hide');
     $("#showmaplink").removeClass("ui-disabled");
     $("#showmaplink").addClass("ui-enabled");
 
     $("#my_details_link").removeClass("ui-disabled");
     $("#my_details_link").addClass("ui-enabled");
-
-    $("#add_site_link").removeClass("ui-disabled");
-    $("#add_site_link").addClass("ui-enabled");
-
+    var phonename = document.getElementById("username1").value;
+    if (phonename.length > 0) {
+        $("#add_site_link").removeClass("ui-disabled");
+        $("#add_site_link").addClass("ui-enabled");
+    
     $("#my_sites_link").removeClass("ui-disabled");
     $("#my_sites_link").addClass("ui-enabled");
-
+    }
     $("#search_link").removeClass("ui-disabled");
     $("#search_link").addClass("ui-enabled");
+
+    $("#weather").removeClass("ui-disabled");
+    $("#weather").addClass("ui-enabled");
+
+    $("#status").removeClass("ui-disabled");
+    $("#status").addClass("ui-enabled");
+
+    $("#mydeets").removeClass("ui-disabled");
+    $("#mydeets").addClass("ui-enabled");
+
+    $("#twitter").removeClass("ui-disabled");
+    $("#twitter").addClass("ui-enabled");
+    $("#twitter").trigger('expand');
 
     //startmap();
     //document.getElementById("uuidi").innerHTML = device.uuid;
@@ -607,13 +915,10 @@ var start = function() {
 
 
 function init() {
-    //  $("#set_pc").buttonMarkup({ inline: true });
-    //document.addEventListener("deviceready", load_data, false);
-    //bds = "((55.91794121734191, -3.021798358789056), (56.18635420913567, -2.443642841210931))";
-    //format_bounds(bds);
-    //getCacheBW("newdata");
-    load_data();
 
+    document.addEventListener("deviceready", FTLcheck, false);
+    //FTLcheck();
+  
 }
 
 function save_id() {
@@ -625,7 +930,7 @@ function save_id() {
     });
     try {
         var phoneid = device.uuid;
-        $("#uuid").html(phoneid);
+       // $("#uuid").html(phoneid);
 } catch (Error) {
     var phoneid = "laptop2";
     }
@@ -655,12 +960,52 @@ function save_id() {
 
 }
 
-//get name + userID, API calls #
-function load_data() {
+function load_data_refresh() {
     var browser_w = parseInt($(document).width()) - 10;
     $('#data_status').append("widths: " + browser_w);
     $('#map_overlay').css('width', browser_w.toString() + 'px');
-    $('#map_overlaym').css('width', browser_w.toString() + 'px');
+    $('#set_map_overlaym').css('width', browser_w.toString() + 'px');
+    $('#set_map_overlay').css('width', browser_w.toString() + 'px');
+    $('#twitter_div').css('width', browser_w.toString() + 'px');
+    $.mobile.loading('show', {
+        text: 'foo',
+        textVisible: true,
+        theme: 'a',
+        html: "<p>Please be patient ...</p><p></p><p>Refreshing data</p>"
+    });
+
+    var site_ct = getSiteCtstore();
+    var phonename = getPhoneNamestore();
+    if (phonename.length == 0) {
+        $('#name_msg').html("Please add a name in My Details before adding sites.");
+    } 
+    var town = getTownstore();
+    var total = getTotalstore();
+    var lat_tn = getLat_tn();
+    var lat_nm = getLat_nm();
+    $('#phone_name').html(phonename);
+    document.getElementById("username1").value = phonename;
+    $('#my_sites_ct').html(site_ct);
+    $('#data_status').append("API: unknown");
+    $('#loc_here').html(town);
+    $("#gps_results").html(town);
+    $("#lat_nm").html(lat_nm);
+    $("#lat_tn").html(lat_tn);
+    $("#total_sites").html(total);
+    //id, town, from store
+    getWeather(0);
+   
+
+}
+
+//get name + userID, API calls #
+function load_data_db() {
+    var browser_w = parseInt($(document).width()) - 10;
+    $('#data_status').append("widths: " + browser_w);
+    $('#map_overlay').css('width', browser_w.toString() + 'px');
+    $('#set_map_overlaym').css('width', browser_w.toString() + 'px');
+    $('#set_map_overlay').css('width', browser_w.toString() + 'px');
+    $('#twitter_div').css('width', browser_w.toString() + 'px');
     $.mobile.loading('show', {
         text: 'foo',
         textVisible: true,
@@ -669,17 +1014,21 @@ function load_data() {
     });
     try {
         var phoneid = device.uuid;
-        $("#uuid").html(phoneid);
+       // $("#uuid").html(phoneid);
     } catch (Error) {
-        var phoneid = "laptop3";
+    var phoneid = "laptop3";
+   // $("#uuid").html(phoneid);
     }
     var userID;
     var phonename;
     var APIcalls;
     var site_ct;
-
+    var new_user = "false";
+    var lat_nm;
+    var lat_tn;
+    var total;
     $.ajax({
-    type: "POST",
+        type: "POST",
         url: "http://washingapp.apphb.com/Home/SaveID",
         //url: "http://localhost:3192/Home/SaveID",
         data: "phoneID=" + phoneid,
@@ -690,18 +1039,34 @@ function load_data() {
             phonename = json['Name'];
             APIcalls = json['APIcalls'];
             site_ct = json['site_ct'];
-            $('#my_sites_ct').html(site_ct);
-            $('#data_status').append("API: " + userID);
+            lat_nm = json['lat_nm'];
+            lat_tn = json['lat_tn'];
+            total = json['total'];
+            new_user = "true";
+
         },
         error: function(xhr, error) {
             // console.debug(xhr); console.debug(error);
 
         },
         complete: function(xhr, status) {
-            SaveLoginDetails(APIcalls, phonename, userID, site_ct);
-            $("#phone_name").html(phonename);
-            GetGPSData();
-            $("#data_status").append(userID + " Done 1");
+            SaveLoginDetails(APIcalls, phonename, userID, site_ct, total, lat_nm, lat_tn);
+            $('#phone_name').html(phonename);
+            document.getElementById("username1").value = phonename;
+            if (phonename.length == 0) {
+                $('#name_msg').html("Please add a name in My Details before adding sites.");
+            } 
+            $('#my_sites_ct').html(site_ct);
+            $('#data_status').append("API: " + userID);
+            var town = getTownstore();
+            $('#loc_here').html(town);
+            $("#gps_results").html(town);
+            $('#lat_nm').html(lat_nm);
+            $('#lat_tn').html(lat_tn);
+            $('#total_sites').html(total);
+
+            getWeather(1);
+
 
         }
     });
@@ -718,9 +1083,8 @@ function setMarkers(map, bounds_map, PID) {
     removeMarkers();
     var markers_array = [];
     var ct = 0;
-    var image = 'mrkr.png';
     if (parseInt(PID) > 0) {
-        var infoWindowLive = new google.maps.InfoWindow({ content: 'This one: ' + PID });
+//        var infoWindowLive = new google.maps.InfoWindow({ content: 'This one: ' + PID });
     }
     $.ajax({
         type: "GET",
@@ -733,7 +1097,14 @@ function setMarkers(map, bounds_map, PID) {
             ct = json.ct;
             $.each(json.points, function(i, markers) {
                 console.log(json);
-                var infoWindow = new google.maps.InfoWindow({ content: 'Place ID' + markers.PID });
+                if (markers.PID == parseInt(PID)) {
+                    var image = 'marker_search.png';
+                    ListComments(markers.PID);
+                    $('#place_name').html(markers.name);
+                } else {
+                    var image = 'marker_s4.png';
+                }
+                //var infoWindow = new google.maps.InfoWindow({ content: 'Place ID' + markers.PID });
                 var siteLatLng = new google.maps.LatLng(markers.lat, markers.longval);
                 var markerp = new google.maps.Marker({ 'position': siteLatLng, 'icon': image });
                 markers_array.push(markerp);
@@ -742,17 +1113,10 @@ function setMarkers(map, bounds_map, PID) {
                 //attach infowindow on click
                 google.maps.event.addListener(markerp, "click", function() {
                     //$('#map_markers').fadeOut().html("<p>Click: " + markers.name + markers.PID + "</p>").fadeIn();
-                    var infoWindow = new google.maps.InfoWindow({ content: 'Place ID' + markers.PID });
                     ListComments(markers.PID);
                     $('#place_name').html(markers.name);
-                    infoWindow.open(map, markerp);
+                    //infoWindow.open(map, markerp);
                 });
-
-               // if (markers.PID == parseInt(PID)) {
-                    //
-               //     infoWindowLive.open(map, markerp);
-              //      alert(PID);
-              //  }
 
                 google.maps.event.addListener(markerp, "drag", function() {
                     $('#map_msg').html(markerp.position.lat());
@@ -760,7 +1124,7 @@ function setMarkers(map, bounds_map, PID) {
 
 
             });
-            var mcOptions = { gridSize: 100, maxZoom: 15 };
+            var mcOptions = { gridSize: 100, maxZoom: 18 };
             //$("#popupPadded").popup("close");
             $("#map_overlay").fadeOut();
             var markerCluster = new MarkerClusterer(map, markers_array, mcOptions);
@@ -773,7 +1137,14 @@ function setMarkers(map, bounds_map, PID) {
 
         },
         complete: function(xhr, status) {
-            $("#map_msg").html(ct + " Loaded. Click to see comments ...");
+            var bannermsg = "";
+            if (ct == 0) {
+                $("#map_msg").html(ct + " No sledging sites listed in this view.");
+                
+            } else {
+                $("#map_msg").html(ct + " Loaded. Click to see comments ...");
+
+            }
 
         }
     });
@@ -781,13 +1152,14 @@ function setMarkers(map, bounds_map, PID) {
 }
 
 function setMarker_site(map, bounds_map, lat, lng) {
+    var image = 'marker_n.png';
     $('#lat_coord').html(lat.toString().slice(0, 9));
     $('#long_coord').html(lng.toString().slice(0, 9));
     var bounds = new google.maps.LatLngBounds(bounds_map);
     var marktxt = "";
     var markers_array = [];
     var siteLatLng = new google.maps.LatLng(lat, lng);
-    var markerp = new google.maps.Marker({ 'position': siteLatLng, draggable: true, map: map });
+    var markerp = new google.maps.Marker({ 'position': siteLatLng, draggable: true, 'icon': image, map: map });
     google.maps.event.addListener(markerp, "drag", function() {
     $('#lat_coord').html(markerp.position.lat().toString().slice(0, 9));
     $('#long_coord').html(markerp.position.lng().toString().slice(0, 9));
@@ -798,14 +1170,14 @@ function setMarker_site(map, bounds_map, lat, lng) {
 function setMarker_move(map, bounds_map, lat, lng) {
     var latstr = lat.toString().slice(0,9);
     var lngstr = lng.toString().slice(0,9);
-
+    var image = 'marker_n.png'
     $('#lat_coordm').html(latstr);
     $('#long_coordm').html(lngstr);
     var bounds = new google.maps.LatLngBounds(bounds_map);
     var marktxt = "";
     var markers_array = [];
     var siteLatLng = new google.maps.LatLng(lat, lng);
-    var markerp = new google.maps.Marker({ 'position': siteLatLng, draggable: true, map: map });
+    var markerp = new google.maps.Marker({ 'position': siteLatLng, draggable: true, 'icon': image, map: map });
     google.maps.event.addListener(markerp, "drag", function() {
         $('#lat_coordm').html(markerp.position.lat().toString().slice(0,9));
         $('#long_coordm').html(markerp.position.lng().toString().slice(0,9));
@@ -813,24 +1185,35 @@ function setMarker_move(map, bounds_map, lat, lng) {
     $("#set_map_overlaym").fadeOut();
 }
 
-function getPosition() {
-    var lat = "";
-    var longval = "";
-    var store = new Lawnchair({
-        adapter: "dom",
-        name: "data_store"
-    }, function(store) {
+function DeleteSite(pid) {
+    
+if (confirm("Delete. Are you sure?")) { 
+// do this
+
+    $.ajax({
+        type: "POST",
+        //url: "http://localhost:3192/Home/DeletePlace",
+        url: "http://washingapp.apphb.com/Home/DeletePlace",
+        data: "PID=" + pid,
+        dataType: "jsonp",
+        success: function(json) {
+        },
+        error: function(xhr, error) {
+            // console.debug(xhr); console.debug(error);
+
+        },
+        complete: function(xhr, status) {
+            $("#place" + pid).slideUp();
+            $("#sites_msg").html("Site deleted");
+            var new_ct = parseInt(getSiteCtstore()) - 1;
+            if (new_ct < 0) {
+                $("#my_sites_ct").html("0");
+            } else {
+                $("#my_sites_ct").html(new_ct.toString());
+            }
+        }
     });
-
-    store.get('loc_data', function(theJsonData) {
-        lat = theJsonData.lat;
-        longval = theJsonData.longval;
-    });
-
-    var loc = lat + "," + longval;
-
-    return loc;
-
+}
 }
 
 function ListSites() {
@@ -846,13 +1229,14 @@ function ListSites() {
         dataType: "jsonp",
         success: function(json) {
             $.each(json.sites, function(i, result) {
-                sites_html = sites_html + "<div class=\"ui-grid-b\">" +
- "<div class=\"ui-block-a\"><div class=\"ui-bar ui-bar-a\"><p></p>" + result.name + "</div></div>" +
- "<div class=\"ui-block-b\"><div class=\"ui-bar ui-bar-a\"><a href=\"index.html#move_site\" data-role=\"button\" data-icon=\"delete\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"c\" data-inline=\"true\" onclick=\"move_site_map(" + result.latitude + "," + result.longitude + "," + result.PID + ")\">Move</a></div></div>" +
-"<div class=\"ui-block-c\"><div class=\"ui-bar ui-bar-a\"><a href=\"index.html#add_site\" data-role=\"button\" data-icon=\"delete\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"c\" data-inline=\"true\" onclick=\"DeleteSite(" + result.PID + ")\">Delete</a></div></div></div>" +
-                "<div class=\"ui-bar ui-bar-b\" style=\"height:2px\"></div>";
-                ct = json.ct;
+                sites_html = sites_html + "<div id=\"place" + result.PID + "\"><div class=\"ui-grid-b\">" +
+ "<div class=\"ui-block-a\"><div class=\"ui-bar ui-bar-c\"><p></p>" + result.name + "</div></div>" +
+ "<div class=\"ui-block-b\"><div class=\"ui-bar ui-bar-c\"><a href=\"index.html#move_site\" data-role=\"button\" data-icon=\"gear\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"b\" data-inline=\"true\" onclick=\"move_site_map(" + result.latitude + "," + result.longitude + "," + result.PID + ")\">Move</a></div></div>" +
+"<div class=\"ui-block-c\"><div class=\"ui-bar ui-bar-c\"><a href=\"#\" data-role=\"button\" data-icon=\"delete\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"b\" data-inline=\"true\" onclick=\"DeleteSite(" + result.PID + ")\">Delete</a></div></div></div>" +
+                "<div class=\"ui-bar ui-bar-b\" style=\"height:2px\"></div></div>";
+               
             });
+             ct = json.ct;
         },
         error: function(xhr, error) {
             // console.debug(xhr); console.debug(error);
@@ -869,14 +1253,15 @@ function ListSites() {
 }
 
 function doSearch() {
+    $("#sites_search_msg").show();
     $("#sites_search_msg").html("Searching ...");
     var search_str = document.getElementById("searchid").value;
     var sites_html = "<ul data-role=\"listview\" data-theme=\"a\" data-inset=\"true\">";
     var ct = 0;
     $.ajax({
         type: "GET",
-        url: "http://localhost:3192/Home/ListPlaces",
-        //url: "http://washingapp.apphb.com/Home/ListMySites",
+        //url: "http://localhost:3192/Home/ListPlaces",
+        url: "http://washingapp.apphb.com/Home/ListPlaces",
         data: "search_str=" + search_str,
         dataType: "jsonp",
         success: function(json) {
@@ -904,25 +1289,24 @@ if (PID == 0) {
     PID = document.getElementById("hidPID").innerHTML;
     console.log(PID + "hid");
 }
-
+console.log(PID);
 var comments_html = "";
 var ct = 0;
 $.ajax({
     type: "GET",
     //url: "http://localhost:3192/Home/ListComments",
     url: "http://washingapp.apphb.com/Home/ListComments",
-
     data: "PID=" + PID,
     dataType: "jsonp",
     success: function(json) {
         $.each(json.cmts, function(i, result) {
             comments_html = comments_html + "<div class=\"ui-grid-a\">" +
- "<div class=\"ui-block-a\"><div class=\"ui-bar ui-bar-a\">" + result.datetime + "</div></div>" +
- "<div class=\"ui-block-b\"><div class=\"ui-bar ui-bar-a\">" + result.username + "</div></div></div>" +
- "<div class=\"ui-bar ui-bar-a\">" + result.comment + "</div>" +
+ "<div style=\"color:#F2EDA2\" class=\"ui-block-a\"><div class=\"ui-bar ui-bar-c\">" + result.datetime + "</div></div>" +
+ "<div class=\"ui-block-b\"><div style=\"color:#F2EDA2\" class=\"ui-bar ui-bar-c\">" + result.username + "</div></div></div>" +
+ "<div class=\"ui-bar ui-bar-c\"><h4>" + result.comment + "</h4></div>" +
  "<div class=\"ui-bar ui-bar-b\" style=\"height:1px\"></div>";
-            ct = json.ct;
         });
+        ct = json.ct;
     },
     error: function(xhr, error) {
         // console.debug(xhr); console.debug(error);
@@ -932,16 +1316,16 @@ $.ajax({
         if (ct == 0) {
             $("#place_comments").html("No comments");
         } else {
-            $("#place_comments").html(comments_html);
-            $("#comments_ct").html("Comments (" + ct + ")" + "<div style=\"display:none\" id=\"hidPID\">" + PID + "</div>");
+        $("#place_comments").html(comments_html + "<div style=\"display:none\" id=\"hidPID\">" + PID + "</div>").trigger('create');
             $("#addcomm").show();
         }
-        $("#map_msg").html("Comments loaded.");
+        $("#map_msg").html(ct + " comments loaded.");
 
     }
 });
 
 }
+
 
 function SaveComment() {
 
@@ -955,24 +1339,24 @@ function SaveComment() {
         type: "POST",
         //url: "http://localhost:3192/Home/SaveComment",
         url: "http://washingapp.apphb.com/Home/SaveComment",
-        data: "PID=" + PID + "&comment=" + comment + "&userID" + userID,
+        data: "PID=" + PID + "&comment=" + comment + "&userID=" + userID,
         dataType: "jsonp",
         success: function(json) {
             $.each(json.cmts, function(i, result) {
-                comments_html = comments_html + "<div class=\"ui-grid-a\">" +
- "<div class=\"ui-block-a\"><div class=\"ui-bar ui-bar-a\">" + result.datetime + "</div></div>" +
- "<div class=\"ui-block-b\"><div class=\"ui-bar ui-bar-a\">" + result.username + "</div></div></div>" +
- "<div class=\"ui-bar ui-bar-a\">" + result.comment + "</div>" +
- "<div class=\"ui-bar ui-bar-b\" style=\"height:5px\"></div>";
-                ct = json.ct;
+                comments_html = comments_html + "<div class=\"ui-grid-a\" style=\"font-weight:12px\">" +
+ "<div class=\"ui-block-a\"><div class=\"ui-bar ui-bar-c\">" + result.datetime + "</div></div>" +
+ "<div class=\"ui-block-b\"><div class=\"ui-bar ui-bar-c\">" + result.username + "</div></div></div>" +
+ "<div class=\"ui-bar ui-bar-c\">" + result.comment + "</div>" +
+ "<div class=\"ui-bar ui-bar-b\" style=\"height:1px\"></div>";
             });
+            ct = json.ct;
         },
         error: function(xhr, error) {
             // console.debug(xhr); console.debug(error);
 
         },
         complete: function(xhr, status) {
-        document.getElementById("addcommentid").value = "";
+            document.getElementById("addcommentid").value = "";
             if (ct == 0) {
                 $("#place_comments").html("No comments");
             } else {
@@ -984,6 +1368,7 @@ function SaveComment() {
 
         }
     });
+
 
 }
 
@@ -998,8 +1383,8 @@ function getPosition() {
 
     store.get('loc_data', function(theJsonData) {
         lat = theJsonData.lat;
-        longval = theJsonData.longval;
-        $("#map_msg").append("from store: lat " + lat + "long " + longval);
+        longval = theJsonData.lng;
+        //$("#map_msg").append("from store: lat " + lat + "long " + longval);
 
     });
 
@@ -1135,7 +1520,6 @@ function GoogleMap_move(lat, lng, PID) {
 function GoogleMap_result(lat, lng, PID) {
     var siteLatLng = lat + "," + lng;
     this.initialize = function() {
-
         var map = showMap();
         $('#place_name').html("&nbsp");
         $('#place_name').html("&nbsp");
@@ -1181,7 +1565,7 @@ function GoogleMap_result(lat, lng, PID) {
 }
 
 
-function getPlace(lat,lng) {
+function getPlace(lat,lng,fresh) {
     var town;
     $.ajax({
         type: "GET",
@@ -1194,15 +1578,25 @@ function getPlace(lat,lng) {
 
             });
             $("#loc_here").html(town);
+            $("#gps_results").html(town);
             //SaveNewLocation(lat, lng, town);
 
         },
         error: function(xhr, error) {
             $("#loc_here").html("No town listed for: " + lat + "," + lng);
-
+            $("#gps_results").html("No town listed for: " + lat + "," + lng);
         },
         complete: function(xhr, status) {
-            checkStore(30);
+            SaveFirstLoginDetails(lat, lng, town);
+            if (fresh == 1) {
+                getWeather(1);
+            } else {
+                load_data_db();
+            }
+            //FTL path: check APIcalls, save ID, get weather
+
+            //CheckForUser(lat, lng, town);
+            //checkStore(30);
 
             //$("#map_msg").html("Done.");
         }
@@ -1214,7 +1608,6 @@ function getLatLng(postcode) {
     var lat;
     var lng;
     var town;
-    alert(postcode);
     $.ajax({
         type: "GET",
         url: "http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=" + postcode + "&country=GB&username=fletch1",
@@ -1225,20 +1618,23 @@ function getLatLng(postcode) {
                 lat = geo.lat;
                 lng = geo.lng;
             });
-            $("#pc_results").html("<h4>" + town + "</h4><h4>Lat: " + lat + "</h4><h4>Long: " + lng + "</h4>");
+            //$("#pc_results").html("<h4>" + town + "</h4><h4>Lat: " + lat + "</h4><h4>Long: " + lng + "</h4>");
             SaveNewLocation(lat, lng, town);
             $("#loc_here").html(town);
+            $("#gps_results").html(town);
             $("#showmaplink").removeClass("ui-disabled");
             $("#showmaplink").addClass("ui-enabled");
 
         },
         error: function(xhr, error) {
-            $("#pc_results").html("No town listed for: " + lat + "," + lng);
-            alert("fail");
+            $("#loc_here").html("No town listed for: " + lat + "," + lng);
+            $("#gps_results").html("No town listed for: " + lat + "," + lng);
+
 
         },
         complete: function(xhr, status) {
             //$("#map_msg").html("Done.");
+            getWeather(1);
         }
 
     });
@@ -1255,7 +1651,8 @@ function SaveNewLocation(lat, lng, town) {
     var me = {
         key: 'loc_data',
         lat: lat,
-        longval: lng
+        lng: lng,
+        town: town
     };
 
     // save it
@@ -1287,7 +1684,6 @@ function startmap_set() {
     var lat = latlng[0];
     var lng = latlng[1];
     var map = new GoogleMap_set(lat, lng);
-    document.getElementById("usernameid").value = "myname";
     map.initialize();
 }
 
@@ -1318,12 +1714,10 @@ function add_site_map() {
 }
 
 function move_site_map(lat, lng, PID) {
-    //alert(site_name);
     timerc = setInterval(function() { startmap_move(lat, lng, PID) }, 1000);
 }
 
 function search_result_map(lat, lng, PID) {
-    //alert(site_name);
     timerd = setInterval(function() { startmap_result(lat, lng, PID) }, 1000);
 }
 
@@ -1430,7 +1824,7 @@ function checkLocation(network) {
         var me = {
             key: 'loc_data',
             lat: "56.058168",
-            longval: "-2.719811"
+            lng: "-2.719811"
         };
 
         // save it
@@ -1450,7 +1844,7 @@ function checkLocation(network) {
             var me = {
                 key: 'loc_data',
                 lat: p.coords.latitude,
-                longval: p.coords.longitude
+                lng: p.coords.longitude
             };
 
             // save it

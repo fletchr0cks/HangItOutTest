@@ -20,24 +20,61 @@ function getCacheBW(age) {
         var timenow = new Date();
         var hour_now = timenow.getHours();
         var today = timenow.getDate();
+        var timesaved = theJsonData.timesaved;
         //if (age == "olddata") {
         $('#loc_result').append("<br /> cached data from: " + age);
         // }
         var country = parsed_json['location']['country'];
         //alert("saved= " + json_data);
-        var posy = 14;
-        var posyt = 25;
+        var posy = 54;
+        var posyt = 65;
         var example = document.getElementById('canvhere');
         var ctx2d = example.getContext('2d');
+        ctx2d.fillStyle = "#000";
+        ctx2d.fillRect(0, 0, 450, 2000);
         var ni = 1;
         var done_dt = 0;
         var first_hour = -1;
         hour_bg_bk = "000";
         var totalsnow = 0;
-
+        var diff = (Math.round(new Date().getTime() / 1000) - epochdata) / 360;
+        var hours = Math.round(diff);
         var dt = parseInt(0);
         var dt_ct = parseInt(0);
         var total_score = parseInt(0);
+        
+        ctx2d.fillStyle = '#FFF';
+        ctx2d.font = '14px Arial';
+        ctx2d.fillText("Hourly weather for " + location + ". Last updated: " + hours + "hours ago.", 10, 10);
+
+        ctx2d.fillStyle = "#f2e857";
+        ctx2d.fillRect(10, 20, 15, 12);
+        ctx2d.fillStyle = '#FFF';
+        ctx2d.font = '12px Arial';
+        ctx2d.fillText("Wind (mph)", 27, 30);
+
+        ctx2d.fillStyle = "#32CD32";
+        ctx2d.fillRect(105, 20, 15, 12);
+        ctx2d.fillStyle = '#FFF';
+        ctx2d.font = '12px Arial';
+        ctx2d.fillText("Temp (C)", 122, 30);
+
+        ctx2d.fillStyle = "#2489ce";
+        ctx2d.fillRect(180, 20, 15, 12);
+        ctx2d.fillStyle = '#FFF';
+        ctx2d.font = '12px Arial';
+        ctx2d.fillText("Rain (mm)", 197, 30);
+
+        ctx2d.fillStyle = "#FFF";
+        ctx2d.fillRect(265, 20, 15, 12);
+        ctx2d.fillStyle = '#FFF';
+        ctx2d.font = '12px Arial';
+        ctx2d.fillText("Snow (mm)", 281, 30);
+
+        //ctx2d.fillStyle = "#808080";
+        //ctx2d.fillRect(2, 10, 10, 20);
+
+
 
         $.each(parsed_json.hourly_forecast, function(i, zone) {
             var imgi = new Image();
@@ -54,15 +91,17 @@ function getCacheBW(age) {
                 hour = hour - 12
             }
             var sky = parseInt(zone.sky);
-            var rain = parseInt(zone.qpf.metric);
+            var rain_txt = parseInt(zone.qpf.metric);
+            
+            var rain = (parseInt(zone.qpf.metric) * 20) + 10;
             var snowlen = Math.round(zone.snow.metric);
             totalsnow = totalsnow + Math.round(zone.snow.metric);
-           
+
             var snow = (parseInt(zone.snow.metric) * 2) + 10;
             var hour_bg_bk = "9F9F9F";
             var wind_bg = "51D251";
             var temp_bg = "FFB336";
-            var wind_txt = "FFF";
+            var wind_txt = "2f3e46";
             var temp_txt = "FFF";
             var ampm = zone.FCTTIME.ampm;
             if (first_hour == -1) {
@@ -92,8 +131,8 @@ function getCacheBW(age) {
             ctx2d.font = '20px Arial';
             ctx2d.fillStyle = '#FFF';
             if (hour < 10) {
-   
-               ctx2d.fillText(hour, 16, posyt + 10);
+
+                ctx2d.fillText(hour, 16, posyt + 10);
             } else {
                 ctx2d.fillText(hour, 6, posyt + 10);
             }
@@ -101,31 +140,49 @@ function getCacheBW(age) {
             ctx2d.font = '10px Arial';
             ctx2d.fillText(ampm, 30, posyt + 10);
 
-
-            ctx2d.fillStyle = "#808080";
+            //wind
+            ctx2d.fillStyle = "#f2e857";
             ctx2d.fillRect(53, posy + 16, ws, 16);
             ctx2d.font = '10px Arial';
             ctx2d.fillStyle = wind_txt;
             ctx2d.fillText(zone.wspd.metric, 40 + ws, posyt + 17);
 
-            ctx2d.fillStyle = "#6495ED";
+            //temp
+            ctx2d.fillStyle = "#32CD32";
             ctx2d.fillRect(start, posy + 32, temp, 16);
             ctx2d.font = '10px Arial';
             ctx2d.fillStyle = temp_txt;
             ctx2d.fillText(zone.temp.metric, (start + 2), posyt + 33);
 
+            //rain
+            if (rain == 10 || zone.qpf.metric.length == 0) {
+                ctx2d.fillStyle = "#2489ce";
+                ctx2d.fillRect(53, posy + 48, 10, 16);
+                ctx2d.font = '10px Arial';
+                ctx2d.fillStyle = "FFF";
+                ctx2d.fillText("0", 55, posyt + 49);
+            } else {
+                ctx2d.fillStyle = "#2489ce";
+                ctx2d.fillRect(53, posy + 48, rain, 16);
+                ctx2d.font = '10px Arial';
+                ctx2d.fillStyle = "FFF";
+                ctx2d.fillText(rain_txt, 45 + rain, posyt + 49);
+            }
+
+           
+            //snow
             ctx2d.fillStyle = "#FFF";
-            ctx2d.fillRect(53, posy + 48, snow, 16);
+            ctx2d.fillRect(53, posy + 66, snow, 16);
             ctx2d.font = '10px Arial';
             ctx2d.fillStyle = "#000";
-            ctx2d.fillText(parseInt(zone.snow.metric), 53 + snow - (snowlen.toString().length * 12), posyt + 49);
+            ctx2d.fillText(parseInt(zone.snow.metric), 53 + snow - (snowlen.toString().length * 12), posyt + 65);
 
             total_score = total_score + new_score;
 
             dt_ct = dt_ct + 1;
 
             ctx2d.font = '12px Arial';
-            ctx2d.fillStyle = "#32CD32";
+            ctx2d.fillStyle = "#FFF";
             ctx2d.fillText(cond, 53, posyt);
 
             ctx2d.font = '13px Arial Bold ';
@@ -141,19 +198,13 @@ function getCacheBW(age) {
             if (total_score > 270) {
                 var res = dt_ct;
                 if (done_dt == 0) {
-
                     $('#calc').html("Drying time: " + res + " hours");
-
-
                 }
                 done_dt = 1;
-
-
                 total_score = 0;
             }
-
-            posy = posy + 78;
-            posyt = posyt + 78;
+            posy = posy + 96;
+            posyt = posyt + 96;
 
         });
 
@@ -438,50 +489,52 @@ function getDatalocalNew() {
 
  var loc = lat + "," + longval;
  $.ajax({
-  type: "GET",
-  url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
-  //dataType: "jsonp",
-  //success: function(json) {
-            
-  
-  //url: "json.txt",
-  dataType: "jsonp",
-  success: function(json) {
-      //var json = eval('(' + jsontxt + ')');
-      var jsontext = JSON.stringify(json);
-      var location = json['location']['city'];
+     type: "GET",
+     url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
+     //dataType: "jsonp",
+     //success: function(json) {
 
-      $('#loc_result').append("<br /> Location from data local new " + location + " (" + loc + ")");
 
-      var epoch = Math.round(new Date().getTime() / 1000)
-      var timenow = new Date();
-      var hour_now = timenow.getHours();
-      var minute_now = timenow.getMinutes();
-      var today = timenow.getDate();
-      var me = {
-          key: 'app_data',
-          json: jsontext,
-          hoursaved: hour_now,
-          minsaved: minute_now,
-          datesaved: today,
-          epoch: epoch
-      };
+     //url: "json.txt",
+     dataType: "jsonp",
+     success: function(json) {
+         //var json = eval('(' + jsontxt + ')');
+         var jsontext = JSON.stringify(json);
+         var location = json['location']['city'];
 
-      // save it
-      store.save(me);
-      
-      //lawnchair_s.save({ key: 'mydata', json: jsontext, hoursaved: hour_now, minsaved: minute_now, datesaved: today, epoch: epoch });
+         $('#loc_result').append("<br /> Location from data local new " + location + " (" + loc + ")");
 
-      getCacheNew("newdata");
-  },
-  error: function(xhr, error) {
-      console.debug(xhr); console.debug(error);
-  },
-  complete: function() {
+         var epoch = Math.round(new Date().getTime() / 1000)
+         var timenow = new Date();
+         var hour_now = timenow.getHours();
+         var minute_now = timenow.getMinutes();
+         var today = timenow.getDate();
+         alert(timenow);
+         var me = {
+             key: 'app_data',
+             json: jsontext,
+             hoursaved: hour_now,
+             minsaved: minute_now,
+             datesaved: today,
+             timesaved: timenow,
+             epoch: epoch
+         };
 
-  }
+         // save it
+         store.save(me);
 
-});
+         //lawnchair_s.save({ key: 'mydata', json: jsontext, hoursaved: hour_now, minsaved: minute_now, datesaved: today, epoch: epoch });
+
+         getCacheNew("newdata");
+     },
+     error: function(xhr, error) {
+         console.debug(xhr); console.debug(error);
+     },
+     complete: function() {
+
+     }
+
+ });
         
 }
 

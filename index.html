@@ -3,11 +3,12 @@
 
  <head>
     <meta name="viewport" content="width=320; user-scalable=no" />
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <title>PhoneGap</title>
     		<link href="google.css" rel="stylesheet" type="text/css" />
       <script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<link rel="stylesheet" href="assets/css/prom5.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile.structure-1.2.0.min.css" />
 <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
 <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
@@ -29,52 +30,52 @@
 <div data-role="page" id="one" data-theme="a">
 
 	<div data-role="header">
-		<h1>Multi-page</h1>
+		<h1><img src="headerlogo.png" /></h1>
 	</div><!-- /header -->
 
 	<div data-role="content" >	
-		<div id="message"></div>		
-		 <ul data-role="listview" data-inset="true" data-theme="b">
+		 <ul data-role="listview" data-inset="true" data-theme="a" data-count-theme="b">
 		<li id="showmaplink" class="ui-disabled"><a href="#two" onclick="showmap()">Local Sites</a></li>	
 		<li id="add_site_link" class="ui-disabled"><a href="#add_site"  onclick="add_site_map()">Add a Site</a></li>
-		<li id="my_sites_link" class="ui-disabled"><a href="#my_sites" onclick="ListSites()">My Sites<span id="my_sites_ct" class="ui-li-count">328</span></a></li>
-		<li id="search_link" class="ui-disabled"><a href="#search" onclick="LitSites()">Search</a></li>
+		<li id="my_sites_link" class="ui-disabled"><a href="#my_sites" onclick="ListSites()">My Sites</a><div id="my_sites_ct" class="ui-li-count">0</div></li>
+		<li id="search_link" class="ui-disabled"><a href="#search">Search</a></li>
 	</ul>
-	<div data-role="collapsible" data-theme="b" data-inset="true" data-content-theme="a">
+	<div data-role="collapsible" id="weather" class="ui-disabled" data-theme="a" data-inset="true" data-content-theme="a">
 		<h4>Hourly Weather<div style="display:inline" id="snowfall"></div></h4>
-	<canvas id="canvhere" width="450" height="2000">text here eq no canvas</canvas>
+	<canvas id="canvhere" width="450" height="1880">text here eq no canvas</canvas>
 	 </div>
-	<ul data-role="listview" data-inset="true" id="thelist">          
-    <li data-icon="arrow-r" data-iconpos="right" >
-    <a href="#setloc" data-rel="dialog" data-transition="pop">My Location: <div style="display:inline" id="loc_here">ssd</div></a>
-    <p class="ui-btn-inner">Click to change</p>
-    </li>
-</ul>
 
-<ul data-role="listview" data-inset="true">
+
+<ul data-role="listview" id="mydeets" class="ui-disabled" data-inset="true">
 <li><p class="ui-li-aside"><a href="#my_details" data-rel="dialog" data-transition="flip" data-inline="true" data-icon="gear" data-theme="b" data-role="button" data-mini="true">Edit</a></p>
 <h3>My Details</h3>
-<p>Phone ID: <span id="uuid"></span></p>
-<p>Name: <span id="phone_name"></span></p>
+<p>My Location: <span id="loc_here"></span></p>
+<p>Name: <span id="phone_name"></span><div style="display:inline;color:#66A68B" id="name_msg"></div></p>
 </li>
 </ul>
 
-<ul data-role="listview" data-inset="true">
-<li><p class="ui-li-aside"></p>
-<h2 style="color:#F2EDA2">Status</h2>
-<h3 style="color:#B6CEF2">Total sites: nn (nn added in the last 24 hours)</h3>
-<h4 style="color:#486B73">Total users: nn</h4>
+<ul data-role="listview" id="status" class="ui-disabled" data-inset="true">
+<li><p class="ui-li-aside"><a href="#" data-role="button" data-inline="true" data-icon="gear" data-theme="b" data-role="button" data-mini="true" onclick="load_data_db()">Refresh</a></p>
+<h3>Status</h3>
+<div id="statustxt"><p>Total sites: <span id="total_sites"></span></p>
+<p>Latest site added by <span id="lat_nm"></span> in <span id="lat_tn"></span></p></div>
 </li>
 </ul>
+<div data-role="collapsible" id="twitter" class="ui-disabled" data-theme="a" data-inset="true" data-content-theme="a" data-collapsed="false">
+<h4>UK Sledge on Twitter</h4>
+<div id="twitter_div">
+<a class="twitter-timeline" href="https://twitter.com/uksledge" data-widget-id="273815461060284417">Tweets by @uksledge</a>
+<script>    !function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = "//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); } } (document, "script", "twitter-wjs");</script>
+</div>
+</div>
 
-<h6 id="data_status">Data Connection: </h6>
-		<p onclick="nuke()">Nuke</p>
-		
-	</div><!-- /content -->
+ <ul data-role="listview" data-inset="true"  data-theme="a" data-count-theme="b">
+		<li data-icon="info"><a href="#credits" data-rel="dialog">Credits</a></li>	
+		</ul>
+<h6 onclick="nuke()" id="data_statusqq"></h6>
 	
-	<div data-role="footer" data-theme="d">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
+	</div><!-- /content -->
+
 </div><!-- /page one -->
 
 
@@ -82,166 +83,139 @@
 <div data-role="page" id="two" data-theme="a">
 
 	<div data-role="header">
-	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="c">Menu</a>
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>
 		<h1>Local Sites</h1>
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="a">
-	    <div id="map_msg" class="ui-bar ui-bar-e"></div>   
+	    <div id="map_msg" class="ui-bar ui-bar-b"></div>   
 		<div id="map_overlay" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:300px"><h4 style="text-align:center;padding-top:100px">Loading sites....</h4></div>
 		<div id="map_canvas" style="height:300px;"></div>
-       <div id="place_name" class="ui-bar ui-bar-e">&nbsp</div> 
-       <div class="swatch-preview">
-       <div class="ui-bar ui-bar-b"><div style="display:inline" id="comments_ct"></div></div></div> 
+       <div id="place_name" data-theme="b" class="ui-bar ui-bar-b"></div>
        <div id="place_comments"></div>
-       <div id="addcomm" class="ui-bar ui-bar-a" style="display:none">
+       <div id="addcomm" class="ui-bar ui-bar-c" style="display:none">
        <div class="ui-grid-a">
 	<div class="ui-block-a"><input type="text" name="addcomment" id="addcommentid" value="" /></div>
-	<div class="ui-block-b"><a href="index.html#two" data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="c" data-inline="true" onclick="SaveComment()">Add Comment</a></div>
+	<div class="ui-block-b"><div data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="b" data-inline="true" onclick="SaveComment()">Add Comment</div></div>
 	</div>
 		</div>
 	</div><!-- /content -->
-	
-	<div data-role="footer">
-		<h4>Page Footer </h4>
-		
-	</div><!-- /footer -->
+
 </div><!-- /page two -->
 
 <div data-role="page" id="add_site" data-theme="a">
 	<div data-role="header">
-	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="c">Menu</a>
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>
 		<h1>Add a Site</h1>
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="a">	
-	    <div class="ui-bar ui-bar-e">Drag marker</div>   		
-		<div id="set_map_overlay" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:350px;width:300px"><h4 style="text-align:center;padding-top:100px">Loading map ....</h4></div>
-		<div id="set_map_canvas" style="height:350px;"></div>
-	<div id="saveSite" class="ui-bar ui-bar-e">Lat: <div style="display:inline" id="lat_coord"></div>   Long:<div style="display:inline" id="long_coord"></div></div> 
+	    <div class="ui-bar ui-bar-b">Drag marker</div>   		
+		<div id="set_map_overlay" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:300px"><h4 style="text-align:center;padding-top:100px"></h4></div>
+		<div id="set_map_canvas" style="height:300px;"></div>
+	<div id="saveSite" class="ui-bar ui-bar-b">Lat: <div style="display:inline" id="lat_coord"></div>   Long:<div style="display:inline" id="long_coord"></div></div> 
 	<div class="ui-grid-a">
 	<div class="ui-block-a"><p></p>Site Name</div>
 	<div class="ui-block-b"><input type="text" name="sitename" id="sitenameid" value="" /></div>
 	</div>
 	<div class="ui-grid-a">
-	<div class="ui-block-a">Comment</div>
+	<div class="ui-block-a"><p></p>Comment</div>
 	<div class="ui-block-b"><input type="text" name="comment" id="commentid" value="" /></div>
 	</div>
-		<div class="ui-grid-a">
-	<div class="ui-block-a">Name</div>
-	<div class="ui-block-b"><input type="text" name="username" id="usernameid" value="" /></div>
-	</div>
-		<div id="saveSiteBtn"><div data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="c" data-inline="true" onclick="saveSite1()">Save</div></div>
+		<div id="saveSiteBtn"><div data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="b" data-inline="true" onclick="saveSite1()">Save</div></div>
 		
 	</div><!-- /content -->
-	
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
+
 </div>
 
 <div data-role="page" id="move_site" data-theme="a">
 	<div data-role="header">
-	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="c">Menu</a>
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>
 		<h1>Move Site</h1>
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="a">	
-	    <div class="ui-bar ui-bar-e">Move marker for: <div style="display:inline" id="movePlaceName"></div><div id="MPID" style="display:none"></div></div>   
+	    <div class="ui-bar ui-bar-b">Move marker<div id="MPID" style="display:none"></div></div>  
 		
 		<div id="set_map_overlaym" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:300px"><h4 style="text-align:center;padding-top:100px">Loading map ....</h4></div>
 		<div id="set_map_canvasm" style="height:300px;"></div>
-	 <div id="saveSitem" class="ui-bar ui-bar-e">Lat: <div style="display:inline" id="lat_coordm"></div>   Long:<div style="display:inline" id="long_coordm"></div></div> 
-		<div id="saveMovedSite"><div data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="c" data-inline="true" onclick="saveMovedSite()">Save</div></div>
+	 <div id="saveSitem" class="ui-bar ui-bar-b">Lat: <div style="display:inline" id="lat_coordm"></div>   Long:<div style="display:inline" id="long_coordm"></div></div> 
+		<div id="saveMovedSite"><div data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="b" data-inline="true" data-direction="reverse" onclick="saveMovedSite()">Save</div></div>
 		
 	</div><!-- /content -->
-	
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
+
 </div>
 
 <div data-role="page" id="my_sites" data-theme="a">
 
 	<div data-role="header">
-	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="c">Menu</a>		
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>		
 	<h1>My Sites</h1>
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="a">
    <div id="sites_msg" class="ui-bar ui-bar-b"></div>   
-       <div id="sites_list"></div>
+       <div id="sites_list" data-theme="b"></div>
 	</div><!-- /content -->
-	
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
+
 </div>
 
 <div data-role="page" id="search" data-theme="a">
 
 	<div data-role="header">
-	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="c">Menu</a>		
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>		
 	<h1>Search</h1>
 	</div><!-- /header -->
 
-	<div data-role="content" data-theme="a">
+	<div data-role="content" data-theme="c">
   <div class="ui-grid-a">
 	<div class="ui-block-a"><input type="text" name="search" id="searchid" value="" /></div>
 	<div class="ui-block-b"><div data-role="button" data-icon="search" data-iconpos="left" data-mini="true" data-theme="b" data-inline="true" onclick="doSearch()">Search</div></div>
 	</div>
-	 <div id="sites_search_msg" class="ui-bar ui-bar-b"></div>   
+	 <div id="sites_search_msg" class="ui-bar ui-bar-b" style="display:none"></div>   
        <div id="sites_search_list"></div>
 		</div>
-		
-	</div><!-- /content -->
-	
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
 </div>
-
-
-<!-- Start of third page: #popup -->
-<div data-role="page" id="setloc">
-
-	<div data-role="header" data-theme="e">
-		<h1>Set Location</h1>
-	</div><!-- /header -->
-
-<div data-role="content" data-theme="d">
-<div class="ui-grid-a">
-	<div class="ui-block-a"><label  for="search1">Enter your UK postcode:</label><div id="pc_results"></div></div>
-	<div class="ui-block-b" id="pc_search_btn"><input data-theme="e" type="search" name="pc" id="postcode" value=""/><div data-theme="e" id="set_pc" data-role="button" onclick="setPC()"> Search </div>	
-</div>
-</div>
-<h2>Or:</h2>
-
-<div class="ui-grid-a">
-	<div class="ui-block-a"><label  for="search2">Enter your lat long:</label></div>
-	<div class="ui-block-b"><input data-theme="e" type="text" name="pc" id="latlng" value=""/><div data-theme="e" id="set_latlng" data-role="button" onclick="setLL()"> Set </div></div>
-</div>	
-		<p><a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back to page "one"</a></p>	
-	</div><!-- /content -->
-	</div>
 	
 <!-- Start of third page: #popup -->
 <div data-role="page" id="my_details">
 
-	<div data-role="header" data-theme="e">
-		<h1>Enter your name</h1>
+	<div data-role="header" data-theme="c">
+		<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>		
+		<h1>Edit Details</h1>
 	</div><!-- /header -->
 
-<div data-role="content" data-theme="d">
-<div><h4>Phone ID:</h4></div>
-<div id="save_response">
-<div><input data-theme="e" type="text" name="username" id="username1" value=""/></div></div>
-<div data-theme="e" data-role="button" onclick="saveName()">Save</div>	
+<div data-role="content" data-theme="c">
+<div><h3>Location: <div style="display:inline" id="gps_results"></div></h3></div>
+<div data-theme="b" data-role="button" onclick="refreshGPSLocation()">Get position from GPS</div>
+<p></p>
+<div class="ui-grid-a">
+	<div class="ui-block-a"><h5>Or, enter your UK postcode:</h5></label><div id="pc_results"></div></div>
+	<div class="ui-block-b" id="pc_search_btn"><input data-theme="c" type="search" name="pc" id="postcode" value=""/><div data-theme="b" id="set_pc" data-role="button" onclick="setPC()"> Search </div></div>
+</div>
 
-		<p><a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Close</a></p>	
+<p></p>
+</h5>Name used when posting new sites and comments</h5>
+<div class="ui-grid-a">
+	<div class="ui-block-a"><input data-theme="c" type="text" name="username" id="username1" value=""/></div>
+	<div class="ui-block-b"><div data-theme="b" data-role="button" onclick="saveName()">Save</div></div>
+</div>
+
+		<p><a href="#one" data-theme="b" data-rel="back" data-role="button" data-inline="true" data-icon="back" onclick="closeDetails()" >Close</a></p>	
 	</div><!-- /content -->
 	</div>
+<div data-role="page" id="credits" data-theme="c">
 
+	<div data-role="header" data-theme="b">
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>		
+	<h1>Credits and About</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="c">
+  <p>This app would not be possible without all the great free APIs and technologies from:</p>
+  <div style="text-align:center"><img src="logos.png" /></div>
+		</div>
+</div>
 
 </body>
 </html>
