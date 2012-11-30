@@ -26,8 +26,8 @@ function getCacheBW(age) {
         // }
         var country = parsed_json['location']['country'];
         //alert("saved= " + json_data);
-        var posy = 54;
-        var posyt = 65;
+        var posy = 74;
+        var posyt = 85;
         var example = document.getElementById('canvhere');
         var ctx2d = example.getContext('2d');
         ctx2d.fillStyle = "#000";
@@ -42,39 +42,35 @@ function getCacheBW(age) {
         var dt = parseInt(0);
         var dt_ct = parseInt(0);
         var total_score = parseInt(0);
-        
+
         ctx2d.fillStyle = '#FFF';
         ctx2d.font = '14px Arial';
-        ctx2d.fillText("Hourly weather for " + location + ". Last updated: " + hours + "hours ago.", 10, 10);
+        ctx2d.fillText("Hourly weather for " + location + ".", 0, 10);
+        ctx2d.fillText("Last updated: " + hours + " hours ago.", 0, 30);
 
         ctx2d.fillStyle = "#f2e857";
-        ctx2d.fillRect(10, 20, 15, 12);
-        ctx2d.fillStyle = '#FFF';
-        ctx2d.font = '12px Arial';
-        ctx2d.fillText("Wind (mph)", 27, 30);
+        ctx2d.fillRect(0, 40, 60, 16);
+        ctx2d.fillStyle = '#000';
+        ctx2d.font = '11px Arial';
+        ctx2d.fillText("Wind (mph)", 2, 52);
 
-        ctx2d.fillStyle = "#32CD32";
-        ctx2d.fillRect(105, 20, 15, 12);
+        ctx2d.fillStyle = "#66A68B";
+        ctx2d.fillRect(60, 40, 55, 16);
         ctx2d.fillStyle = '#FFF';
-        ctx2d.font = '12px Arial';
-        ctx2d.fillText("Temp (C)", 122, 30);
+        ctx2d.font = '11px Arial';
+        ctx2d.fillText("Temp (C)", 64, 52);
 
         ctx2d.fillStyle = "#2489ce";
-        ctx2d.fillRect(180, 20, 15, 12);
+        ctx2d.fillRect(115, 40, 55, 16);
         ctx2d.fillStyle = '#FFF';
-        ctx2d.font = '12px Arial';
-        ctx2d.fillText("Rain (mm)", 197, 30);
+        ctx2d.font = '11px Arial';
+        ctx2d.fillText("Rain (mm)", 119, 52);
 
         ctx2d.fillStyle = "#FFF";
-        ctx2d.fillRect(265, 20, 15, 12);
-        ctx2d.fillStyle = '#FFF';
-        ctx2d.font = '12px Arial';
-        ctx2d.fillText("Snow (mm)", 281, 30);
-
-        //ctx2d.fillStyle = "#808080";
-        //ctx2d.fillRect(2, 10, 10, 20);
-
-
+        ctx2d.fillRect(170, 40, 60, 16);
+        ctx2d.fillStyle = '#000';
+        ctx2d.font = '11px Arial';
+        ctx2d.fillText("Snow (mm)", 172, 52);
 
         $.each(parsed_json.hourly_forecast, function(i, zone) {
             var imgi = new Image();
@@ -92,7 +88,7 @@ function getCacheBW(age) {
             }
             var sky = parseInt(zone.sky);
             var rain_txt = parseInt(zone.qpf.metric);
-            
+
             var rain = (parseInt(zone.qpf.metric) * 20) + 10;
             var snowlen = Math.round(zone.snow.metric);
             totalsnow = totalsnow + Math.round(zone.snow.metric);
@@ -148,7 +144,7 @@ function getCacheBW(age) {
             ctx2d.fillText(zone.wspd.metric, 40 + ws, posyt + 17);
 
             //temp
-            ctx2d.fillStyle = "#32CD32";
+            ctx2d.fillStyle = "#66A68B";
             ctx2d.fillRect(start, posy + 32, temp, 16);
             ctx2d.font = '10px Arial';
             ctx2d.fillStyle = temp_txt;
@@ -169,10 +165,10 @@ function getCacheBW(age) {
                 ctx2d.fillText(rain_txt, 45 + rain, posyt + 49);
             }
 
-           
+
             //snow
             ctx2d.fillStyle = "#FFF";
-            ctx2d.fillRect(53, posy + 66, snow, 16);
+            ctx2d.fillRect(53, posy + 64, snow, 16);
             ctx2d.font = '10px Arial';
             ctx2d.fillStyle = "#000";
             ctx2d.fillText(parseInt(zone.snow.metric), 53 + snow - (snowlen.toString().length * 12), posyt + 65);
@@ -210,7 +206,7 @@ function getCacheBW(age) {
 
         if (totalsnow > 10) {
             totalsnow = (totalsnow / 10);
-            $('#snowfall').html(": " + Math.round(totalsnow) + "cm of snow on the way :-)");
+            $('#snowfall').html(": " + Math.round(totalsnow) + " cm of snow on the way :-)");
         }
 
     });

@@ -1,3 +1,4 @@
+
 var deviceInfo = function() {
     //document.getElementById("platform").innerHTML = device.platform;
     //document.getElementById("version").innerHTML = device.version;
@@ -870,16 +871,68 @@ function GPS_refresh(retval) {
 }
 
 function popTwitter() {
-    var html = "<a class=\"twitter-timeline\" href=\"https://twitter.com/uksledge\" data-widget-id=\"273815461060284417\">Tweets by @uksledge</a>" +
-"<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>";
+    $('#twitter').html();
+    var ultop = "<ul data-role=\"listview\" data-inset=\"true\" class=\"ui-listview\">";
+    var ulbtm = "</ul>";
+    var url = "http://api.twitter.com/1/statuses/user_timeline/uksledge.json?screen_name=uksledge&count=6&callback=?";
+    //var url = 'http://search.twitter.com/search.json?q=';
+    var query = 'uksledge';
+    var options = '&result_type=recent&rpp=4&page=1&callback=?';
+    var colltop = "<div id=\"tweetw\"  data-role=\"collapsible\" data-theme=\"a\" data-inset=\"true\" data-content-theme=\"a\"><h4>Tweets</h4>";
+    var htmlt = "";
 
-    $("#twitter").html(html).trigger('create');
+    $.getJSON(url, function(json) {
+        $.each(json, function(i, zone) {
+
+        //<img style=\"padding:10px\" src=" + zone.profile_image_url_https + " />
+        var para = "<li class=\"ui-li ui-li-static ui-body-c\"><p class=\"ui-li-heading\" style=\"color:#66A68B\">" + zone.created_at + "</p><p style=\"white-space: normal\" class=\"ui-li-desc\">" + zone.text + "</p></li>";
+            htmlt += ultop + para + ulbtm;
+
+        });
+        $('#twitter').html(colltop + htmlt + "</div>").trigger('create');
+
+    });
+}
+function popTwitter_o() {
+    //alert("t");
+    var ultop =  "<ul data-role=\"listview\" class=\"ui-listview\">";
+var ulbtm = "</ul>";
+var para = "";
+$.ajax({
+    type: "GET",
+    url: "http://api.twitter.com/1/statuses/user_timeline/uksledge.json?screen_name=uksledge&count=20",
+    dataType: "jsonp",
+    success: function(json) {
+        //txt = json['text'];
+       // var json_parsed = eval('(' + json + ')');
+        //var jsontext = JSON.stringify(json);
+        //alert(json_parsed);
+        $.each(json.results, function(i, zone) {
+            //  var res = "<p>" + zone.text + "</p>";
+            var time = zone.created_at;
+            //  var lang = "<p><img src=" + zone.profile_image_url_https + "</></p>";
+            alert(time);
+            //var para = "<li class=\"ui-li ui-li-static ui-body-c\"><h3 class=\"ui-li-heading\">" + zone.from_user + "</h3><p class=\"ui-li-desc\">" + zone.text + "</p><p class=\"ui-li-desc\">" + zone.created_at + "</p></li>";
+        });
+    },
+    error: function(xhr, error) {
+        console.debug(xhr); console.debug(error);
+
+        //alert("save error");
+    },
+    complete: function(xhr, status) {
+        // $("#twitter").html(ultop + para + ulbtm).trigger('create');
+
+    }
+
+});
+    //
 }
 
 
 var start = function() {
 
-    //popTwitter();
+    popTwitter();
     $.mobile.loading('hide');
     $("#showmaplink").removeClass("ui-disabled");
     $("#showmaplink").addClass("ui-enabled");
@@ -890,9 +943,9 @@ var start = function() {
     if (phonename.length > 0) {
         $("#add_site_link").removeClass("ui-disabled");
         $("#add_site_link").addClass("ui-enabled");
-    
-    $("#my_sites_link").removeClass("ui-disabled");
-    $("#my_sites_link").addClass("ui-enabled");
+
+        $("#my_sites_link").removeClass("ui-disabled");
+        $("#my_sites_link").addClass("ui-enabled");
     }
     $("#search_link").removeClass("ui-disabled");
     $("#search_link").addClass("ui-enabled");
@@ -975,6 +1028,7 @@ function load_data_refresh() {
     $('#map_overlay').css('width', browser_w.toString() + 'px');
     $('#set_map_overlaym').css('width', browser_w.toString() + 'px');
     $('#set_map_overlay').css('width', browser_w.toString() + 'px');
+    $('#logosid').css('width', browser_w.toString() + 'px');
     $('#twitter_div').css('width', browser_w.toString() + 'px');
     $.mobile.loading('show', {
         text: 'foo',
@@ -1015,6 +1069,7 @@ function load_data_db() {
     $('#set_map_overlaym').css('width', browser_w.toString() + 'px');
     $('#set_map_overlay').css('width', browser_w.toString() + 'px');
     $('#twitter_div').css('width', browser_w.toString() + 'px');
+    $('#logosid').css('width', browser_w.toString() + 'px');
     $.mobile.loading('show', {
         text: 'foo',
         textVisible: true,

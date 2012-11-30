@@ -28,10 +28,9 @@
 
 <!-- Start of first page: #one -->
 <div data-role="page" id="one" data-theme="a">
+
 	<div data-role="content" >	
 	<div style="text-align:center"><img  src="headerlogo.png" /></div>
-	<div id="twitter">
-</div>
 		 <ul data-role="listview" data-inset="true" data-theme="a" data-count-theme="b">
 		<li id="showmaplink" class="ui-disabled"><a href="#two" onclick="showmap()">Local Sites</a></li>	
 		<li id="add_site_link" class="ui-disabled"><a href="#add_site"  onclick="add_site_map()">Add a Site</a></li>
@@ -42,24 +41,23 @@
 		<h4>Hourly Weather<div style="display:inline" id="snowfall"></div></h4>
 	<canvas id="canvhere" width="450" height="1880">text here eq no canvas</canvas>
 	 </div>
-
+<div id="twitter"></div>	
 
 <ul data-role="listview" id="mydeets" class="ui-disabled" data-inset="true">
 <li><p class="ui-li-aside"><a href="#my_details" data-rel="dialog" data-transition="flip" data-inline="true" data-icon="gear" data-theme="b" data-role="button" data-mini="true">Edit</a></p>
 <h3>My Details</h3>
-<p>My Location: <span id="loc_here" onclick="popTwitter()"></span></p>
+<p>My Location: <span id="loc_here"></span></p>
 <p>Name: <span id="phone_name"></span><div style="display:inline;color:#66A68B" id="name_msg"></div></p>
 </li>
 </ul>
 
-<ul data-role="listview" id="status" class="ui-disabled" data-inset="true">
+<ul data-role="listview" id="status" data-inset="true">
 <li><p class="ui-li-aside"><a href="#" data-role="button" data-inline="true" data-icon="gear" data-theme="b" data-role="button" data-mini="true" onclick="load_data_db()">Refresh</a></p>
 <h3>Status</h3>
 <div id="statustxt"><p>Total sites: <span id="total_sites"></span></p>
 <p>Latest site added by <span id="lat_nm"></span> in <span id="lat_tn"></span></p></div>
 </li>
 </ul>
-
 
  <ul data-role="listview" data-inset="true"  data-theme="a" data-count-theme="b">
 		<li data-icon="info"><a href="#credits" data-rel="dialog">Credits</a></li>	
@@ -200,12 +198,12 @@
 
 	<div data-role="header" data-theme="b">
 	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>		
-	<h1>Credits and About</h1>
+	<h1>Credits</h1>
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="c">
   <p>This app would not be possible without all the great free APIs and technologies from:</p>
-  <div style="text-align:center"><img src="logos.PNG" /></div>
+  <div style="text-align:center"><img style="width:300px" src="logos.png" /></div>
 		</div>
 </div>
 
