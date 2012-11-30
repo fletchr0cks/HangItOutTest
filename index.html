@@ -28,11 +28,6 @@
 
 <!-- Start of first page: #one -->
 <div data-role="page" id="one" data-theme="a">
-
-	<div data-role="header">
-		<h1><img src="headerlogo.png" /></h1>
-	</div><!-- /header -->
-
 	<div data-role="content" >	
 	<div style="text-align:center"><img  src="headerlogo.png" /></div>
 	<div id="twitter">
@@ -52,7 +47,7 @@
 <ul data-role="listview" id="mydeets" class="ui-disabled" data-inset="true">
 <li><p class="ui-li-aside"><a href="#my_details" data-rel="dialog" data-transition="flip" data-inline="true" data-icon="gear" data-theme="b" data-role="button" data-mini="true">Edit</a></p>
 <h3>My Details</h3>
-<p>My Location: <span id="loc_here"></span></p>
+<p>My Location: <span id="loc_here" onclick="popTwitter()"></span></p>
 <p>Name: <span id="phone_name"></span><div style="display:inline;color:#66A68B" id="name_msg"></div></p>
 </li>
 </ul>
