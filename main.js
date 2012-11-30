@@ -879,7 +879,7 @@ function popTwitter() {
 
 var start = function() {
 
-    popTwitter();
+    //popTwitter();
     $.mobile.loading('hide');
     $("#showmaplink").removeClass("ui-disabled");
     $("#showmaplink").addClass("ui-enabled");
