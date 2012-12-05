@@ -1025,7 +1025,7 @@ function save_id() {
 }
 
 function load_data_refresh() {
-    var browser_w = parseInt($(document).width()) - 10;
+    var browser_w = parseInt($(document).width()) - 20;
     $('#data_status').append("widths: " + browser_w);
     $('#map_overlay').css('width', browser_w.toString() + 'px');
     $('#set_map_overlaym').css('width', browser_w.toString() + 'px');
