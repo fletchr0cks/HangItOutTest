@@ -891,7 +891,7 @@ function popTwitter() {
         var btnbtm = "<iframe allowtransparency=\"true\" frameborder=\"0\" scrolling=\"no\" " +
   "src=\"//platform.twitter.com/widgets/follow_button.html?screen_name=uksledge&show_count=false\" " +
   "style=\"width:300px; height:20px;\"></iframe>";
-        $('#twitter').html(colltop + htmlt + btnbtm + "</div>").trigger('create');
+        $('#twitter').html(colltop + htmlt + "</div>").trigger('create');
 
     });
 }
