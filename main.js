@@ -1,4 +1,3 @@
-
 var deviceInfo = function() {
     //document.getElementById("platform").innerHTML = device.platform;
     //document.getElementById("version").innerHTML = device.version;
@@ -522,7 +521,7 @@ function logWeather(userid,latval,longval) {
     $.ajax({
         type: "POST",
         url: "http://washingapp.apphb.com/Home/GetWeather",
-        //url: "http://localhost:3192/Home/GetWeather",
+        //url: "http://host:3192/Home/GetWeather",
         data: "userID=" + userid + "&latval=" + latval + "&longval=" + longval,
         dataType: "text/plain",
         success: function(response) {
@@ -1096,8 +1095,8 @@ function load_data_db() {
     var total;
     $.ajax({
         type: "POST",
-        //url: "http://washingapp.apphb.com/Home/SaveID",
-        url: "http://localhost:3192/Home/SaveID",
+        url: "http://washingapp.apphb.com/Home/SaveID",
+        //url: "http://localhost:3192/Home/SaveID",
         data: "phoneID=" + phoneid,
         dataType: "jsonp",
         success: function(json) {
