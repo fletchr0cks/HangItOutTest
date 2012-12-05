@@ -877,7 +877,7 @@ function popTwitter() {
     //var url = 'http://search.twitter.com/search.json?q=';
     var query = 'uksledge';
     var options = '&result_type=recent&rpp=4&page=1&callback=?';
-    var colltop = "<div id=\"tweetw\"  data-role=\"collapsible\" data-theme=\"a\" data-inset=\"true\" data-content-theme=\"a\"><h4>Tweets</h4>";
+    var colltop = "<div id=\"tweetw\"  data-role=\"collapsible\" data-theme=\"a\" data-inset=\"true\" data-content-theme=\"a\"><h4>Tweets from @uksledge</h4>";
     var htmlt = "";
 
     $.getJSON(url, function(json) {
@@ -1237,7 +1237,7 @@ function setMarkers(map, bounds_map, PID) {
 
             var bannermsg = "";
             if (ct == 0) {
-                $("#map_msg").html(ct + " No sledging sites listed in this view.");
+                $("#map_msg").html(ct + " No sledging sites in this view.");
 
             } else {
                 $("#map_msg").html(ct + " Loaded. Click to see comments ...");
