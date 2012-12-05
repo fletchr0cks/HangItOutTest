@@ -2,7 +2,7 @@
 <html>
 
  <head>
-    <meta name="viewport" content="width=320; user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <title>PhoneGap</title>
     		<link href="google.css" rel="stylesheet" type="text/css" />
@@ -11,6 +11,7 @@
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile.structure-1.2.0.min.css" />
 <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
       <script type="text/javascript" charset="utf-8" src="main.js"></script>
 		<script src="assets/js/lawnchair/adaptors/LawnchairAdaptorHelpers.js" type="text/javascript" charset="utf-8"></script>
@@ -19,9 +20,16 @@
 		<script src="assets/js/lawnchair/Lawnchair.js" type="text/javascript" charset="utf-8"></script>
 		<script src="assets/js/dsl.js" type="text/javascript" charset="utf-8"></script>
 		<script src="assets/js/app_local.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
+<script type="text/javascript">
+    $(document).bind("pageinit", function() {
+        // Make your jQuery Mobile framework configuration changes here!
 
+    $.mobile.page.prototype.options.addBackBtn = true;
+    $.mobile.defaultPageTransition = 'none';
+    $.mobile.useFastClick = false;
+    });
+</script>
 
   </head>
   <body onload="init();" id="stage" class="theme">
@@ -44,8 +52,9 @@
 <div id="twitter"></div>	
 
 <ul data-role="listview" id="mydeets" class="ui-disabled" data-inset="true">
-<li><p class="ui-li-aside"><a href="#my_details" data-rel="dialog" data-transition="flip" data-inline="true" data-icon="gear" data-theme="b" data-role="button" data-mini="true">Edit</a></p>
+<li><p class="ui-li-aside"><a href="#my_details" data-rel="dialog" data-inline="true" data-icon="gear" data-theme="b" data-role="button" data-mini="true">Edit</a></p>
 <h3>My Details</h3>
+<p>&nbsp;</p>
 <p>My Location: <span id="loc_here"></span></p>
 <p>Name: <span id="phone_name"></span><div style="display:inline;color:#66A68B" id="name_msg"></div></p>
 </li>
@@ -78,18 +87,26 @@
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="a">
+	<div data-role="button" data-icon="refresh" data-iconpos="left" data-mini="true" data-theme="b" data-inline="true" onclick="showmap()">Refresh my location</div>
 	    <div id="map_msg" class="ui-bar ui-bar-b"></div>   
 		<div id="map_overlay" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:300px"><h4 style="text-align:center;padding-top:100px">Loading sites....</h4></div>
 		<div id="map_canvas" style="height:300px;"></div>
        <div id="place_name" data-theme="b" class="ui-bar ui-bar-b"></div>
        <div id="place_comments"></div>
-       <div id="addcomm" class="ui-bar ui-bar-c" style="display:none">
-       <div class="ui-grid-a">
-	<div class="ui-block-a"><input type="text" name="addcomment" id="addcommentid" value="" /></div>
-	<div class="ui-block-b"><div data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="b" data-inline="true" onclick="SaveComment()">Add Comment</div></div>
-	</div>
-		</div>
-	</div><!-- /content -->
+       <div id="addcomm" style="display:none">
+ <ul data-role="listview" id="Ul1" data-inset="true">
+<li>
+<div><input type="text" name="addcomment" id="addcommentid" value="" /></div>
+<div data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="b" data-inline="true" onclick="SaveComment()">Add Comment</div>
+<h6>Flag site to Moderator:</h6>
+<select data-mini="true" name="slider" id="sliderid" data-role="slider"  data-theme="a">
+	<option value="no" selected="selected">No</option>
+	<option value="yes" >Yes</option>
+</select>
+</div>
+</li>
+</ul>      
+ 	</div><!-- /content -->
 
 </div><!-- /page two -->
 
@@ -203,7 +220,7 @@
 
 	<div data-role="content" data-theme="c">
   <p>This app would not be possible without all the great free APIs and technologies from:</p>
-  <div style="text-align:center"><img style="width:300px" src="logos.png" /></div>
+  <div style="text-align:center"><img style="width:280px" src="logos2.png" /></div>
 		</div>
 </div>
 

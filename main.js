@@ -659,7 +659,7 @@ function saveName() {
         theme: 'a',
         html: "<p>Saving name ...</p>"
     });
-    alert(username + userid);
+    //alert(username + userid);
     $.ajax({
         type: "POST",
         //url: "http://localhost:3192/Home/SavePhonename",
@@ -874,9 +874,9 @@ function popTwitter() {
     $('#twitter').html();
     var ultop = "<ul data-role=\"listview\" data-inset=\"true\" class=\"ui-listview\">";
     var ulbtm = "</ul>";
-    var url = "http://api.twitter.com/1/statuses/user_timeline/uksledge.json?screen_name=uksledge&count=6&callback=?";
+    var url = "http://api.twitter.com/1/statuses/user_timeline/washingapp.json?screen_name=washingapp&count=6&callback=?";
     //var url = 'http://search.twitter.com/search.json?q=';
-    var query = 'uksledge';
+    var query = 'washingapp';
     var options = '&result_type=recent&rpp=4&page=1&callback=?';
     var colltop = "<div id=\"tweetw\"  data-role=\"collapsible\" data-theme=\"a\" data-inset=\"true\" data-content-theme=\"a\"><h4>Tweets</h4>";
     var htmlt = "";
@@ -884,12 +884,15 @@ function popTwitter() {
     $.getJSON(url, function(json) {
         $.each(json, function(i, zone) {
 
-        //<img style=\"padding:10px\" src=" + zone.profile_image_url_https + " />
-        var para = "<li class=\"ui-li ui-li-static ui-body-c\"><p class=\"ui-li-heading\" style=\"color:#66A68B\">" + zone.created_at + "</p><p style=\"white-space: normal\" class=\"ui-li-desc\">" + zone.text + "</p></li>";
+            //<img style=\"padding:10px\" src=" + zone.profile_image_url_https + " />
+            var para = "<li class=\"ui-li ui-li-static ui-body-c\"><p class=\"ui-li-heading\" style=\"color:#66A68B\">" + zone.created_at + "</p><p style=\"white-space: normal\" class=\"ui-li-desc\">" + zone.text + "</p></li>";
             htmlt += ultop + para + ulbtm;
 
         });
-        $('#twitter').html(colltop + htmlt + "</div>").trigger('create');
+        var btnbtm = "<iframe allowtransparency=\"true\" frameborder=\"0\" scrolling=\"no\" " +
+  "src=\"//platform.twitter.com/widgets/follow_button.html?screen_name=washingapp&show_count=false\" " +
+  "style=\"width:300px; height:20px;\"></iframe>";
+        $('#twitter').html(colltop + htmlt + btnbtm + "</div>").trigger('create');
 
     });
 }
@@ -900,7 +903,7 @@ var ulbtm = "</ul>";
 var para = "";
 $.ajax({
     type: "GET",
-    url: "http://api.twitter.com/1/statuses/user_timeline/uksledge.json?screen_name=uksledge&count=20",
+    url: "http://api.twitter.com/1/statuses/user_timeline/washingapp.json?screen_name=washingapp&count=20",
     dataType: "jsonp",
     success: function(json) {
         //txt = json['text'];
@@ -1093,8 +1096,8 @@ function load_data_db() {
     var total;
     $.ajax({
         type: "POST",
-        url: "http://washingapp.apphb.com/Home/SaveID",
-        //url: "http://localhost:3192/Home/SaveID",
+        //url: "http://washingapp.apphb.com/Home/SaveID",
+        url: "http://localhost:3192/Home/SaveID",
         data: "phoneID=" + phoneid,
         dataType: "jsonp",
         success: function(json) {
@@ -1150,6 +1153,13 @@ function setMarkers(map, bounds_map, PID) {
     if (parseInt(PID) > 0) {
 //        var infoWindowLive = new google.maps.InfoWindow({ content: 'This one: ' + PID });
     }
+    var timage = 'marker_search.png';
+    var position = getPosition();
+    var latlng = position.split(',');
+    var tlat = latlng[0];
+    var tlng = latlng[1];
+    var hereLatLng = new google.maps.LatLng(latlng);
+
     $.ajax({
         type: "GET",
         url: "http://washingapp.apphb.com/Home/GetSitesInRange",
@@ -1157,54 +1167,79 @@ function setMarkers(map, bounds_map, PID) {
         data: "bounds=" + bds_fmt,
         dataType: "jsonp",
         success: function(json) {
+            var json_loc = { "points": [{ "lat": tlat, "longval": tlng, "name": "You are here!", "PID": "1"}] };
+            ct = json.ct; //56.208,-3.15
+            $.merge(json.points, json_loc.points);
             var jsontext = JSON.stringify(json);
-            ct = json.ct;
+           
             $.each(json.points, function(i, markers) {
                 console.log(json);
                 if (markers.PID == parseInt(PID)) {
                     var image = 'marker_search.png';
                     ListComments(markers.PID);
                     $('#place_name').html(markers.name);
+                } else if (markers.PID == 1) {
+                    var image = 'marker_search.png';
                 } else {
                     var image = 'marker_s4.png';
                 }
                 //var infoWindow = new google.maps.InfoWindow({ content: 'Place ID' + markers.PID });
                 var siteLatLng = new google.maps.LatLng(markers.lat, markers.longval);
                 var markerp = new google.maps.Marker({ 'position': siteLatLng, 'icon': image });
-                markers_array.push(markerp);
-                marktxt = marktxt + "<p>" + markers.name + i + "</p>";
-
-                //attach infowindow on click
+                if (markers.name == "You are here!") {
+                } else {
+                    markers_array.push(markerp);
+                }
                 google.maps.event.addListener(markerp, "click", function() {
                     //$('#map_markers').fadeOut().html("<p>Click: " + markers.name + markers.PID + "</p>").fadeIn();
-                    ListComments(markers.PID);
+                    if (markers.PID != 1) {
+                        ListComments(markers.PID);
+                        $('#place_name').html(markers.name);
+                    } else {
                     $('#place_name').html(markers.name);
+                    }
                     //infoWindow.open(map, markerp);
                 });
 
-                google.maps.event.addListener(markerp, "drag", function() {
-                    $('#map_msg').html(markerp.position.lat());
-                });
-
-
             });
+            // var image = 'marker_search.png';
+            //  var position = getPosition();
+            // var latlng = position.split(',');
+            // var hereLatLng = new google.maps.LatLng(latlng);
+
+            // var markerp = new google.maps.Marker({ 'position': hereLatLng, 'icon': image });
+            // markers_array.push(markerp);
+
+            //attach infowindow on click
+            // google.maps.event.addListener(markerp, "click", function() {
+            //$('#map_markers').fadeOut().html("<p>Click: " + markers.name + markers.PID + "</p>").fadeIn();
+
+            //   $('#place_name').html("you are here");
+            //infoWindow.open(map, markerp);
+            // });
+
+
             var mcOptions = { gridSize: 100, maxZoom: 18 };
             //$("#popupPadded").popup("close");
             $("#map_overlay").fadeOut();
             var markerCluster = new MarkerClusterer(map, markers_array, mcOptions);
-            //console.log(markers_array);
-            // $('#map_markers').html(marktxt);
+            // var position = getPosition();
+            //var latlng = position.split(',');
+            //var marker_here = new google.maps.Marker({ 'position': latlng, 'icon': 'marker_s4.png' });
 
+            //markers_array2.push(marker_here);
+            //var markerCluster2 = new MarkerClusterer(map, markers_array2, mcOptions);
         },
         error: function(xhr, error) {
             console.debug(xhr); console.debug(error);
 
         },
         complete: function(xhr, status) {
+
             var bannermsg = "";
             if (ct == 0) {
                 $("#map_msg").html(ct + " No sledging sites listed in this view.");
-                
+
             } else {
                 $("#map_msg").html(ct + " Loaded. Click to see comments ...");
 
@@ -1281,7 +1316,9 @@ if (confirm("Delete. Are you sure?")) {
 }
 
 function ListSites() {
-    
+   var ultop = "<ul data-role=\"listview\" data-inset=\"true\" class=\"ui-listview\">";
+var ulbtm = "</ul>";
+ 
     var sites_html = "";
     var ct = 0;
     var userID = getUserIDstore();
@@ -1293,14 +1330,19 @@ function ListSites() {
         dataType: "jsonp",
         success: function(json) {
             $.each(json.sites, function(i, result) {
-                sites_html = sites_html + "<div id=\"place" + result.PID + "\"><div class=\"ui-grid-b\">" +
- "<div class=\"ui-block-a\"><div class=\"ui-bar ui-bar-c\"><p></p>" + result.name + "</div></div>" +
- "<div class=\"ui-block-b\"><div class=\"ui-bar ui-bar-c\"><a href=\"index.html#move_site\" data-role=\"button\" data-icon=\"gear\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"b\" data-inline=\"true\" onclick=\"move_site_map(" + result.latitude + "," + result.longitude + "," + result.PID + ")\">Move</a></div></div>" +
-"<div class=\"ui-block-c\"><div class=\"ui-bar ui-bar-c\"><a href=\"#\" data-role=\"button\" data-icon=\"delete\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"b\" data-inline=\"true\" onclick=\"DeleteSite(" + result.PID + ")\">Delete</a></div></div></div>" +
-                "<div class=\"ui-bar ui-bar-b\" style=\"height:2px\"></div></div>";
-               
+                var para = "<li id=\"place" + result.PID + "\" class=\"ui-li ui-li-static ui-body-c\"><p class=\"ui-li-heading\"><h4>" + result.name + "</h4></p>" +
+                "<p class=\"ui-li-desc\"><a href=\"index.html#move_site\" data-role=\"button\" data-icon=\"gear\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"b\" data-inline=\"true\" onclick=\"move_site_map(" + result.latitude + "," + result.longitude + "," + result.PID + ")\">Move Location</a>" +
+                "<a href=\"#\" data-role=\"button\" data-icon=\"delete\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"b\" data-inline=\"true\" onclick=\"DeleteSite(" + result.PID + ")\">Delete</a></p></li>";
+                sites_html = sites_html + ultop + para + ulbtm;
+
+//                sites_html = sites_html + "<div class=\"ui-grid-b\">" +
+// "<div class=\"ui-block-a\"><div class=\"ui-bar ui-bar-c\"><p></p>" + result.name + "</div></div>" +
+// "<div class=\"ui-block-b\"><div class=\"ui-bar ui-bar-c\"><a href=\"index.html#move_site\" data-role=\"button\" data-icon=\"gear\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"b\" data-inline=\"true\" onclick=\"move_site_map(" + result.latitude + "," + result.longitude + "," + result.PID + ")\">Move</a></div></div>" +
+//"<div class=\"ui-block-c\"><div class=\"ui-bar ui-bar-c\"><a href=\"#\" data-role=\"button\" data-icon=\"delete\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"b\" data-inline=\"true\" onclick=\"DeleteSite(" + result.PID + ")\">Delete</a></div></div></div>" +
+  //              "<div class=\"ui-bar ui-bar-b\" style=\"height:2px\"></div></div>";
+
             });
-             ct = json.ct;
+            ct = json.ct;
         },
         error: function(xhr, error) {
             // console.debug(xhr); console.debug(error);
@@ -1308,7 +1350,7 @@ function ListSites() {
         },
         complete: function(xhr, status) {
 
-        $("#sites_list").html(sites_html).trigger('create');
+            $("#sites_list").html(sites_html).trigger('create');
             $("#sites_msg").html("Sites loaded. (" + ct + ")");
 
         }
@@ -1354,6 +1396,9 @@ if (PID == 0) {
     console.log(PID + "hid");
 }
 console.log(PID);
+var ultop = "<ul data-role=\"listview\" data-inset=\"true\" class=\"ui-listview\">";
+var ulbtm = "</ul>";
+var comments_html2 = "";
 var comments_html = "";
 var ct = 0;
 $.ajax({
@@ -1364,11 +1409,8 @@ $.ajax({
     dataType: "jsonp",
     success: function(json) {
         $.each(json.cmts, function(i, result) {
-            comments_html = comments_html + "<div class=\"ui-grid-a\">" +
- "<div style=\"color:#F2EDA2\" class=\"ui-block-a\"><div class=\"ui-bar ui-bar-c\">" + result.datetime + "</div></div>" +
- "<div class=\"ui-block-b\"><div style=\"color:#F2EDA2\" class=\"ui-bar ui-bar-c\">" + result.username + "</div></div></div>" +
- "<div class=\"ui-bar ui-bar-c\"><h4>" + result.comment + "</h4></div>" +
- "<div class=\"ui-bar ui-bar-b\" style=\"height:1px\"></div>";
+            var para = "<li class=\"ui-li ui-li-static ui-body-c\"><p class=\"ui-li-heading\" style=\"color:#66A68B\">On " + result.datetime + ", " + result.username + " wrote:</p><p style=\"white-space: normal\" class=\"ui-li-desc\">" + result.comment + "</p></li>";
+            comments_html2 = comments_html2 + ultop + para + ulbtm;
         });
         ct = json.ct;
     },
@@ -1380,7 +1422,8 @@ $.ajax({
         if (ct == 0) {
             $("#place_comments").html("No comments");
         } else {
-        $("#place_comments").html(comments_html + "<div style=\"display:none\" id=\"hidPID\">" + PID + "</div>").trigger('create');
+            $("#place_comments").html(comments_html2 + "<div style=\"display:none\" id=\"hidPID\">" + PID + "</div>").trigger('create');
+            //$("#place_comments").html(comments_html + "<div style=\"display:none\" id=\"hidPID\">" + PID + "</div>").trigger('create');
             $("#addcomm").show();
         }
         $("#map_msg").html(ct + " comments loaded.");
@@ -1394,24 +1437,26 @@ $.ajax({
 function SaveComment() {
 
     var PID = document.getElementById("hidPID").innerHTML;
+    var flag = document.getElementById("sliderid").value;
     var comment = document.getElementById("addcommentid").value;
-    console.log(PID + "hid");
+    
     var userID = getUserIDstore();
+    var ultop = "<ul data-role=\"listview\" data-inset=\"true\" class=\"ui-listview\">";
+    var ulbtm = "</ul>";
+    var comments_html2 = "";
     var comments_html = "";
     var ct = 0;
     $.ajax({
         type: "POST",
         //url: "http://localhost:3192/Home/SaveComment",
         url: "http://washingapp.apphb.com/Home/SaveComment",
-        data: "PID=" + PID + "&comment=" + comment + "&userID=" + userID,
+        data: "PID=" + PID + "&comment=" + comment + "&userID=" + userID + "&flag=" + flag,
         dataType: "jsonp",
         success: function(json) {
             $.each(json.cmts, function(i, result) {
-                comments_html = comments_html + "<div class=\"ui-grid-a\" style=\"font-weight:12px\">" +
- "<div class=\"ui-block-a\"><div class=\"ui-bar ui-bar-c\">" + result.datetime + "</div></div>" +
- "<div class=\"ui-block-b\"><div class=\"ui-bar ui-bar-c\">" + result.username + "</div></div></div>" +
- "<div class=\"ui-bar ui-bar-c\">" + result.comment + "</div>" +
- "<div class=\"ui-bar ui-bar-b\" style=\"height:1px\"></div>";
+                var para = "<li class=\"ui-li ui-li-static ui-body-c\"><p class=\"ui-li-heading\" style=\"color:#66A68B\">On " + result.datetime + ", " + result.username + " wrote: </p><p style=\"white-space: normal\" class=\"ui-li-desc\">" + result.comment + "</p></li>";
+              
+                comments_html2 = comments_html2 + ultop + para + ulbtm;
             });
             ct = json.ct;
         },
@@ -1420,15 +1465,15 @@ function SaveComment() {
 
         },
         complete: function(xhr, status) {
+        $("#sliderid").val('no').slider("refresh");
             document.getElementById("addcommentid").value = "";
             if (ct == 0) {
                 $("#place_comments").html("No comments");
             } else {
-                $("#place_comments").html(comments_html);
-                $("#comments_ct").html("Comments (" + ct + ")" + "<div style=\"display:none\" id=\"hidPID\">" + PID + "</div>");
+                $("#place_comments").html(comments_html2 + "<div style=\"display:none\" id=\"hidPID\">" + PID + "</div>").trigger('create');
                 $("#addcomm").show();
             }
-            $("#map_msg").html("Comment saved.");
+            $("#map_msg").html(ct + " comments loaded.");
 
         }
     });
