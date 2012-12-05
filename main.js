@@ -873,9 +873,9 @@ function popTwitter() {
     $('#twitter').html();
     var ultop = "<ul data-role=\"listview\" data-inset=\"true\" class=\"ui-listview\">";
     var ulbtm = "</ul>";
-    var url = "http://api.twitter.com/1/statuses/user_timeline/washingapp.json?screen_name=washingapp&count=6&callback=?";
+    var url = "http://api.twitter.com/1/statuses/user_timeline/uksledge.json?screen_name=uksledge&count=6&callback=?";
     //var url = 'http://search.twitter.com/search.json?q=';
-    var query = 'washingapp';
+    var query = 'uksledge';
     var options = '&result_type=recent&rpp=4&page=1&callback=?';
     var colltop = "<div id=\"tweetw\"  data-role=\"collapsible\" data-theme=\"a\" data-inset=\"true\" data-content-theme=\"a\"><h4>Tweets</h4>";
     var htmlt = "";
@@ -889,7 +889,7 @@ function popTwitter() {
 
         });
         var btnbtm = "<iframe allowtransparency=\"true\" frameborder=\"0\" scrolling=\"no\" " +
-  "src=\"//platform.twitter.com/widgets/follow_button.html?screen_name=washingapp&show_count=false\" " +
+  "src=\"//platform.twitter.com/widgets/follow_button.html?screen_name=uksledge&show_count=false\" " +
   "style=\"width:300px; height:20px;\"></iframe>";
         $('#twitter').html(colltop + htmlt + btnbtm + "</div>").trigger('create');
 
