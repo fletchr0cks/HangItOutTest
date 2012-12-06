@@ -888,10 +888,12 @@ function popTwitter() {
             htmlt += ultop + para + ulbtm;
 
         });
+        var follow = "<li class=\"ui-li ui-li-static ui-body-c\"><p style=\"white-space: normal\" class=\"ui-li-desc\"><a href=\"https://twitter.com/uksledge\">Follow @uksledge</a></p></li>";
         var btnbtm = "<iframe allowtransparency=\"true\" frameborder=\"0\" scrolling=\"no\" " +
   "src=\"//platform.twitter.com/widgets/follow_button.html?screen_name=uksledge&show_count=false\" " +
   "style=\"width:300px; height:20px;\"></iframe>";
-        $('#twitter').html(colltop + htmlt + "</div>").trigger('create');
+        var followbox = ultop + follow + ulbtm;
+        $('#twitter').html(colltop + htmlt + followbox + "</div>").trigger('create');
 
     });
 }
@@ -980,8 +982,8 @@ var start = function() {
 
 function init() {
 
-    document.addEventListener("deviceready", FTLcheck, false);
-    //FTLcheck();
+    //document.addEventListener("deviceready", FTLcheck, false);
+    FTLcheck();
   
 }
 
