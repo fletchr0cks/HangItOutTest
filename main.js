@@ -1239,10 +1239,10 @@ function setMarkers(map, bounds_map, PID) {
 
             var bannermsg = "";
             if (ct == 0) {
-                $("#map_msg").html(ct + " No sledging sites in this view.");
+                $("#map_msg").html("No sledging sites in this view.");
 
             } else {
-                $("#map_msg").html(ct + " Loaded. Click to see comments ...");
+                $("#map_msg").html(ct + " Loaded. Click to see comments.");
 
             }
 
