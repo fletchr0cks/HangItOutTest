@@ -116,14 +116,14 @@ var suc = function(p) {
 };
 
 var refreshGPSLocation = function() {
-
+    $("#gps_results").html("Refreshing ...");
     var suc = function(p) {
         var GPS_saved = SaveGPSLocation(p.coords.latitude, p.coords.longitude);
         if (GPS_saved == 1) {
             $("#data_status").append("<br /> saved GPS:" + p.coords.latitude, p.coords.longitude);
             GPS_refresh(1);
         } else {
-        GPS_refresh(0);
+            GPS_refresh(0);
         }
     };
     var locFail = function() {
@@ -520,7 +520,7 @@ function logWeather(userid,latval,longval) {
 
     $.ajax({
         type: "POST",
-        url: "http://washingapp.apphb.com/Home/GetWeather",
+        url: "http://uksledge.apphb.com/Home/GetWeather",
         //url: "http://host:3192/Home/GetWeather",
         data: "userID=" + userid + "&latval=" + latval + "&longval=" + longval,
         dataType: "text/plain",
@@ -636,7 +636,7 @@ function setPC(postcode) {
     //var postcode = $("set_pc").val();
     var postcode = document.getElementById("postcode").value;
     var pc_uri = encodeURI(postcode);
-    
+    $('#gps_results').html('Searching ..');
     getLatLng(pc_uri);
 }
 
@@ -662,7 +662,7 @@ function saveName() {
     $.ajax({
         type: "POST",
         //url: "http://localhost:3192/Home/SavePhonename",
-        url: "http://washingapp.apphb.com/Home/SavePhonename",
+        url: "http://uksledge.apphb.com/Home/SavePhonename",
         data: "userid=" + userid + "&phonename=" + username,
         dataType: "jsonp",
         success: function(json) {
@@ -738,7 +738,7 @@ function saveSite2(town) {
     $.ajax({
         type: "POST",
         //url: "http://localhost:3192/Home/SavePlace",
-        url: "http://washingapp.apphb.com/Home/SavePlace",
+        url: "http://uksledge.apphb.com/Home/SavePlace",
         data: "userid=" + userid + "&placename=" + sitename + "&comment=" + comment + "&latval=" + latval + "&longval=" + longval + "&username=" + username + "&town=" + town,
         dataType: "jsonp",
         success: function(json) {
@@ -801,7 +801,7 @@ function saveMovedSite() {
     $.ajax({
         type: "POST",
         //url: "http://localhost:3192/Home/MovePlace",
-        url: "http://washingapp.apphb.com/Home/MovePlace",
+        url: "http://uksledge.apphb.com/Home/MovePlace",
         data: "latval=" + latval + "&longval=" + longval + "&PID=" + PID,
         dataType: "jsonp",
         success: function(json) {
@@ -863,9 +863,58 @@ function GPS_refresh(retval) {
         var lng = latlng[1];
         getPlace(lat, lng, 1);
     } else {
+    $("#gps_results").html("Failed.");
         $.mobile.loading('hide');
         $("#loc_here").html("Click here to set manually");
     }
+
+}
+
+function AddSnowEvent(cm, location) {
+    var name = getPhoneNamestore();
+    var UserID = getUserIDstore();
+    $.ajax({
+        type: "POST",
+        //url: "http://localhost:3192/Home/ListPlaces",
+        url: "http://uksledge.apphb.com/Home/AddSnowEvent",
+        data: "UserID=" + UserID + "&cm=" + cm + "&location=" + location + "&name=" + name,
+        dataType: "jsonp",
+        success: function(json) {
+            
+        },
+        error: function(xhr, error) {
+            // console.debug(xhr); console.debug(error);
+
+        },
+        complete: function(xhr, status) {
+
+        }
+    });
+
+}
+
+function AddColdest(temp, location) {
+    var name = getPhoneNamestore();
+    var UserID = getUserIDstore();
+    
+    $.ajax({
+        type: "POST",
+        //url: "http://localhost:3192/Home/ListPlaces",
+        url: "http://uksledge.apphb.com/Home/AddColdest",
+        data: "UserID=" + UserID + "&temp=" + temp + "&location=" + location + "&name=" + name,
+        dataType: "jsonp",
+        success: function(json) {
+
+        },
+        error: function(xhr, error) {
+           console.debug(xhr); console.debug(error);
+
+        },
+        complete: function(xhr, status) {
+
+        }
+    });
+
 
 }
 
@@ -982,8 +1031,8 @@ var start = function() {
 
 function init() {
 
-    //document.addEventListener("deviceready", FTLcheck, false);
-    FTLcheck();
+    document.addEventListener("deviceready", FTLcheck, false);
+    //FTLcheck();
   
 }
 
@@ -1002,7 +1051,7 @@ function save_id() {
     }
     $.ajax({
         type: "POST",
-        url: "http://washingapp.apphb.com/Home/Save",
+        url: "http://uksledge.apphb.com/Home/Save",
         //url: "http://localhost:3192/Home/Save",
         data: "lat=22&lval=37&city=nb&country=uk&comment=" + phoneid,
         dataType: "text/plain",
@@ -1067,7 +1116,7 @@ function load_data_refresh() {
 
 //get name + userID, API calls #
 function load_data_db() {
-    var browser_w = parseInt($(document).width()) - 10;
+    var browser_w = parseInt($(document).width()) - 20;
     $('#data_status').append("widths: " + browser_w);
     $('#map_overlay').css('width', browser_w.toString() + 'px');
     $('#set_map_overlaym').css('width', browser_w.toString() + 'px');
@@ -1097,7 +1146,7 @@ function load_data_db() {
     var total;
     $.ajax({
         type: "POST",
-        url: "http://washingapp.apphb.com/Home/SaveID",
+        url: "http://uksledge.apphb.com/Home/SaveID",
         //url: "http://localhost:3192/Home/SaveID",
         data: "phoneID=" + phoneid,
         dataType: "jsonp",
@@ -1163,7 +1212,7 @@ function setMarkers(map, bounds_map, PID) {
 
     $.ajax({
         type: "GET",
-        url: "http://washingapp.apphb.com/Home/GetSitesInRange",
+        url: "http://uksledge.apphb.com/Home/GetSitesInRange",
         //url: "http://localhost:3192/Home/GetSitesInRange",
         data: "bounds=" + bds_fmt,
         dataType: "jsonp",
@@ -1293,7 +1342,7 @@ if (confirm("Delete. Are you sure?")) {
     $.ajax({
         type: "POST",
         //url: "http://localhost:3192/Home/DeletePlace",
-        url: "http://washingapp.apphb.com/Home/DeletePlace",
+        url: "http://uksledge.apphb.com/Home/DeletePlace",
         data: "PID=" + pid,
         dataType: "jsonp",
         success: function(json) {
@@ -1326,7 +1375,7 @@ var ulbtm = "</ul>";
     $.ajax({
         type: "GET",
         //url: "http://localhost:3192/Home/ListMySites",
-        url: "http://washingapp.apphb.com/Home/ListMySites",
+        url: "http://uksledge.apphb.com/Home/ListMySites",
         data: "UserID=" + userID,
         dataType: "jsonp",
         success: function(json) {
@@ -1335,13 +1384,6 @@ var ulbtm = "</ul>";
                 "<p class=\"ui-li-desc\"><a href=\"index.html#move_site\" data-role=\"button\" data-icon=\"gear\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"b\" data-inline=\"true\" onclick=\"move_site_map(" + result.latitude + "," + result.longitude + "," + result.PID + ")\">Move Location</a>" +
                 "<a href=\"#\" data-role=\"button\" data-icon=\"delete\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"b\" data-inline=\"true\" onclick=\"DeleteSite(" + result.PID + ")\">Delete</a></p></li>";
                 sites_html = sites_html + ultop + para + ulbtm;
-
-//                sites_html = sites_html + "<div class=\"ui-grid-b\">" +
-// "<div class=\"ui-block-a\"><div class=\"ui-bar ui-bar-c\"><p></p>" + result.name + "</div></div>" +
-// "<div class=\"ui-block-b\"><div class=\"ui-bar ui-bar-c\"><a href=\"index.html#move_site\" data-role=\"button\" data-icon=\"gear\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"b\" data-inline=\"true\" onclick=\"move_site_map(" + result.latitude + "," + result.longitude + "," + result.PID + ")\">Move</a></div></div>" +
-//"<div class=\"ui-block-c\"><div class=\"ui-bar ui-bar-c\"><a href=\"#\" data-role=\"button\" data-icon=\"delete\" data-iconpos=\"left\" data-mini=\"true\" data-theme=\"b\" data-inline=\"true\" onclick=\"DeleteSite(" + result.PID + ")\">Delete</a></div></div></div>" +
-  //              "<div class=\"ui-bar ui-bar-b\" style=\"height:2px\"></div></div>";
-
             });
             ct = json.ct;
         },
@@ -1368,7 +1410,7 @@ function doSearch() {
     $.ajax({
         type: "GET",
         //url: "http://localhost:3192/Home/ListPlaces",
-        url: "http://washingapp.apphb.com/Home/ListPlaces",
+        url: "http://uksledge.apphb.com/Home/ListPlaces",
         data: "search_str=" + search_str,
         dataType: "jsonp",
         success: function(json) {
@@ -1405,7 +1447,7 @@ var ct = 0;
 $.ajax({
     type: "GET",
     //url: "http://localhost:3192/Home/ListComments",
-    url: "http://washingapp.apphb.com/Home/ListComments",
+    url: "http://uksledge.apphb.com/Home/ListComments",
     data: "PID=" + PID,
     dataType: "jsonp",
     success: function(json) {
@@ -1424,8 +1466,7 @@ $.ajax({
             $("#place_comments").html("No comments");
         } else {
             $("#place_comments").html(comments_html2 + "<div style=\"display:none\" id=\"hidPID\">" + PID + "</div>").trigger('create');
-            //$("#place_comments").html(comments_html + "<div style=\"display:none\" id=\"hidPID\">" + PID + "</div>").trigger('create');
-            $("#addcomm").show();
+            
         }
         $("#map_msg").html(ct + " comments loaded.");
 
@@ -1450,7 +1491,7 @@ function SaveComment() {
     $.ajax({
         type: "POST",
         //url: "http://localhost:3192/Home/SaveComment",
-        url: "http://washingapp.apphb.com/Home/SaveComment",
+        url: "http://uksledge.apphb.com/Home/SaveComment",
         data: "PID=" + PID + "&comment=" + comment + "&userID=" + userID + "&flag=" + flag,
         dataType: "jsonp",
         success: function(json) {

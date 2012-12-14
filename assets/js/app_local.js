@@ -42,6 +42,7 @@ function getCacheBW(age) {
         var dt = parseInt(0);
         var dt_ct = parseInt(0);
         var total_score = parseInt(0);
+        var coldest = 30;
 
         ctx2d.fillStyle = '#FFF';
         ctx2d.font = '14px Arial';
@@ -77,7 +78,12 @@ function getCacheBW(age) {
             imgi.src = "http://icons.wxug.com/i/c/i/" + zone.icon + ".gif";
             var ws = (parseInt(zone.wspd.english) * 6) + 10;
             var temp = (parseInt(zone.temp.metric) * 3) + 10;
+            var tempc = parseInt(zone.temp.metric);
             var start = 53;
+            if (tempc < coldest) {
+                coldest = tempc
+            }
+
             if (parseInt(zone.temp.metric) < 1) {
                 start = 42 + (parseInt(zone.temp.metric) * 3);
                 temp = 53 - start;
@@ -206,9 +212,14 @@ function getCacheBW(age) {
 
         if (totalsnow > 10) {
             totalsnow = (totalsnow / 10);
+            AddSnowEvent(totalsnow, location);
             $('#snowfall').html(": " + Math.round(totalsnow) + " cm of snow on the way :-)");
         }
 
+        if (age == "newdata") {
+
+            AddColdest(coldest.toString(), location);
+        }
     });
 
 
