@@ -1172,8 +1172,9 @@ function load_data_db() {
             document.getElementById("username1").value = phonename;
             if (phonename.length == 0) {
                 $('#name_msg').html("Please add a name in My Details before adding sites.");
-            } 
+            }
             $('#my_sites_ct').html(site_ct);
+            alert("ct=" + site_ct);
             $('#data_status').append("API: " + userID);
             var town = getTownstore();
             $('#loc_here').html(town);
