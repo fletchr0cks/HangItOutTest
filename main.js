@@ -444,7 +444,7 @@ function FTLcheck() {
 function DataCheck(level,diff) {
     var network = check_network();
     //network = "NONE";
-    var hours = Math.round(diff / 360);
+    var hours = Math.round(diff / 3600);
     if (level == 1) {
         if (network == "NONE" || network == null) {
             alert("This app needs a data connection for the initial boot up.");
@@ -467,7 +467,7 @@ function DataCheck(level,diff) {
 
         if (diff <= 5000) {
             //get site count, town, lat, lng from store
-            $("#data_status").append('<br />less 500, simple refresh');
+            $("#data_status").append('<br />less 5000, simple refresh');
             load_data_refresh();
         } else {
             //get name, count, etc from store, then weather (checkstore) => start
@@ -690,6 +690,7 @@ function saveName() {
 
 function saveSite1() {
     $("#set_map_overlay").fadeIn();
+    $("#saveSiteBtn").hide();
     var latval = document.getElementById("lat_coord").innerHTML;
     var longval = document.getElementById("long_coord").innerHTML;
     $.mobile.loading('show', {
@@ -1174,7 +1175,7 @@ function load_data_db() {
                 $('#name_msg').html("Please add a name in My Details before adding sites.");
             }
             $('#my_sites_ct').html(site_ct);
-            alert("ct=" + site_ct);
+           
             $('#data_status').append("API: " + userID);
             var town = getTownstore();
             $('#loc_here').html(town);
@@ -1467,7 +1468,7 @@ $.ajax({
             $("#place_comments").html("No comments");
         } else {
             $("#place_comments").html(comments_html2 + "<div style=\"display:none\" id=\"hidPID\">" + PID + "</div>").trigger('create');
-            
+            $("#addcomm").show();
         }
         $("#map_msg").html(ct + " comments loaded.");
 
@@ -1607,6 +1608,7 @@ function GoogleMap(lat,lng) {
 
 function GoogleMap_set(lat, lng) {
     $("#set_map_overlay").fadeIn();
+    $("#saveSiteBtn").show();
     var siteLatLng = lat + "," + lng;
     this.initialize = function() {
 
@@ -1837,6 +1839,7 @@ function startmap_set() {
     var lng = latlng[1];
     var map = new GoogleMap_set(lat, lng);
     map.initialize();
+    
 }
 
 function startmap_move(lat, lng, PID) {

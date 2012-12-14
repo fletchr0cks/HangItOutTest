@@ -20,10 +20,10 @@
 		<script src="assets/js/app_local.js" type="text/javascript" charset="utf-8"></script>
 
 <script type="text/javascript">
-    $(document).bind("pageinit", function() {
+    $(document).bind("init", function() {
         // Make your jQuery Mobile framework configuration changes here!
 
-    $.mobile.page.prototype.options.addBackBtn = true;
+    $.mobile.page.prototype.options.addBackBtn = false;
     $.mobile.defaultPageTransition = 'none';
     $.mobile.useFastClick = false;
     });
@@ -91,6 +91,7 @@
 		<div id="map_canvas" style="height:300px;"></div>
        <div id="place_name" data-theme="b" class="ui-bar ui-bar-b"></div>
        <div id="place_comments"></div>
+       <div id="addcomm" style="display:none">
     <ul data-role="listview" id="Ul1" data-inset="true">
 <li>
 <div><input type="text" name="addcomment" id="addcommentid" value="" /></div>
@@ -101,7 +102,8 @@
 	<option value="yes" >Yes</option>
 </select>
 </li>
-</ul>      
+</ul>   
+</div>   
  	</div><!-- /content -->
 
 </div><!-- /page two -->
