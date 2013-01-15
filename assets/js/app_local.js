@@ -37,7 +37,7 @@ function getCacheBW(age) {
         var first_hour = -1;
         hour_bg_bk = "000";
         var totalsnow = 0;
-        var diff = (Math.round(new Date().getTime() / 1000) - epochdata) / 360;
+        var diff = (Math.round(new Date().getTime() / 1000) - epochdata) / 3600;
         var hours = Math.round(diff);
         var dt = parseInt(0);
         var dt_ct = parseInt(0);
@@ -227,73 +227,73 @@ function getCacheBW(age) {
 
 }
 
-        
-        
-function checkCacheDate() {
-var gotdata = 0;
-// Getting some data out of the lawnchair database
-lawnchair.get('mydata', function(obj) {
-    if (obj !== null) {
-    //alert("have data");
-    gotdata = -1;
-    } else {
-    alert("no data");
-    gotdata = -1
-    }
-    doSomething(gotdata);
-});
 
-// Saving to the database
-//lawnchair.save({key:'my_data_key', lastSync: currentTime, dataList: someData});         
-    
+
+function checkCacheDate() {
+    var gotdata = 0;
+    // Getting some data out of the lawnchair database
+    lawnchair.get('mydata', function(obj) {
+        if (obj !== null) {
+            //alert("have data");
+            gotdata = -1;
+        } else {
+            alert("no data");
+            gotdata = -1
+        }
+        doSomething(gotdata);
+    });
+
+    // Saving to the database
+    //lawnchair.save({key:'my_data_key', lastSync: currentTime, dataList: someData});         
+
 }
 
 function doSomething(datar) {
-//alert("func" + datar);
-if (datar == -1) {
-getData();
-} else {
-getCache("olddata");
-}
+    //alert("func" + datar);
+    if (datar == -1) {
+        getData();
+    } else {
+        getCache("olddata");
+    }
 }
 
 function resultsClick() {
-//var somedata = "hihi";
-//lawnchair.save({key:'mydata', lastSync:somedata});
-$('#map').show();
+    //var somedata = "hihi";
+    //lawnchair.save({key:'mydata', lastSync:somedata});
+    $('#map').show();
 
 }
 
 
 function tryData() {
-alert("trying");
-getData();
+    alert("trying");
+    getData();
 }
 
 
 
-function moveBox() { 
- var canvas = document.getElementById('canvasElement'); 
-var context = canvas.getContext('2d'); 
-var canvasWidth = "300"; 
-var canvasHeight = "50"; 
-var x = 10; 
-var y = 10; 
-context.font = '16px Arial';
-// Clears out our canvas to redraw 
-//context.clearRect(0,0, canvasWidth, canvasHeight); 
-// Draws our box 
-context.fillStyle = '#DE613F';
-context.fillRect(x, y, 20, 20); 
-var dt = 8;
-// Increases our x variable by 1 each time this function is called, moving our box along the horizontal axis 
-x++; 
-// Calls our moveBox() every 33 milliseconds, causing the whole process to loop 
-setTimeout(moveBox, 10); 
+function moveBox() {
+    var canvas = document.getElementById('canvasElement');
+    var context = canvas.getContext('2d');
+    var canvasWidth = "300";
+    var canvasHeight = "50";
+    var x = 10;
+    var y = 10;
+    context.font = '16px Arial';
+    // Clears out our canvas to redraw 
+    //context.clearRect(0,0, canvasWidth, canvasHeight); 
+    // Draws our box 
+    context.fillStyle = '#DE613F';
+    context.fillRect(x, y, 20, 20);
+    var dt = 8;
+    // Increases our x variable by 1 each time this function is called, moving our box along the horizontal axis 
+    x++;
+    // Calls our moveBox() every 33 milliseconds, causing the whole process to loop 
+    setTimeout(moveBox, 10);
 
-context.fillStyle = '#FFF';
-//context.fillText("Drying time: " + dt + " hours", 15, 26);
-//context.clearRect(0,0, 300, 50);
+    context.fillStyle = '#FFF';
+    //context.fillText("Drying time: " + dt + " hours", 15, 26);
+    //context.clearRect(0,0, 300, 50);
 }
 
 
@@ -446,35 +446,35 @@ function getCacheNew(age) {
 
 
 }
-        
- function saveData(lat,lval,pid) {
-  $.ajax({
-                    type: "POST",
-                    //url: "http://washingapp.apphb.com/Home/Save",
-                    url: "http://localhost:3192/Home/Save",
-                    data: "lat=22&lval=37",
-                    dataType: "text/plain",
-                    success: function(response) {
-                    //alert("posted" + lat + ":" + lval);
-                      var json = eval('(' + response + ')');
-                      alert("out=" + json);
-                    },
-            error: function(data) {
+
+function saveData(lat, lval, pid) {
+    $.ajax({
+        type: "POST",
+        //url: "http://washingapp.apphb.com/Home/Save",
+        url: "http://localhost:3192/Home/Save",
+        data: "lat=22&lval=37",
+        dataType: "text/plain",
+        success: function(response) {
+            //alert("posted" + lat + ":" + lval);
+            var json = eval('(' + response + ')');
+            alert("out=" + json);
+        },
+        error: function(data) {
             alert("save error");
-                 }
-                 });
- }
+        }
+    });
+}
 
 function checkLoc() {
 
-//navigator.geolocation.getCurrentPosition(function (position) {
-//  loc = position.coords.latitude + "," + position.coords.longitude;
-//  alert(loc);
-  return 1;
-//  }, function () {
-//  alert("no location");
-//  return 0
-//  });
+    //navigator.geolocation.getCurrentPosition(function (position) {
+    //  loc = position.coords.latitude + "," + position.coords.longitude;
+    //  alert(loc);
+    return 1;
+    //  }, function () {
+    //  alert("no location");
+    //  return 0
+    //  });
 
 }
 
@@ -485,116 +485,116 @@ function getDatalocalNew() {
         adapter: "dom",
         name: "data_store"
     }, function(store) {
-});
-    
-       store.get('loc_data', function(theJsonData) {
-       lat = theJsonData.lat;
-       longval = theJsonData.longval;
-        $('#loc_result').append("<br /> lat " + lat + "long " + longval);
-        
     });
 
- var loc = lat + "," + longval;
- $.ajax({
-     type: "GET",
-     url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
-     //dataType: "jsonp",
-     //success: function(json) {
+    store.get('loc_data', function(theJsonData) {
+        lat = theJsonData.lat;
+        longval = theJsonData.longval;
+        $('#loc_result').append("<br /> lat " + lat + "long " + longval);
+
+    });
+
+    var loc = lat + "," + longval;
+    $.ajax({
+        type: "GET",
+        url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
+        //dataType: "jsonp",
+        //success: function(json) {
 
 
-     //url: "json.txt",
-     dataType: "jsonp",
-     success: function(json) {
-         //var json = eval('(' + jsontxt + ')');
-         var jsontext = JSON.stringify(json);
-         var location = json['location']['city'];
+        //url: "json.txt",
+        dataType: "jsonp",
+        success: function(json) {
+            //var json = eval('(' + jsontxt + ')');
+            var jsontext = JSON.stringify(json);
+            var location = json['location']['city'];
 
-         $('#loc_result').append("<br /> Location from data local new " + location + " (" + loc + ")");
+            $('#loc_result').append("<br /> Location from data local new " + location + " (" + loc + ")");
 
-         var epoch = Math.round(new Date().getTime() / 1000)
-         var timenow = new Date();
-         var hour_now = timenow.getHours();
-         var minute_now = timenow.getMinutes();
-         var today = timenow.getDate();
-         alert(timenow);
-         var me = {
-             key: 'app_data',
-             json: jsontext,
-             hoursaved: hour_now,
-             minsaved: minute_now,
-             datesaved: today,
-             timesaved: timenow,
-             epoch: epoch
-         };
+            var epoch = Math.round(new Date().getTime() / 1000)
+            var timenow = new Date();
+            var hour_now = timenow.getHours();
+            var minute_now = timenow.getMinutes();
+            var today = timenow.getDate();
+            alert(timenow);
+            var me = {
+                key: 'app_data',
+                json: jsontext,
+                hoursaved: hour_now,
+                minsaved: minute_now,
+                datesaved: today,
+                timesaved: timenow,
+                epoch: epoch
+            };
 
-         // save it
-         store.save(me);
+            // save it
+            store.save(me);
 
-         //lawnchair_s.save({ key: 'mydata', json: jsontext, hoursaved: hour_now, minsaved: minute_now, datesaved: today, epoch: epoch });
+            //lawnchair_s.save({ key: 'mydata', json: jsontext, hoursaved: hour_now, minsaved: minute_now, datesaved: today, epoch: epoch });
 
-         getCacheNew("newdata");
-     },
-     error: function(xhr, error) {
-         console.debug(xhr); console.debug(error);
-     },
-     complete: function() {
+            getCacheNew("newdata");
+        },
+        error: function(xhr, error) {
+            console.debug(xhr); console.debug(error);
+        },
+        complete: function() {
 
-     }
+        }
 
- });
-        
+    });
+
 }
 
 
- function getDatalocal() {
- var lawnchair_s = new Lawnchair({table:'mytable'}, function(){
-    // Lawnchair setup! 
-});
- //var deviceID = device.uuid;
- var loc = "56.058168,-2.719811";
- var locck = checkLoc();
- // alert("get data " + locck);
- if (locck == 1) {
+function getDatalocal() {
+    var lawnchair_s = new Lawnchair({ table: 'mytable' }, function() {
+        // Lawnchair setup! 
+    });
+    //var deviceID = device.uuid;
+    var loc = "56.058168,-2.719811";
+    var locck = checkLoc();
+    // alert("get data " + locck);
+    if (locck == 1) {
 
         $.ajax({
             //url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
             //dataType: "jsonp",
             //success: function(json) {
-            
+
             type: "GET",
-	    url: "json.txt",
-	    dataType: "html",
-	    success: function(jsontxt) {
-           	var json = eval('(' + jsontxt + ')');
-		var jsontext =  JSON.stringify(json);	
-            	var location = json['location']['city'];
-          
-           $('#loc_result').append("<br /> Location from data local" + location + " (" + loc + ")");
-           
+            url: "json.txt",
+            dataType: "html",
+            success: function(jsontxt) {
+                var json = eval('(' + jsontxt + ')');
+                var jsontext = JSON.stringify(json);
+                var location = json['location']['city'];
+
+                $('#loc_result').append("<br /> Location from data local" + location + " (" + loc + ")");
+
                 var epoch = Math.round(new Date().getTime() / 1000)
-	        var timenow = new Date();
-		var hour_now  = timenow.getHours();
+                var timenow = new Date();
+                var hour_now = timenow.getHours();
                 var minute_now = timenow.getMinutes();
-		var today = timenow.getDate();
-        
-        lawnchair_s.save({key:'mydata', json:jsontext, hoursaved:hour_now, minsaved:minute_now, datesaved:today, epoch:epoch});
-      
-           getCache("newdata");    
-       	        },
-           error: function(xhr, error) {
-	                      console.debug(xhr); console.debug(error);
-	                  },
-	                  complete: function() {
-	   
-               }
-                          
+                var today = timenow.getDate();
+
+                lawnchair_s.save({ key: 'mydata', json: jsontext, hoursaved: hour_now, minsaved: minute_now, datesaved: today, epoch: epoch });
+
+                getCache("newdata");
+            },
+            error: function(xhr, error) {
+                console.debug(xhr); console.debug(error);
+            },
+            complete: function() {
+
+            }
+
         });
-        
-        } else {
-        
+
+    } else {
+
         alert("not loc for data");
-        }
-      
-        
-        }
+    }
+
+
+}
         

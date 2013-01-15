@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 
  <head>
@@ -21,8 +21,6 @@
 
 <script type="text/javascript">
     $(document).bind("init", function() {
-        // Make your jQuery Mobile framework configuration changes here!
-
     $.mobile.page.prototype.options.addBackBtn = false;
     $.mobile.defaultPageTransition = 'none';
     $.mobile.useFastClick = false;
@@ -35,19 +33,19 @@
 <!-- Start of first page: #one -->
 <div data-role="page" id="one" data-theme="a">
 
-	<div data-role="content" >	
+	<div data-role="content" >
 	<div style="text-align:center"><img  src="headerlogo.png" /></div>
 		 <ul data-role="listview" data-inset="true" data-theme="a" data-count-theme="b">
-		<li id="showmaplink" class="ui-disabled"><a href="#two" onclick="showmap()">Local Sites</a></li>	
+		<li id="showmaplink" class="ui-disabled"><a href="#two" onclick="showmap()">Local Sites</a></li>
 		<li id="add_site_link" class="ui-disabled"><a href="#add_site"  onclick="add_site_map()">Add a Site</a></li>
 		<li id="my_sites_link" class="ui-disabled"><a href="#my_sites" onclick="ListSites()">My Sites</a><div id="my_sites_ct" class="ui-li-count">0</div></li>
 		<li id="search_link" class="ui-disabled"><a href="#search">Search</a></li>
 	</ul>
 	<div data-role="collapsible" id="weather" class="ui-disabled" data-theme="a" data-inset="true" data-content-theme="a">
 		<h4>Hourly Weather<div style="display:inline" id="snowfall"></div></h4>
-	<canvas id="canvhere" width="300" height="1880">text here eq no canvas</canvas>
+	<canvas id="canvhere" width="300" height="1880">no canvas</canvas>
 	 </div>
-<div id="twitter"></div>	
+<div id="twitter"></div>
 
 <ul data-role="listview" id="mydeets" class="ui-disabled" data-inset="true">
 <li><p class="ui-li-aside"><a href="#my_details" data-rel="dialog" data-inline="true" data-icon="gear" data-theme="b" data-role="button" data-mini="true">Edit</a></p>
@@ -67,10 +65,16 @@
 </ul>
 
  <ul data-role="listview" data-inset="true"  data-theme="a" data-count-theme="b">
-		<li data-icon="info"><a href="#credits" data-rel="dialog">Credits</a></li>	
+		<li data-icon="info"><a href="#credits" data-rel="dialog">Credits</a></li>
 		</ul>
-<h6 onclick="nuke()" id="data_status"></h6>
-	
+
+ <ul data-role="listview" data-inset="true"  data-theme="a" data-count-theme="b">
+		<li data-icon="delete"><a href="#" onclick="close()">Exit</a></li>
+		</ul>
+
+
+<h6 onclick="nukeo()" id="data_statusoo"></h6>
+
 	</div><!-- /content -->
 
 </div><!-- /page one -->
@@ -86,7 +90,7 @@
 
 	<div data-role="content" data-theme="a">
 	<div data-role="button" data-icon="refresh" data-iconpos="left" data-mini="true" data-theme="b" data-inline="true" onclick="showmap()">Refresh my location</div>
-	    <div id="map_msg" class="ui-bar ui-bar-b"></div>   
+	    <div id="map_msg" class="ui-bar ui-bar-b"></div>
 		<div id="map_overlay" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:300px"><h4 style="text-align:center;padding-top:100px">Loading sites....</h4></div>
 		<div id="map_canvas" style="height:300px;"></div>
        <div id="place_name" data-theme="b" class="ui-bar ui-bar-b"></div>
@@ -102,8 +106,8 @@
 	<option value="yes" >Yes</option>
 </select>
 </li>
-</ul>   
-</div>   
+</ul>
+</div>
  	</div><!-- /content -->
 
 </div><!-- /page two -->
@@ -114,11 +118,11 @@
 		<h1>Add a Site</h1>
 	</div><!-- /header -->
 
-	<div data-role="content" data-theme="a">	
-	    <div class="ui-bar ui-bar-b">Drag marker</div>   		
+	<div data-role="content" data-theme="a">
+	    <div class="ui-bar ui-bar-b">Drag marker</div>
 		<div id="set_map_overlay" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:300px"><h4 style="text-align:center;padding-top:100px"></h4></div>
 		<div id="set_map_canvas" style="height:300px;"></div>
-<div id="saveSite" class="ui-bar ui-bar-b">Lat: <div style="display:inline" id="lat_coord"></div>   Long:<div style="display:inline" id="long_coord"></div></div> 
+<div id="saveSite" class="ui-bar ui-bar-b">Lat: <div style="display:inline" id="lat_coord"></div>   Long:<div style="display:inline" id="long_coord"></div></div>
 	<div class="ui-grid-a">
 	<div class="ui-block-a"><p></p>Site Name</div>
 	<div class="ui-block-b"><input type="text" name="sitename" id="sitenameid" value="" /></div>
@@ -128,7 +132,7 @@
 	<div class="ui-block-b"><input type="text" name="comment" id="commentid" value="" /></div>
 	</div>
 		<div id="saveSiteBtn"><div data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="b" data-inline="true" onclick="saveSite1()">Save</div></div>
-		
+
 	</div><!-- /content -->
 
 </div>
@@ -139,14 +143,14 @@
 		<h1>Move Site</h1>
 	</div><!-- /header -->
 
-	<div data-role="content" data-theme="a">	
-	    <div class="ui-bar ui-bar-b">Move marker<div id="MPID" style="display:none"></div></div>  
-		
+	<div data-role="content" data-theme="a">
+	    <div class="ui-bar ui-bar-b">Move marker<div id="MPID" style="display:none"></div></div>
+
 		<div id="set_map_overlaym" style="z-index:5000;position:absolute;display:none;background-color:Gray;opacity:0.8;height:300px"><h4 style="text-align:center;padding-top:100px">Loading map ....</h4></div>
 		<div id="set_map_canvasm" style="height:300px;"></div>
-	 <div id="saveSitem" class="ui-bar ui-bar-b">Lat: <div style="display:inline" id="lat_coordm"></div>   Long:<div style="display:inline" id="long_coordm"></div></div> 
+	 <div id="saveSitem" class="ui-bar ui-bar-b">Lat: <div style="display:inline" id="lat_coordm"></div>   Long:<div style="display:inline" id="long_coordm"></div></div>
 		<div id="saveMovedSite"><div data-role="button" data-icon="delete" data-iconpos="left" data-mini="true" data-theme="b" data-inline="true" data-direction="reverse" onclick="saveMovedSite()">Save</div></div>
-		
+
 	</div><!-- /content -->
 
 </div>
@@ -154,12 +158,12 @@
 <div data-role="page" id="my_sites" data-theme="a">
 
 	<div data-role="header">
-	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>		
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>
 	<h1>My Sites</h1>
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="a">
-   <div id="sites_msg" class="ui-bar ui-bar-b"></div>   
+   <div id="sites_msg" class="ui-bar ui-bar-b"></div>
        <div id="sites_list" data-theme="b"></div>
 	</div><!-- /content -->
 
@@ -168,7 +172,7 @@
 <div data-role="page" id="search" data-theme="a">
 
 	<div data-role="header">
-	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>		
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>
 	<h1>Search</h1>
 	</div><!-- /header -->
 
@@ -177,16 +181,16 @@
 	<div class="ui-block-a"><input type="text" name="search" id="searchid" value="" /></div>
 	<div class="ui-block-b"><div data-role="button" data-icon="search" data-iconpos="left" data-mini="true" data-theme="b" data-inline="true" onclick="doSearch()">Search</div></div>
 	</div>
-	 <div id="sites_search_msg" class="ui-bar ui-bar-b" style="display:none"></div>   
+	 <div id="sites_search_msg" class="ui-bar ui-bar-b" style="display:none"></div>
        <div id="sites_search_list"></div>
 		</div>
 </div>
-	
+
 <!-- Start of third page: #popup -->
 <div data-role="page" id="my_details">
 
 	<div data-role="header" data-theme="c">
-		<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>		
+		<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>
 		<h1>Edit Details</h1>
 	</div><!-- /header -->
 
@@ -206,19 +210,21 @@
 	<div class="ui-block-b"><div data-theme="b" data-role="button" onclick="saveName()">Save</div></div>
 </div>
 
-		<p><a href="#one" data-theme="b" data-rel="back" data-role="button" data-inline="true" data-icon="back" onclick="closeDetails()" >Close</a></p>	
+		<p><a href="#one" data-theme="b" data-rel="back" data-role="button" data-inline="true" data-icon="back" onclick="closeDetails()" >Close</a></p>
 	</div><!-- /content -->
 	</div>
 <div data-role="page" id="credits" data-theme="c">
 
 	<div data-role="header" data-theme="b">
-	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>		
+	<a href="#one" data-direction="reverse" data-icon="arrow-l" data-theme="b">Menu</a>
 	<h1>Credits</h1>
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="c">
   <p>This app would not be possible without all the great free APIs and technologies from:</p>
   <div style="text-align:center"><img style="width:250px" src="logos2.png" /></div>
+  <div><a href="mailto:mistersledge@mail.com?Subject=Contact%20from%20app">Contact me at mistersledge@mail.com</a></div>
+ 
 		</div>
 </div>
 

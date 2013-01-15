@@ -1,6 +1,4 @@
 var deviceInfo = function() {
-    //document.getElementById("platform").innerHTML = device.platform;
-    //document.getElementById("version").innerHTML = device.version;
     try {
         document.getElementById("uuid").innerHTML = device.uuid;
         document.getElementById("uuidi").innerHTML = device.uuid;
@@ -8,9 +6,6 @@ var deviceInfo = function() {
     } catch (Error) {
         document.getElementById("uuid").innerHTML = "PC";
     }
-    //document.getElementById("width").innerHTML = screen.width;
-    //document.getElementById("height").innerHTML = screen.height;
-    //document.getElementById("colorDepth").innerHTML = screen.colorDepth;
 };
 
 var getLocation = function() {
@@ -443,7 +438,6 @@ function FTLcheck() {
 
 function DataCheck(level,diff) {
     var network = check_network();
-    //network = "NONE";
     var hours = Math.round(diff / 3600);
     if (level == 1) {
         if (network == "NONE" || network == null) {
@@ -1032,8 +1026,8 @@ var start = function() {
 
 function init() {
 
-    document.addEventListener("deviceready", FTLcheck, false);
-    //FTLcheck();
+    //document.addEventListener("deviceready", FTLcheck, false);
+    FTLcheck();
   
 }
 
@@ -1057,9 +1051,7 @@ function save_id() {
         data: "lat=22&lval=37&city=nb&country=uk&comment=" + phoneid,
         dataType: "text/plain",
         success: function(response) {
-            //alert("posted" + lat + ":" + lval);
-            //var json = eval('(' + response + ')');
-            //alert("out=" + json);
+           
         },
         error: function(xhr, error) {
             console.debug(xhr); console.debug(error);
@@ -1254,33 +1246,11 @@ function setMarkers(map, bounds_map, PID) {
                 });
 
             });
-            // var image = 'marker_search.png';
-            //  var position = getPosition();
-            // var latlng = position.split(',');
-            // var hereLatLng = new google.maps.LatLng(latlng);
-
-            // var markerp = new google.maps.Marker({ 'position': hereLatLng, 'icon': image });
-            // markers_array.push(markerp);
-
-            //attach infowindow on click
-            // google.maps.event.addListener(markerp, "click", function() {
-            //$('#map_markers').fadeOut().html("<p>Click: " + markers.name + markers.PID + "</p>").fadeIn();
-
-            //   $('#place_name').html("you are here");
-            //infoWindow.open(map, markerp);
-            // });
-
+          
 
             var mcOptions = { gridSize: 100, maxZoom: 18 };
-            //$("#popupPadded").popup("close");
             $("#map_overlay").fadeOut();
             var markerCluster = new MarkerClusterer(map, markers_array, mcOptions);
-            // var position = getPosition();
-            //var latlng = position.split(',');
-            //var marker_here = new google.maps.Marker({ 'position': latlng, 'icon': 'marker_s4.png' });
-
-            //markers_array2.push(marker_here);
-            //var markerCluster2 = new MarkerClusterer(map, markers_array2, mcOptions);
         },
         error: function(xhr, error) {
             console.debug(xhr); console.debug(error);
@@ -1368,9 +1338,9 @@ if (confirm("Delete. Are you sure?")) {
 }
 
 function ListSites() {
+    $("#sites_msg").html("Downloading ..");
    var ultop = "<ul data-role=\"listview\" data-inset=\"true\" class=\"ui-listview\">";
 var ulbtm = "</ul>";
- 
     var sites_html = "";
     var ct = 0;
     var userID = getUserIDstore();
