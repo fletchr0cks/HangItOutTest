@@ -1026,8 +1026,8 @@ var start = function() {
 
 function init() {
 
-    //document.addEventListener("deviceready", FTLcheck, false);
-    FTLcheck();
+    document.addEventListener("deviceready", FTLcheck, false);
+    //FTLcheck();
   
 }
 
