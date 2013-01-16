@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns		= "http://www.w3.org/ns/widgets"
 	xmlns:gap	= "http://phonegap.com/ns/1.0"
-	id		= "com.phonegap.hangitouttest"
+	id		= "com.phonegap.uksledge"
 	version 	= "2.1.0">
 
 	<name>UK Sledge</name>
@@ -11,8 +11,8 @@
 	</description>
 
 	<author href="http://github.com/fletchr0cks"
-		email="nick.fletcher@gmail.com">
-		Nick Fletcher
+		email="3lawssafeapps@gmail.com">
+		Mr Sledge
 	</author>
 
 	<icon src="logouks.png" gap:role="default" />
