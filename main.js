@@ -19,7 +19,7 @@ var getLocation = function() {
 };
 
 function format_bounds(bds) {
-  
+
 var bds2 = bds.replace("((","");
 var bds3 = bds2.replace("))","");
 var bds4 = bds3.replace("), (",",");
@@ -29,7 +29,7 @@ return(bds6);
 }
 
 function SaveGPSLocation(lat,lng) {
-   
+
     var store = new Lawnchair({
         adapter: "dom",
         name: "data_store"
@@ -64,7 +64,7 @@ function SaveFirstLoginDetails(lat, lng, town) {
 
     // save it
     store.save(me);
-   
+
 }
 
 function SaveLoginDetails(APIcalls,phonename,userID,site_ct,total,lat_nm,lat_tn) {
@@ -103,7 +103,7 @@ var suc = function(p) {
         }
     };
     var locFail = function() {
-        alert("GPS fail");
+        alert("GPS failed, set location manually");
         $("#data_status").append("<br /> GPS fail");
         GPS_done(0);
     };
@@ -122,7 +122,7 @@ var refreshGPSLocation = function() {
         }
     };
     var locFail = function() {
-        alert("GPS fail");
+        alert("GPS failed, set location manually");
         $("#data_status").append("<br /> GPS fail");
         GPS_refresh(0);
     };
@@ -203,7 +203,7 @@ function close() {
 function check_network() {
 try {
     var networkState = navigator.network.connection.type;
- 
+
     var states = {};
     states[Connection.UNKNOWN]  = 'Unknown connection';
     states[Connection.ETHERNET] = 'Ethernet connection';
@@ -214,7 +214,7 @@ try {
     states[Connection.NONE]     = 'NONE';
 
     //confirm('Connection type:\n ' + states[networkState]);
-    
+
 } catch (Error) {
 //alert(Error);
      return "PC";
@@ -271,7 +271,7 @@ function getEpochstore() {
         } else {
         }
     });
-  
+
     return (item);
 }
 
@@ -381,7 +381,7 @@ function getPhoneNamestore() {
         } else {
         }
     });
-   
+
     return (item);
 }
 
@@ -391,7 +391,7 @@ function getFromStore(storetype,storeval) {
         adapter: "dom",
         name: "data_store"
     }, function(store) {
-    
+
     return item;
     });
 
@@ -399,17 +399,17 @@ function getFromStore(storetype,storeval) {
 
     if (available) {
             store.get(storetype, function(theJsonData) {
-                item = theJsonData.storeval;              
+                item = theJsonData.storeval;
             });
         } else {
-            
+
         }
     });
 }
 
 function FTLcheck() {
-  
-    
+
+
  var store = new Lawnchair({
         adapter: "dom",
         name: "data_store"
@@ -425,7 +425,7 @@ function FTLcheck() {
             var diff = Math.round(new Date().getTime() / 1000) - parseInt(epochdata);
             $("#data_status").append('<br /> diff= ' + diff);
             DataCheck(0, diff);
-            
+
         } else {
             $("#data_status").append('<br />no login data');
             //first time login
@@ -470,7 +470,7 @@ function DataCheck(level,diff) {
         }
     }
     }
-   
+
 }
 
 
@@ -568,6 +568,7 @@ function getWeather(timediff) {
         $.ajax({
             type: "GET",
             url: "http://api.wunderground.com/api/bf45926a1b878028/hourly/geolookup/q/" + loc + ".json",
+            //56.052,-2.732
             //url: "json.txt",
             //dataType: "html",
             dataType: "jsonp",
@@ -583,7 +584,7 @@ function getWeather(timediff) {
                 var hour_now = timenow.getHours();
                 var minute_now = timenow.getMinutes();
                 var today = timenow.getDate();
-               
+
                 $('#data_status').append("<br /> save w: " + epoch);
                 var me = {
                     key: 'app_data',
@@ -791,7 +792,7 @@ function saveMovedSite() {
     var PID = document.getElementById("MPID").innerHTML;
     var latval = document.getElementById("lat_coordm").innerHTML;
     var longval = document.getElementById("long_coordm").innerHTML;
-   
+
     var userid = getUserIDstore();
     $.ajax({
         type: "POST",
@@ -845,6 +846,8 @@ function GPS_done(retval) {
         getPlace(lat, lng, 0);
     } else {
         $.mobile.loading('hide');
+        $("#mydeets").removeClass("ui-disabled");
+        $("#mydeets").addClass("ui-enabled");
         $("#loc_here").html("Click here to set manually");
     }
 
@@ -875,7 +878,7 @@ function AddSnowEvent(cm, location) {
         data: "UserID=" + UserID + "&cm=" + cm + "&location=" + location + "&name=" + name,
         dataType: "jsonp",
         success: function(json) {
-            
+
         },
         error: function(xhr, error) {
             // console.debug(xhr); console.debug(error);
@@ -891,7 +894,7 @@ function AddSnowEvent(cm, location) {
 function AddColdest(temp, location) {
     var name = getPhoneNamestore();
     var UserID = getUserIDstore();
-    
+
     $.ajax({
         type: "POST",
         //url: "http://localhost:3192/Home/ListPlaces",
@@ -1028,7 +1031,7 @@ function init() {
 
     document.addEventListener("deviceready", FTLcheck, false);
     //FTLcheck();
-  
+
 }
 
 function save_id() {
@@ -1051,7 +1054,7 @@ function save_id() {
         data: "lat=22&lval=37&city=nb&country=uk&comment=" + phoneid,
         dataType: "text/plain",
         success: function(response) {
-           
+
         },
         error: function(xhr, error) {
             console.debug(xhr); console.debug(error);
@@ -1062,7 +1065,7 @@ function save_id() {
         $("#phone_name").html("Dave");
         GetGPSData();
         $("#data_status").html("Almost done...");
-            
+
         }
     });
 
@@ -1087,7 +1090,7 @@ function load_data_refresh() {
     var phonename = getPhoneNamestore();
     if (phonename.length == 0) {
         $('#name_msg').html("Please add a name in My Details before adding sites.");
-    } 
+    }
     var town = getTownstore();
     var total = getTotalstore();
     var lat_tn = getLat_tn();
@@ -1103,7 +1106,7 @@ function load_data_refresh() {
     $("#total_sites").html(total);
     //id, town, from store
     getWeather(0);
-   
+
 
 }
 
@@ -1167,7 +1170,7 @@ function load_data_db() {
                 $('#name_msg').html("Please add a name in My Details before adding sites.");
             }
             $('#my_sites_ct').html(site_ct);
-           
+
             $('#data_status').append("API: " + userID);
             var town = getTownstore();
             $('#loc_here').html(town);
@@ -1215,7 +1218,7 @@ function setMarkers(map, bounds_map, PID) {
             ct = json.ct; //56.208,-3.15
             $.merge(json.points, json_loc.points);
             var jsontext = JSON.stringify(json);
-           
+
             $.each(json.points, function(i, markers) {
                 console.log(json);
                 if (markers.PID == parseInt(PID)) {
@@ -1246,7 +1249,7 @@ function setMarkers(map, bounds_map, PID) {
                 });
 
             });
-          
+
 
             var mcOptions = { gridSize: 100, maxZoom: 18 };
             $("#map_overlay").fadeOut();
@@ -1307,8 +1310,8 @@ function setMarker_move(map, bounds_map, lat, lng) {
 }
 
 function DeleteSite(pid) {
-    
-if (confirm("Delete. Are you sure?")) { 
+
+if (confirm("Delete. Are you sure?")) {
 // do this
 
     $.ajax({
@@ -1453,7 +1456,7 @@ function SaveComment() {
     var PID = document.getElementById("hidPID").innerHTML;
     var flag = document.getElementById("sliderid").value;
     var comment = document.getElementById("addcommentid").value;
-    
+
     var userID = getUserIDstore();
     var ultop = "<ul data-role=\"listview\" data-inset=\"true\" class=\"ui-listview\">";
     var ulbtm = "</ul>";
@@ -1469,7 +1472,7 @@ function SaveComment() {
         success: function(json) {
             $.each(json.cmts, function(i, result) {
                 var para = "<li class=\"ui-li ui-li-static ui-body-c\"><p class=\"ui-li-heading\" style=\"color:#66A68B\">On " + result.datetime + ", " + result.username + " wrote: </p><p style=\"white-space: normal\" class=\"ui-li-desc\">" + result.comment + "</p></li>";
-              
+
                 comments_html2 = comments_html2 + ultop + para + ulbtm;
             });
             ct = json.ct;
@@ -1512,7 +1515,7 @@ function getPosition() {
     });
 
     var loc = lat + "," + longval;
-   
+
     return loc;
 
 }
@@ -1596,10 +1599,10 @@ function GoogleMap_set(lat, lng) {
             bounds = map.getBounds();
         });
         setMarker_site(map, bounds, lat, lng);
-       
+
         var markerp = new google.maps.Marker({ 'position': siteLatLng, draggable: true, map: map });
         $("#set_map_overlay").fadeOut();
-        
+
         infowindow = new google.maps.InfoWindow({
             content: "holding..."
         });
@@ -1809,7 +1812,7 @@ function startmap_set() {
     var lng = latlng[1];
     var map = new GoogleMap_set(lat, lng);
     map.initialize();
-    
+
 }
 
 function startmap_move(lat, lng, PID) {
@@ -1922,9 +1925,9 @@ store.get('app_data', function(theJsonData) {
             getCacheNew("olddata");
         } else {
             getDatalocalNew();
-            
-        }    
-        
+
+        }
+
     } else {
     $("#loc_result").append('<br />' + diff + ' recent data, get cache');
     getCacheNew("olddata");
@@ -1957,7 +1960,7 @@ function checkLocation(network) {
 
         return 1;
     } else {
-      
+
       var suc = function(p) {
             //alert(p.coords.latitude + " " + p.coords.longitude);
             var store = new Lawnchair({
@@ -1984,7 +1987,7 @@ function checkLocation(network) {
 
 
     }
-  
+
 }
 
 function checkDataMain() {
@@ -2005,7 +2008,7 @@ function checkDataMain() {
         } else {
         $("#loc_result").append('<br />no location');
 
-          
+
         }
     });
 
